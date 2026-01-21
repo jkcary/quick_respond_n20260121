@@ -1,0 +1,64 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Vocabulary List",
+  "description": "JSON schema for English vocabulary word lists",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id", "word", "phonetic", "chinese", "sentence"],
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Unique identifier for the vocabulary item",
+        "pattern": "^g[3-9]v[0-9]+_[0-9]+$",
+        "examples": ["g5v2_001", "g3v1_042"]
+      },
+      "word": {
+        "type": "string",
+        "description": "English word",
+        "minLength": 1,
+        "examples": ["telescope", "adventure", "beautiful"]
+      },
+      "phonetic": {
+        "type": "string",
+        "description": "IPA phonetic notation",
+        "pattern": "^/.*/$",
+        "examples": ["/ˈtel.ɪ.skoʊp/", "/ədˈven.tʃər/"]
+      },
+      "chinese": {
+        "type": "array",
+        "description": "Chinese translations (one or more)",
+        "minItems": 1,
+        "items": {
+          "type": "string",
+          "minLength": 1
+        },
+        "examples": [
+          ["望远镜"],
+          ["冒险", "奇遇"],
+          ["美丽的", "漂亮的"]
+        ]
+      },
+      "sentence": {
+        "type": "string",
+        "description": "Example sentence in English",
+        "minLength": 1,
+        "examples": [
+          "I looked at the stars through a telescope.",
+          "The children went on an exciting adventure."
+        ]
+      },
+      "image_url": {
+        "type": "string",
+        "description": "Optional image URL (local path or remote URL)",
+        "examples": [
+          "assets/img/g5/telescope.png",
+          "https://example.com/images/telescope.jpg",
+          ""
+        ]
+      }
+    },
+    "additionalProperties": false
+  },
+  "minItems": 1
+}

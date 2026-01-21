@@ -1,0 +1,190 @@
+# 产品需求文档 (PRD): 跨平台英语单词智能诊断 Agent
+
+| 文档属性 | 详细信息 |
+| --- | --- |
+| **项目名称** | English AI Agent (EAA) |
+| **版本号** | **v1.0 (Release Candidate)** |
+| **最后更新** | 2024-05-20 |
+| **目标平台** | Windows (Electron) / Android (Capacitor) |
+| **核心技术** | Vue/React, Tailwind CSS, Web Speech API, LocalStorage |
+
+## 1. 产品全局图 (Product Scope)
+
+### 1.1 系统架构图
+
+```mermaid
+graph TD
+    User[用户终端] -->|交互| App{Hybrid App}
+    
+    subgraph "前端容器 (Electron/Capacitor)"
+        UI[界面层 (Tailwind CSS)]
+        Logic[业务逻辑层]
+        Storage[本地存储 (JSON/SQLite)]
+    end
+    
+    App --> UI
+    UI --> Logic
+    
+    Logic -->|读取| Storage
+    Logic -->|ASR/TTS| BrowserAPI[Web Speech API]
+    Logic -->|HTTP Request| LLM[多模型聚合网关]
+    
+    subgraph "外部服务"
+        LLM --> DeepSeek
+        LLM --> OpenAI
+        LLM --> Other[Ollama/Moonshot]
+    end
+
+```
+
+### 1.2 核心业务流程 (5-Word Loop)
+
+```mermaid
+sequenceDiagram
+    participant U as 用户
+    participant S as 系统
+    participant A as LLM API
+    
+    Note over S: 权限检查 (Android: 麦克风)
+    S->>S: 加载词库 -> 过滤已掌握词 -> 抽取5词
+    
+    loop 5次循环
+        S->>U: 显示单词卡片 + 自动发音
+        U->>S: 语音输入 (或降级为打字)
+        
+        alt 输入为空/识别失败
+            S->>U: 提示重试
+        else 输入有效
+            S->>A: Prompt: 评判翻译准确性
+            A-->>S: JSON结果 {correct: bool}
+            
+            alt 正确
+                S->>U: 绿色光效 + 播放 "Ping" 音效
+            else 错误
+                S->>U: 红色警示 + 朗读正确发音 + 展示例句
+                S->>S: 写入 Error Log (本地库)
+            end
+        end
+    end
+    
+    S->>U: 结算页面 (得分 + 存入错题数量)
+
+```
+
+---
+
+## 2. 详细功能说明 (Detailed Requirements)
+
+### 2.1 模块 A: 设置与模型配置 (Configuration)
+
+* **功能描述**:
+1. **年级锚点**: 用户选择年级（3-9年级）。系统根据 `current_grade` 自动聚合 `grade <= current_grade` 的所有单词 JSON 数据。
+2. **API 网关配置**:
+* 支持 DeepSeek, OpenAI, Moonshot, Ollama, Anthropic。
+* 字段: `Base URL` (可选, 用于代理), `API Key`, `Model Name` (如 deepseek-chat)。
+
+
+3. **热更新逻辑**: 修改配置并保存后，**即时生效**于下一组测试，但不中断当前正在进行的 5 词测试。
+
+
+* **交互细节**:
+* **保存反馈**: 点击保存后，后台发送一个 `Hello World` 请求验证连通性。成功显示绿色对勾，失败显示红色错误码。
+
+
+
+### 2.2 模块 B: 智能诊断测试 (Diagnosis & Drill)
+
+* **功能描述**:
+1. **启动检查**:
+* **Android 端**: 首次进入测试时，**强制弹窗**申请 `RECORD_AUDIO` 权限。
+* **拒绝处理**: 若用户拒绝权限，自动隐藏麦克风图标，仅展示文本输入框，并提示“语音功能受限”。
+
+
+2. **出题策略**: 优先抽取 `error_log` 中 `mastered: false` 的单词。若无错题，则随机抽取新词。
+3. **AI 判卷**:
+* 使用 System Prompt 锁定输出格式为纯 JSON，严禁输出废话。
+* *Prompt 示例*: `Judge if the user's Chinese translation matches the English word. Word: {word}, Input: {input}. Return JSON: {"correct": boolean, "correction": "string"}`.
+
+
+
+
+
+### 2.3 模块 C: 错题本与 VST 模式 (Error Review)
+
+* **功能描述**:
+1. **错题列表**: 按“错误日期”倒序排列。
+2. **VST 深度学习卡片**:
+* **V (Visual)**: 加载 JSON `image_url`。**兜底逻辑**: 若 URL 为空或加载失败 (404)，显示系统默认的 SVG 线条风格图标（如“大脑”或“书本”图标），保持界面整洁。
+* **S (Sound)**: 自动播放 TTS。
+* **T (Text)**: 依次展示 单词 -> 音标 -> 汉语 -> 例句。
+
+
+3. **打印导出**: 将错题渲染为 HTML Canvas，生成 A4 布局图片或 PDF 调用系统打印。
+
+
+
+---
+
+## 3. 数据规范 (Data Schema)
+
+### 3.1 核心单词表 (JSON)
+
+*文件名示例: `grade5_vol2.json*`
+
+```json
+[
+  {
+    "id": "g5v2_001",
+    "word": "telescope",
+    "phonetic": "/ˈtel.ɪ.skoʊp/",
+    "chinese": ["望远镜"],
+    "sentence": "I looked at the stars through a telescope.",
+    "image_url": "assets/img/g5/telescope.png" // 可为空
+  }
+]
+
+```
+
+### 3.2 错题记录 (LocalStorage Key: `ea_error_log`)
+
+```json
+{
+  "g5v2_001": {
+    "err_count": 2,
+    "last_err_at": 1716182400000,
+    "history_inputs": ["电视", "显微镜"]
+  }
+}
+
+```
+
+---
+
+## 4. 非功能需求 (NFR) & UI规范
+
+1. **视觉风格 (Tailwind)**:
+* **背景**: `bg-slate-900` (深空黑)
+* **卡片**: `bg-slate-800` + `rounded-2xl` + `border border-slate-700`
+* **主色 (Primary)**: `text-cyan-400` (科技蓝)
+* **强调 (Accent)**: `ring-cyan-500/50` (光晕效果)
+
+
+2. **性能指标**:
+* APK 包体积控制在 50MB 以内。
+* 本地 JSON 检索速度 < 100ms (支持 5000+ 单词量级)。
+
+
+3. **容错性**:
+* 断网状态下，APP 需提示“仅支持本地浏览”，并禁用测试功能（因依赖 LLM）。
+
+
+
+---
+
+> **Phase 5: 交付与重置 (Delivery)**
+> 任务已完成。这份文档已经具备了工程开发的全部要素（架构、逻辑、数据结构、UI规范、异常处理）。
+> **您希望我为您执行以下哪项后续操作？**
+> 1. **生成 Cursor/Claude 提示词**: 基于此 PRD，编写一段能让 AI 编程工具直接生成项目骨架的 Prompt。
+> 2. **归档项目**: 结束本次会话，开始讨论新的开发想法。
+> 
+>

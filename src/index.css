@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-cyber-bg text-cyber-secondary font-sans antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-cyber-primary font-semibold;
+  }
+
+  button {
+    @apply transition-all duration-200;
+  }
+}
+
+@layer components {
+  /* Cyberpunk Button */
+  .btn-cyber {
+    @apply px-6 py-3 bg-cyber-primary text-cyber-bg font-medium rounded-lg
+           hover:bg-cyan-300 active:scale-95 disabled:opacity-50
+           disabled:cursor-not-allowed disabled:hover:bg-cyber-primary;
+  }
+
+  .btn-cyber-outline {
+    @apply px-6 py-3 border-2 border-cyber-primary text-cyber-primary
+           font-medium rounded-lg hover:bg-cyber-primary hover:text-cyber-bg
+           active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-cyber-danger {
+    @apply px-6 py-3 bg-cyber-alert text-white font-medium rounded-lg
+           hover:bg-rose-400 active:scale-95 disabled:opacity-50;
+  }
+
+  /* Card */
+  .card-cyber {
+    @apply bg-cyber-surface rounded-xl p-6 shadow-lg
+           border border-slate-700;
+  }
+
+  /* Input */
+  .input-cyber {
+    @apply w-full px-4 py-3 bg-cyber-bg border border-cyber-primary
+           rounded-lg text-cyber-primary placeholder-cyber-secondary
+           focus:outline-none focus:ring-2 focus:ring-cyber-primary
+           focus:border-transparent;
+  }
+
+  /* Badge */
+  .badge-cyber {
+    @apply inline-block px-3 py-1 text-sm font-medium
+           bg-cyber-primary/20 text-cyber-primary rounded-full;
+  }
+
+  .badge-alert {
+    @apply inline-block px-3 py-1 text-sm font-medium
+           bg-cyber-alert/20 text-cyber-alert rounded-full;
+  }
+
+  /* Loading Spinner */
+  .spinner {
+    @apply inline-block w-6 h-6 border-3 border-cyber-primary
+           border-t-transparent rounded-full animate-spin;
+  }
+
+  /* Glassmorphism Effect */
+  .glass-cyber {
+    @apply bg-cyber-surface/60 backdrop-blur-md border border-slate-700/50;
+  }
+}
+
+@layer utilities {
+  /* Custom Animations */
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 5px rgba(34, 211, 238, 0.5);
+    }
+    50% {
+      box-shadow: 0 0 20px rgba(34, 211, 238, 0.8);
+    }
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  /* Text Gradient */
+  .text-gradient-cyber {
+    @apply bg-gradient-to-r from-cyan-400 to-blue-500
+           bg-clip-text text-transparent;
+  }
+}

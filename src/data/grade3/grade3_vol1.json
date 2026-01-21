@@ -1,0 +1,82 @@
+[
+  {
+    "id": "g3v1_001",
+    "word": "apple",
+    "phonetic": "/ˈæp.əl/",
+    "chinese": ["苹果"],
+    "sentence": "I eat an apple every day.",
+    "image_url": ""
+  },
+  {
+    "id": "g3v1_002",
+    "word": "book",
+    "phonetic": "/bʊk/",
+    "chinese": ["书", "书籍"],
+    "sentence": "She reads a book before bed.",
+    "image_url": ""
+  },
+  {
+    "id": "g3v1_003",
+    "word": "cat",
+    "phonetic": "/kæt/",
+    "chinese": ["猫"],
+    "sentence": "The cat is sleeping on the sofa.",
+    "image_url": ""
+  },
+  {
+    "id": "g3v1_004",
+    "word": "dog",
+    "phonetic": "/dɔːɡ/",
+    "chinese": ["狗"],
+    "sentence": "My dog likes to play in the park.",
+    "image_url": ""
+  },
+  {
+    "id": "g3v1_005",
+    "word": "elephant",
+    "phonetic": "/ˈel.ɪ.fənt/",
+    "chinese": ["大象"],
+    "sentence": "The elephant has a long trunk.",
+    "image_url": ""
+  },
+  {
+    "id": "g3v1_006",
+    "word": "flower",
+    "phonetic": "/ˈflaʊ.ər/",
+    "chinese": ["花"],
+    "sentence": "She gave me a beautiful flower.",
+    "image_url": ""
+  },
+  {
+    "id": "g3v1_007",
+    "word": "green",
+    "phonetic": "/ɡriːn/",
+    "chinese": ["绿色的"],
+    "sentence": "The grass is green in spring.",
+    "image_url": ""
+  },
+  {
+    "id": "g3v1_008",
+    "word": "happy",
+    "phonetic": "/ˈhæp.i/",
+    "chinese": ["快乐的", "高兴的"],
+    "sentence": "I am happy to see you.",
+    "image_url": ""
+  },
+  {
+    "id": "g3v1_009",
+    "word": "jump",
+    "phonetic": "/dʒʌmp/",
+    "chinese": ["跳", "跳跃"],
+    "sentence": "The children jump on the trampoline.",
+    "image_url": ""
+  },
+  {
+    "id": "g3v1_010",
+    "word": "king",
+    "phonetic": "/kɪŋ/",
+    "chinese": ["国王"],
+    "sentence": "The king lives in a big castle.",
+    "image_url": ""
+  }
+]
