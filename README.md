@@ -1,0 +1,2 @@
+# quick_respond_n20260121
+quick_respond_insprated_by_wang
