@@ -8,20 +8,23 @@ import { useAppStore } from '@/store/useAppStore';
 import { Card, Button } from '@/components/common';
 import { GradeSelector, LLMConfigForm, APITester, type LLMFormData } from '@/components/config';
 import { toast } from '@/components/common';
-import type { LLMProvider } from '@/types';
+import type { LLMProvider, GradeBook } from '@/types';
+import { getGradeBookForGrade, getGradeBookLabel, parseGradeBook } from '@/types';
 
 const SettingsPage: React.FC = () => {
   const navigate = useNavigate();
   const config = useAppStore((state) => state.config);
   const updateConfig = useAppStore((state) => state.updateConfig);
 
-  const [selectedGrade, setSelectedGrade] = useState(config.gradeLevel || 5);
+  const defaultGradeBook = config.gradeBook ?? getGradeBookForGrade(config.gradeLevel || 5);
+  const [selectedGradeBook, setSelectedGradeBook] = useState<GradeBook>(defaultGradeBook);
   const [autoPlayAudio, setAutoPlayAudio] = useState(config.autoPlayPronunciation ?? true);
 
-  const handleGradeChange = (grade: number) => {
-    setSelectedGrade(grade);
-    updateConfig({ gradeLevel: grade });
-    toast.success(`Grade level updated to ${grade}`);
+  const handleGradeChange = (gradeBook: GradeBook) => {
+    const { grade } = parseGradeBook(gradeBook);
+    setSelectedGradeBook(gradeBook);
+    updateConfig({ gradeBook, gradeLevel: grade });
+    toast.success(`Grade level updated to ${getGradeBookLabel(gradeBook)}`);
   };
 
   const handleLLMConfigSave = (data: LLMFormData) => {
@@ -68,7 +71,7 @@ const SettingsPage: React.FC = () => {
             Vocabulary Level
           </h2>
           <GradeSelector
-            value={selectedGrade as any}
+            value={selectedGradeBook}
             onChange={handleGradeChange}
           />
         </Card>

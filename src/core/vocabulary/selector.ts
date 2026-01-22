@@ -3,12 +3,13 @@
  * Priority: Error log words (unmastered) → Random new words
  */
 
-import type { VocabularyItem, GradeLevel, ErrorLog } from '@/types';
-import { loadVocabularyUpToGrade } from './loader';
+import type { VocabularyItem, GradeLevel, GradeBook, ErrorLog } from '@/types';
+import { loadVocabularyUpToGradeBook, loadVocabularyUpToGrade } from './loader';
 
 export interface SelectionOptions {
   count: number;
-  gradeLevel: GradeLevel;
+  gradeLevel?: GradeLevel;
+  gradeBook?: GradeBook;
   errorLog: ErrorLog;
   excludeMastered?: boolean;
   prioritizeErrors?: boolean;
@@ -24,16 +25,23 @@ export async function selectWords(options: SelectionOptions): Promise<Vocabulary
   const {
     count,
     gradeLevel,
+    gradeBook,
     errorLog,
     excludeMastered = true,
     prioritizeErrors = true,
   } = options;
 
-  // Load all vocabulary up to current grade
-  const allVocabulary = await loadVocabularyUpToGrade(gradeLevel);
+  if (!gradeBook && gradeLevel === undefined) {
+    throw new Error('Grade selection is required');
+  }
+
+  const allVocabulary = gradeBook
+    ? await loadVocabularyUpToGradeBook(gradeBook)
+    : await loadVocabularyUpToGrade(gradeLevel as GradeLevel);
 
   if (allVocabulary.length === 0) {
-    throw new Error(`No vocabulary available for grade ${gradeLevel}`);
+    const selectionLabel = gradeBook ?? `grade ${gradeLevel}`;
+    throw new Error(`No vocabulary available for ${selectionLabel}`);
   }
 
   // Get unmastered error words
@@ -137,11 +145,18 @@ function deduplicateById(items: VocabularyItem[]): VocabularyItem[] {
 /**
  * Select a single random word
  */
-export async function selectRandomWord(gradeLevel: GradeLevel): Promise<VocabularyItem> {
-  const vocabulary = await loadVocabularyUpToGrade(gradeLevel);
+export async function selectRandomWord(
+  gradeSelection: GradeLevel | GradeBook
+): Promise<VocabularyItem> {
+  const vocabulary =
+    typeof gradeSelection === 'string'
+      ? await loadVocabularyUpToGradeBook(gradeSelection)
+      : await loadVocabularyUpToGrade(gradeSelection);
 
   if (vocabulary.length === 0) {
-    throw new Error(`No vocabulary available for grade ${gradeLevel}`);
+    const selectionLabel =
+      typeof gradeSelection === 'string' ? gradeSelection : `grade ${gradeSelection}`;
+    throw new Error(`No vocabulary available for ${selectionLabel}`);
   }
 
   const randomIndex = Math.floor(Math.random() * vocabulary.length);

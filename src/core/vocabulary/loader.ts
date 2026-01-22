@@ -3,7 +3,8 @@
  * Supports book-based vocabulary from PEP textbooks (Grade 3-9)
  */
 
-import type { VocabularyItem, GradeLevel } from '@/types';
+import type { VocabularyItem, GradeLevel, GradeBook } from '@/types';
+import { parseGradeBook } from '@/types';
 
 /**
  * Book manifest entry
@@ -21,6 +22,40 @@ interface BookManifest {
  * Cache for loaded vocabulary to avoid redundant imports
  */
 const vocabularyCache: Map<GradeLevel, VocabularyItem[]> = new Map();
+const vocabularyBookCache: Map<GradeBook, VocabularyItem[]> = new Map();
+const vocabularyUpToBookCache: Map<GradeBook, VocabularyItem[]> = new Map();
+
+const GRADE_BOOK_SEQUENCE: GradeBook[] = [
+  '3-1',
+  '3-2',
+  '4-1',
+  '4-2',
+  '5-1',
+  '5-2',
+  '6-1',
+  '6-2',
+  '7-1',
+  '7-2',
+  '8-1',
+  '8-2',
+  '9-3',
+];
+
+function getGradeBooksUpTo(gradeBook: GradeBook): GradeBook[] {
+  const index = GRADE_BOOK_SEQUENCE.indexOf(gradeBook);
+  if (index < 0) {
+    return [];
+  }
+  return GRADE_BOOK_SEQUENCE.slice(0, index + 1);
+}
+
+function getGradeBookFileToken(gradeBook: GradeBook): string {
+  const { grade, semester } = parseGradeBook(gradeBook);
+  if (grade === 9) {
+    return 'g9-full';
+  }
+  return `g${grade}-s${semester}`;
+}
 
 /**
  * Load vocabulary for a specific grade level
@@ -72,6 +107,71 @@ export async function loadGradeVocabulary(grade: GradeLevel): Promise<Vocabulary
     console.error(`Failed to load vocabulary for grade ${grade}:`, error);
     throw new Error(`Vocabulary loading failed for grade ${grade}`);
   }
+}
+
+/**
+ * Load vocabulary for a specific grade book (single semester or full grade 9)
+ */
+export async function loadGradeBookVocabulary(gradeBook: GradeBook): Promise<VocabularyItem[]> {
+  if (vocabularyBookCache.has(gradeBook)) {
+    return vocabularyBookCache.get(gradeBook)!;
+  }
+
+  try {
+    const bookModules = import.meta.glob('@/data/books/*.json');
+    const fileToken = getGradeBookFileToken(gradeBook);
+    const match = Object.entries(bookModules).find(([path]) =>
+      path.includes(`${fileToken}.json`)
+    );
+
+    if (!match) {
+      console.warn(`No vocabulary file found for grade book ${gradeBook}`);
+      return [];
+    }
+
+    const module = (await match[1]()) as { default: VocabularyItem[] };
+    const items = module.default;
+
+    const processedItems = items
+      .map(normalizeVocabularyItem)
+      .filter(validateVocabularyItem);
+
+    const uniqueVocabulary = deduplicateById(processedItems);
+    vocabularyBookCache.set(gradeBook, uniqueVocabulary);
+
+    return uniqueVocabulary;
+  } catch (error) {
+    console.error(`Failed to load vocabulary for grade book ${gradeBook}:`, error);
+    throw new Error(`Vocabulary loading failed for grade book ${gradeBook}`);
+  }
+}
+
+/**
+ * Load vocabulary for all grade books up to and including the selected grade book
+ */
+export async function loadVocabularyUpToGradeBook(
+  gradeBook: GradeBook
+): Promise<VocabularyItem[]> {
+  if (vocabularyUpToBookCache.has(gradeBook)) {
+    return vocabularyUpToBookCache.get(gradeBook)!;
+  }
+
+  const gradeBooks = getGradeBooksUpTo(gradeBook);
+  if (gradeBooks.length === 0) {
+    console.warn(`No grade books found for selection ${gradeBook}`);
+    return [];
+  }
+
+  const vocabularyArrays = await Promise.all(
+    gradeBooks.map((book) => loadGradeBookVocabulary(book))
+  );
+
+  const allVocabulary = vocabularyArrays.flat();
+  const uniqueVocabulary = deduplicateById(allVocabulary);
+
+  vocabularyUpToBookCache.set(gradeBook, uniqueVocabulary);
+
+  return uniqueVocabulary;
 }
 
 /**
@@ -161,11 +261,23 @@ export async function getVocabularyCount(grade: GradeLevel): Promise<number> {
   return vocabulary.length;
 }
 
+export async function getVocabularyCountUpToGrade(grade: GradeLevel): Promise<number> {
+  const vocabulary = await loadVocabularyUpToGrade(grade);
+  return vocabulary.length;
+}
+
+export async function getVocabularyCountForGradeBook(gradeBook: GradeBook): Promise<number> {
+  const vocabulary = await loadVocabularyUpToGradeBook(gradeBook);
+  return vocabulary.length;
+}
+
 /**
  * Clear vocabulary cache (useful for testing or reloading)
  */
 export function clearVocabularyCache(): void {
   vocabularyCache.clear();
+  vocabularyBookCache.clear();
+  vocabularyUpToBookCache.clear();
 }
 
 /**

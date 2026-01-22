@@ -1,7 +1,7 @@
 [
   {
     "id": "g3-s1",
-    "name": "PEP Grade 3 Vol.1",
+    "name": "Grade 3 1st",
     "grade": 3,
     "semester": 1,
     "wordCount": 64,
@@ -9,7 +9,7 @@
   },
   {
     "id": "g3-s2",
-    "name": "PEP Grade 3 Vol.2",
+    "name": "Grade 3 2nd",
     "grade": 3,
     "semester": 2,
     "wordCount": 71,
@@ -17,7 +17,7 @@
   },
   {
     "id": "g4-s1",
-    "name": "PEP Grade 4 Vol.1",
+    "name": "Grade 4 1st",
     "grade": 4,
     "semester": 1,
     "wordCount": 84,
@@ -25,7 +25,7 @@
   },
   {
     "id": "g4-s2",
-    "name": "PEP Grade 4 Vol.2",
+    "name": "Grade 4 2nd",
     "grade": 4,
     "semester": 2,
     "wordCount": 104,
@@ -33,7 +33,7 @@
   },
   {
     "id": "g5-s1",
-    "name": "PEP Grade 5 Vol.1",
+    "name": "Grade 5 1st",
     "grade": 5,
     "semester": 1,
     "wordCount": 131,
@@ -41,7 +41,7 @@
   },
   {
     "id": "g5-s2",
-    "name": "PEP Grade 5 Vol.2",
+    "name": "Grade 5 2nd",
     "grade": 5,
     "semester": 2,
     "wordCount": 154,
@@ -49,7 +49,7 @@
   },
   {
     "id": "g6-s1",
-    "name": "PEP Grade 6 Vol.1",
+    "name": "Grade 6 1st",
     "grade": 6,
     "semester": 1,
     "wordCount": 147,
@@ -57,7 +57,7 @@
   },
   {
     "id": "g6-s2",
-    "name": "PEP Grade 6 Vol.2",
+    "name": "Grade 6 2nd",
     "grade": 6,
     "semester": 2,
     "wordCount": 91,
@@ -65,7 +65,7 @@
   },
   {
     "id": "g7-s1",
-    "name": "PEP Grade 7 Vol.1",
+    "name": "Grade 7 1st",
     "grade": 7,
     "semester": 1,
     "wordCount": 385,
@@ -73,7 +73,7 @@
   },
   {
     "id": "g7-s2",
-    "name": "PEP Grade 7 Vol.2",
+    "name": "Grade 7 2nd",
     "grade": 7,
     "semester": 2,
     "wordCount": 492,
@@ -81,7 +81,7 @@
   },
   {
     "id": "g8-s1",
-    "name": "PEP Grade 8 Vol.1",
+    "name": "Grade 8 1st",
     "grade": 8,
     "semester": 1,
     "wordCount": 413,
@@ -89,7 +89,7 @@
   },
   {
     "id": "g8-s2",
-    "name": "PEP Grade 8 Vol.2",
+    "name": "Grade 8 2nd",
     "grade": 8,
     "semester": 2,
     "wordCount": 468,

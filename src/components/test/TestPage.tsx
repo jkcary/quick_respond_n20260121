@@ -13,6 +13,8 @@ import { ScorePanel } from './ScorePanel';
 import { Button, Modal, LoadingSpinner } from '@/components/common';
 import { LLMGateway } from '@/core/llm';
 import { formatScore, formatDuration } from '@/utils/formatters';
+import { getGradeBookForGrade } from '@/types';
+import type { TestSession } from '@/types';
 
 export const TestPage: React.FC = () => {
   const navigate = useNavigate();
@@ -28,11 +30,11 @@ export const TestPage: React.FC = () => {
     endTest,
     setJudging,
     getCurrentWord,
-    getProgress,
-    getScore,
+    resetTest,
   } = useTestStore();
 
   const [showSummary, setShowSummary] = useState(false);
+  const [completedSession, setCompletedSession] = useState<TestSession | null>(null);
   const [gateway] = useState(() => {
     if (config.apiKey) {
       return new LLMGateway({
@@ -46,20 +48,36 @@ export const TestPage: React.FC = () => {
   });
 
   const currentWord = getCurrentWord();
-  const progress = getProgress();
-  const score = getScore();
+  const summarySession = completedSession ?? currentSession;
+  const summaryCorrect = summarySession
+    ? summarySession.results.filter((result) => result.correct).length
+    : 0;
+  const summaryTotal = summarySession ? summarySession.results.length : 0;
+  const summaryScore = {
+    correct: summaryCorrect,
+    total: summaryTotal,
+    percentage: summaryTotal > 0 ? Math.round((summaryCorrect / summaryTotal) * 100) : 0,
+  };
+  const summaryDuration = summarySession
+    ? summarySession.endTime
+      ? summarySession.endTime - summarySession.startTime
+      : Date.now() - summarySession.startTime
+    : 0;
+  const shouldShowSummary = Boolean(showSummary && summarySession);
 
   // Start test on mount
   useEffect(() => {
     if (!currentSession) {
-      const gradeLevel = config.gradeLevel || 5;
-      startTest(gradeLevel as any, 5);
+      const fallbackGradeBook = getGradeBookForGrade(config.gradeLevel || 5);
+      const gradeSelection = config.gradeBook ?? fallbackGradeBook;
+      startTest(gradeSelection);
     }
   }, []);
 
   // Show summary when test ends
   useEffect(() => {
     if (currentSession?.endTime) {
+      setCompletedSession(currentSession);
       setShowSummary(true);
     }
   }, [currentSession?.endTime]);
@@ -91,26 +109,90 @@ export const TestPage: React.FC = () => {
 
   const handleCloseSummary = () => {
     setShowSummary(false);
+    setCompletedSession(null);
+    resetTest();
     navigate('/');
+  };
+
+  const handleReturnHome = () => {
+    handleCloseSummary();
   };
 
   const handleRetry = () => {
     setShowSummary(false);
-    const gradeLevel = config.gradeLevel || 5;
-    startTest(gradeLevel as any, 5);
+    setCompletedSession(null);
+    const fallbackGradeBook = getGradeBookForGrade(config.gradeLevel || 5);
+    const gradeSelection = config.gradeBook ?? fallbackGradeBook;
+    startTest(gradeSelection);
   };
+
+  const summaryModal = shouldShowSummary ? (
+    <Modal
+      isOpen={showSummary}
+      onClose={handleCloseSummary}
+      title="Test Summary"
+      closeOnBackdrop={false}
+      size="lg"
+    >
+      <div className="space-y-6">
+        {/* Score */}
+        <div className="text-center">
+          <div className="text-6xl font-bold text-cyan-400 mb-2">
+            {summaryScore.percentage}%
+          </div>
+          <div className="text-xl text-slate-300">
+            {formatScore(summaryScore.correct, summaryScore.total)}
+          </div>
+        </div>
+
+        {/* Stats */}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="bg-slate-700 rounded-lg p-4 text-center">
+            <div className="text-3xl font-bold text-green-400">{summaryScore.correct}</div>
+            <div className="text-sm text-slate-400">Correct Answers</div>
+          </div>
+          <div className="bg-slate-700 rounded-lg p-4 text-center">
+            <div className="text-3xl font-bold text-red-400">
+              {summaryScore.total - summaryScore.correct}
+            </div>
+            <div className="text-sm text-slate-400">Errors</div>
+          </div>
+          <div className="bg-slate-700 rounded-lg p-4 text-center col-span-2">
+            <div className="text-2xl font-bold text-cyan-400">
+              {formatDuration(summaryDuration)}
+            </div>
+            <div className="text-sm text-slate-400">Time Taken</div>
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div className="flex gap-4">
+          <Button variant="ghost" onClick={handleCloseSummary} fullWidth>
+            Close
+          </Button>
+          <Button variant="secondary" onClick={handleReturnHome} fullWidth>
+            Return Home
+          </Button>
+          <Button variant="primary" onClick={handleRetry} fullWidth>
+            Try Again
+          </Button>
+        </div>
+      </div>
+    </Modal>
+  ) : null;
 
   if (!currentSession || !currentWord) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <LoadingSpinner size="lg" message="Loading test..." />
+      <div className="min-h-screen bg-slate-900">
+        {!shouldShowSummary && (
+          <div className="flex items-center justify-center min-h-screen">
+            <LoadingSpinner size="lg" message="Loading test..." />
+          </div>
+        )}
+        {summaryModal}
       </div>
     );
   }
-
-  const duration = currentSession.endTime
-    ? currentSession.endTime - currentSession.startTime
-    : Date.now() - currentSession.startTime;
 
   return (
     <div className="min-h-screen bg-slate-900">
@@ -158,55 +240,7 @@ export const TestPage: React.FC = () => {
       </div>
 
       {/* Summary modal */}
-      <Modal
-        isOpen={showSummary}
-        onClose={handleCloseSummary}
-        title="Test Summary"
-        closeOnBackdrop={false}
-        size="lg"
-      >
-        <div className="space-y-6">
-          {/* Score */}
-          <div className="text-center">
-            <div className="text-6xl font-bold text-cyan-400 mb-2">
-              {score.percentage}%
-            </div>
-            <div className="text-xl text-slate-300">
-              {formatScore(score.correct, score.total)}
-            </div>
-          </div>
-
-          {/* Stats */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-slate-700 rounded-lg p-4 text-center">
-              <div className="text-3xl font-bold text-green-400">{score.correct}</div>
-              <div className="text-sm text-slate-400">Correct Answers</div>
-            </div>
-            <div className="bg-slate-700 rounded-lg p-4 text-center">
-              <div className="text-3xl font-bold text-red-400">
-                {score.total - score.correct}
-              </div>
-              <div className="text-sm text-slate-400">Errors</div>
-            </div>
-            <div className="bg-slate-700 rounded-lg p-4 text-center col-span-2">
-              <div className="text-2xl font-bold text-cyan-400">
-                {formatDuration(duration)}
-              </div>
-              <div className="text-sm text-slate-400">Time Taken</div>
-            </div>
-          </div>
-
-          {/* Actions */}
-          <div className="flex gap-4">
-            <Button variant="secondary" onClick={handleCloseSummary} fullWidth>
-              Back to Home
-            </Button>
-            <Button variant="primary" onClick={handleRetry} fullWidth>
-              Try Again
-            </Button>
-          </div>
-        </div>
-      </Modal>
+      {summaryModal}
     </div>
   );
 };

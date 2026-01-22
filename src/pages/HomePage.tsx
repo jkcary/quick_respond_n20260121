@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '@/store/useAppStore';
 import { useErrorStore } from '@/store/errorStore';
 import { Button, Card } from '@/components/common';
+import { getGradeBookForGrade, getGradeBookLabel } from '@/types';
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
@@ -15,6 +16,9 @@ const HomePage: React.FC = () => {
 
   const totalErrors = getTotalErrorCount();
   const unmasteredErrors = getUnmasteredCount();
+  const fallbackGradeBook = getGradeBookForGrade(config.gradeLevel || 5);
+  const activeGradeBook = config.gradeBook ?? fallbackGradeBook;
+  const gradeLabel = getGradeBookLabel(activeGradeBook);
 
   // Load error log on mount
   useEffect(() => {
@@ -97,7 +101,7 @@ const HomePage: React.FC = () => {
               Ready to Practice?
             </h2>
             <p className="text-slate-400">
-              Test your vocabulary with 5 words from Grade {config.gradeLevel || 5}
+              Test your vocabulary with all words up to {gradeLabel}
             </p>
           </div>
 
@@ -135,7 +139,7 @@ const HomePage: React.FC = () => {
           <Card hoverable onClick={() => navigate('/settings')}>
             <div className="text-center">
               <div className="text-4xl font-bold text-cyan-400 mb-2">
-                {config.gradeLevel || 5}
+                {gradeLabel}
               </div>
               <div className="text-sm text-slate-400">Current Grade</div>
             </div>

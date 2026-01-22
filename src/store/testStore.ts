@@ -4,8 +4,16 @@
  */
 
 import { create } from 'zustand';
-import type { VocabularyItem, TestSession, TestResult, JudgmentResult, GradeLevel } from '@/types';
-import { selectWords } from '@/core/vocabulary';
+import type {
+  VocabularyItem,
+  TestSession,
+  TestResult,
+  JudgmentResult,
+  GradeLevel,
+  GradeBook,
+} from '@/types';
+import { parseGradeBook } from '@/types';
+import { selectWords, getVocabularyCountForGradeBook, getVocabularyCountUpToGrade } from '@/core/vocabulary';
 import { ErrorLogStorage } from '@/core/storage';
 
 interface TestState {
@@ -21,7 +29,7 @@ interface TestState {
   /**
    * Start a new test session with selected words
    */
-  startTest: (gradeLevel: GradeLevel, wordCount?: number) => Promise<void>;
+  startTest: (gradeSelection: GradeLevel | GradeBook, wordCount?: number) => Promise<void>;
 
   /**
    * Move to next word in the session
@@ -75,6 +83,8 @@ interface TestState {
 }
 
 const DEFAULT_WORD_COUNT = 5;
+const isGradeBook = (value: GradeLevel | GradeBook): value is GradeBook =>
+  typeof value === 'string';
 
 export const useTestStore = create<TestState>((set, get) => ({
   // ==================== Initial State ====================
@@ -86,20 +96,33 @@ export const useTestStore = create<TestState>((set, get) => ({
   lastResult: null,
 
   // ==================== Actions ====================
-  startTest: async (gradeLevel, wordCount = DEFAULT_WORD_COUNT) => {
+  startTest: async (gradeSelection, wordCount) => {
     try {
       // Load error log for smart word selection
       const errorLogStorage = new ErrorLogStorage();
       const errorLog = await errorLogStorage.load();
 
+      const totalCount =
+        wordCount ??
+        (isGradeBook(gradeSelection)
+          ? await getVocabularyCountForGradeBook(gradeSelection)
+          : await getVocabularyCountUpToGrade(gradeSelection));
+      const effectiveCount = totalCount > 0 ? totalCount : DEFAULT_WORD_COUNT;
+
       // Select words (prioritize errors)
       const selectedWords = await selectWords({
-        count: wordCount,
-        gradeLevel,
+        count: effectiveCount,
+        ...(isGradeBook(gradeSelection)
+          ? { gradeBook: gradeSelection }
+          : { gradeLevel: gradeSelection }),
         errorLog,
         prioritizeErrors: true,
         excludeMastered: true,
       });
+
+      const gradeLevel = isGradeBook(gradeSelection)
+        ? parseGradeBook(gradeSelection).grade
+        : gradeSelection;
 
       // Create new session
       const session: TestSession = {

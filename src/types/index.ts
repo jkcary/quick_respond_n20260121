@@ -13,7 +13,14 @@ export type {
   VSTCardData,
 } from './vocabulary';
 
-export { GradeLevel } from './vocabulary';
+export {
+  GradeLevel,
+  type GradeBook,
+  parseGradeBook,
+  createGradeBook,
+  getGradeBookForGrade,
+  getGradeBookLabel,
+} from './vocabulary';
 
 // LLM types
 export type {

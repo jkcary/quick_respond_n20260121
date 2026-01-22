@@ -12,7 +12,7 @@ import type {
   Word,
   DiagnosisResult,
 } from '@/types';
-import { StorageKeys } from '@/types';
+import { StorageKeys, createGradeBook, parseGradeBook, getGradeBookForGrade } from '@/types';
 
 interface AppState {
   // ==================== Configuration ====================
@@ -43,6 +43,7 @@ export const useAppStore = create<AppState>()(
       // ==================== Configuration ====================
       config: {
         gradeLevel: 5,
+        gradeBook: createGradeBook(5, 1),
         apiProvider: 'deepseek',
         apiKey: '',
         voiceEnabled: true,
@@ -111,12 +112,15 @@ export const useAppStore = create<AppState>()(
       currentSession: null,
 
       startSession: (words) => {
+        const config = get().config;
+        const fallbackGradeBook = getGradeBookForGrade(config.gradeLevel ?? 5);
+        const activeGradeBook = config.gradeBook ?? fallbackGradeBook;
         const session: DiagnosisSession = {
           id: `session_${Date.now()}`,
           startTime: Date.now(),
           words,
           results: [],
-          gradeLevel: get().config.gradeLevel ?? 5,
+          gradeLevel: parseGradeBook(activeGradeBook).grade,
         };
         set({ currentSession: session });
       },

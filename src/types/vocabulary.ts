@@ -110,7 +110,8 @@ export interface ErrorLogEntry {
 export type ErrorLog = Record<string, ErrorLogEntry>;
 
 /**
- * Grade level enumeration
+ * Grade level enumeration (deprecated - use GradeBook instead)
+ * @deprecated Use GradeBook for semester-specific selection
  */
 export enum GradeLevel {
   Grade3 = 3,
@@ -120,6 +121,49 @@ export enum GradeLevel {
   Grade7 = 7,
   Grade8 = 8,
   Grade9 = 9,
+}
+
+/**
+ * Grade book identifier (grade + semester)
+ * Examples: "3-1" (Grade 3 Semester 1), "3-2" (Grade 3 Semester 2), "9-3" (Grade 9 Full)
+ */
+export type GradeBook = `${3 | 4 | 5 | 6 | 7 | 8}-${1 | 2}` | '9-3';
+
+/**
+ * Helper to parse GradeBook into grade and semester
+ */
+export function parseGradeBook(gradeBook: GradeBook): { grade: number; semester: number } {
+  const [grade, semester] = gradeBook.split('-').map(Number);
+  return { grade, semester };
+}
+
+/**
+ * Helper to create GradeBook from grade and semester
+ */
+export function createGradeBook(grade: number, semester: number): GradeBook {
+  return `${grade}-${semester}` as GradeBook;
+}
+
+/**
+ * Get default GradeBook for a grade (handles Grade 9 full volume)
+ */
+export function getGradeBookForGrade(grade: number, semester = 1): GradeBook {
+  if (grade === 9) {
+    return createGradeBook(9, 3);
+  }
+  return createGradeBook(grade, semester);
+}
+
+/**
+ * Get display label for a GradeBook
+ */
+export function getGradeBookLabel(gradeBook: GradeBook): string {
+  const { grade, semester } = parseGradeBook(gradeBook);
+  if (grade === 9) {
+    return `Grade ${grade}`;
+  }
+  const semesterLabel = semester === 1 ? '1st' : '2nd';
+  return `Grade ${grade} ${semesterLabel}`;
 }
 
 /**

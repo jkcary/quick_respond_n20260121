@@ -2,7 +2,7 @@
  * Application Configuration Type Definitions
  */
 
-import { GradeLevel } from './vocabulary';
+import { GradeLevel, type GradeBook } from './vocabulary';
 import { LLMConfig, LLMProvider } from './llm';
 
 /**
@@ -11,6 +11,9 @@ import { LLMConfig, LLMProvider } from './llm';
 export interface AppConfig {
   /** Currently selected grade level */
   currentGrade?: GradeLevel;
+
+  /** Currently selected grade book (semester-specific) */
+  gradeBook?: GradeBook;
 
   /**
    * LLM provider configurations
