@@ -8,8 +8,44 @@ import { useAppStore } from '@/store/useAppStore';
 import { Card, Button } from '@/components/common';
 import { GradeSelector, LLMConfigForm, APITester, type LLMFormData } from '@/components/config';
 import { toast } from '@/components/common';
-import type { LLMProvider, GradeBook } from '@/types';
+import { LLMProvider, type GradeBook, type LLMConfig } from '@/types';
 import { getGradeBookForGrade, getGradeBookLabel, parseGradeBook } from '@/types';
+
+const DEFAULT_PROVIDER_SETTINGS: Record<LLMProvider, { model: string; baseUrl: string }> = {
+  [LLMProvider.DeepSeek]: {
+    model: 'deepseek-chat',
+    baseUrl: 'https://api.deepseek.com',
+  },
+  [LLMProvider.OpenAI]: {
+    model: 'gpt-3.5-turbo',
+    baseUrl: 'https://api.openai.com',
+  },
+  [LLMProvider.Anthropic]: {
+    model: 'claude-3-haiku-20240307',
+    baseUrl: 'https://api.anthropic.com',
+  },
+  [LLMProvider.Moonshot]: {
+    model: 'moonshot-v1-8k',
+    baseUrl: 'https://api.moonshot.cn',
+  },
+  [LLMProvider.Ollama]: {
+    model: 'llama2',
+    baseUrl: 'http://localhost:11434',
+  },
+};
+
+const normalizeProvider = (value?: string): LLMProvider => {
+  switch (value) {
+    case LLMProvider.DeepSeek:
+    case LLMProvider.OpenAI:
+    case LLMProvider.Anthropic:
+    case LLMProvider.Moonshot:
+    case LLMProvider.Ollama:
+      return value;
+    default:
+      return LLMProvider.DeepSeek;
+  }
+};
 
 const SettingsPage: React.FC = () => {
   const navigate = useNavigate();
@@ -28,7 +64,20 @@ const SettingsPage: React.FC = () => {
   };
 
   const handleLLMConfigSave = (data: LLMFormData) => {
+    const existingConfigs = config.llmConfigs ?? ({} as Record<LLMProvider, LLMConfig>);
+    const updatedConfigs: Record<LLMProvider, LLMConfig> = {
+      ...existingConfigs,
+      [data.provider]: {
+        provider: data.provider,
+        apiKey: data.apiKey,
+        modelName: data.model,
+        baseUrl: data.baseUrl,
+        enabled: true,
+      },
+    };
     updateConfig({
+      activeLLMProvider: data.provider,
+      llmConfigs: updatedConfigs,
       apiProvider: data.provider as any,
       apiKey: data.apiKey,
       apiBaseUrl: data.baseUrl,
@@ -43,12 +92,48 @@ const SettingsPage: React.FC = () => {
     toast.success(`Auto-play ${newValue ? 'enabled' : 'disabled'}`);
   };
 
-  const currentLLMConfig = {
-    provider: (config.apiProvider || 'deepseek') as LLMProvider,
-    apiKey: config.apiKey || '',
-    modelName: config.apiProvider === 'deepseek' ? 'deepseek-chat' : 'gpt-3.5-turbo',
-    enabled: true,
-    baseUrl: config.apiBaseUrl,
+  const legacyProvider = normalizeProvider(config.apiProvider);
+  const activeProvider = normalizeProvider(
+    config.activeLLMProvider ?? config.apiProvider
+  );
+  const activeDefaults = DEFAULT_PROVIDER_SETTINGS[activeProvider];
+  const activeStoredConfig = config.llmConfigs?.[activeProvider];
+
+  const initialConfigs = { ...(config.llmConfigs ?? {}) } as Record<
+    LLMProvider,
+    LLMConfig
+  >;
+
+  if (!initialConfigs[legacyProvider] && (config.apiKey || config.apiBaseUrl)) {
+    initialConfigs[legacyProvider] = {
+      provider: legacyProvider,
+      apiKey: config.apiKey || '',
+      modelName: DEFAULT_PROVIDER_SETTINGS[legacyProvider].model,
+      baseUrl: config.apiBaseUrl || DEFAULT_PROVIDER_SETTINGS[legacyProvider].baseUrl,
+      enabled: true,
+    };
+  }
+
+  const initialFormConfigs: Partial<Record<LLMProvider, Partial<LLMFormData>>> =
+    (Object.entries(initialConfigs) as [LLMProvider, LLMConfig][]).reduce(
+      (acc, [provider, cfg]) => {
+        acc[provider] = {
+          provider,
+          apiKey: cfg.apiKey,
+          model: cfg.modelName,
+          baseUrl: cfg.baseUrl,
+        };
+        return acc;
+      },
+      {} as Partial<Record<LLMProvider, Partial<LLMFormData>>>
+    );
+
+  const currentLLMConfig: LLMConfig = {
+    provider: activeProvider,
+    apiKey: activeStoredConfig?.apiKey ?? config.apiKey ?? '',
+    modelName: activeStoredConfig?.modelName ?? activeDefaults.model,
+    enabled: activeStoredConfig?.enabled ?? true,
+    baseUrl: activeStoredConfig?.baseUrl ?? config.apiBaseUrl ?? activeDefaults.baseUrl,
   };
 
   return (
@@ -88,6 +173,7 @@ const SettingsPage: React.FC = () => {
               model: currentLLMConfig.modelName,
               baseUrl: currentLLMConfig.baseUrl,
             }}
+            initialConfigs={initialFormConfigs}
             onSave={handleLLMConfigSave}
           />
         </Card>

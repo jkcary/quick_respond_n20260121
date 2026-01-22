@@ -7,7 +7,7 @@ const Layout = () => {
 
   const navItems = [
     { path: '/', label: 'Diagnosis', icon: '🎯' },
-    { path: '/review', label: 'Review', icon: '📚', badge: errorCount },
+    { path: '/error-log', label: 'Review', icon: '📚', badge: errorCount },
     { path: '/settings', label: 'Settings', icon: '⚙️' },
   ];
 

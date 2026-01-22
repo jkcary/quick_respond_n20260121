@@ -118,7 +118,7 @@ const HomePage: React.FC = () => {
 
         {/* Stats grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card hoverable onClick={() => navigate('/review')}>
+          <Card hoverable onClick={() => navigate('/error-log')}>
             <div className="text-center">
               <div className="text-4xl font-bold text-red-400 mb-2">
                 {totalErrors}
@@ -127,7 +127,7 @@ const HomePage: React.FC = () => {
             </div>
           </Card>
 
-          <Card hoverable onClick={() => navigate('/review')}>
+          <Card hoverable onClick={() => navigate('/error-log')}>
             <div className="text-center">
               <div className="text-4xl font-bold text-yellow-400 mb-2">
                 {unmasteredErrors}

@@ -9,6 +9,7 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
   error?: string;
   helperText?: string;
   fullWidth?: boolean;
+  rightElement?: React.ReactNode;
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -16,6 +17,7 @@ export const Input: React.FC<InputProps> = ({
   error,
   helperText,
   fullWidth = false,
+  rightElement,
   className = '',
   ...props
 }) => {
@@ -27,7 +29,8 @@ export const Input: React.FC<InputProps> = ({
 
   const widthStyles = fullWidth ? 'w-full' : '';
 
-  const combinedClassName = `${baseInputStyles} ${borderStyles} ${widthStyles} ${className}`;
+  const rightPadding = rightElement ? 'pr-11' : '';
+  const combinedClassName = `${baseInputStyles} ${borderStyles} ${widthStyles} ${rightPadding} ${className}`;
 
   return (
     <div className={fullWidth ? 'w-full' : ''}>
@@ -37,7 +40,14 @@ export const Input: React.FC<InputProps> = ({
         </label>
       )}
 
-      <input className={combinedClassName} {...props} />
+      <div className={rightElement ? 'relative' : undefined}>
+        <input className={combinedClassName} {...props} />
+        {rightElement && (
+          <div className="absolute inset-y-0 right-3 flex items-center">
+            {rightElement}
+          </div>
+        )}
+      </div>
 
       {error && (
         <p className="mt-1 text-sm text-red-400">{error}</p>

@@ -2,7 +2,7 @@
  * VoiceInput component - Hybrid voice/text input
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button, Input } from '@/components/common';
 import { SpeechRecognizer } from '@/core/speech';
 import { requestMicrophonePermission, isSpeechRecognitionSupported } from '@/core/speech';
@@ -11,16 +11,19 @@ export interface VoiceInputProps {
   onSubmit: (input: string) => void;
   disabled?: boolean;
   placeholder?: string;
+  wordId?: string;
 }
 
 export const VoiceInput: React.FC<VoiceInputProps> = ({
   onSubmit,
   disabled = false,
   placeholder = 'Enter Chinese translation...',
+  wordId,
 }) => {
   const [input, setInput] = useState('');
   const [isListening, setIsListening] = useState(false);
-  const [recognizer, setRecognizer] = useState<SpeechRecognizer | null>(null);
+  const recognizerRef = useRef<SpeechRecognizer | null>(null);
+  const sessionTokenRef = useRef(0);
   const [voiceEnabled, setVoiceEnabled] = useState(false);
   const [transcript, setTranscript] = useState('');
 
@@ -39,7 +42,7 @@ export const VoiceInput: React.FC<VoiceInputProps> = ({
             continuous: false,
             interimResults: true,
           });
-          setRecognizer(rec);
+          recognizerRef.current = rec;
           setVoiceEnabled(true);
         }
       } catch (error) {
@@ -50,31 +53,60 @@ export const VoiceInput: React.FC<VoiceInputProps> = ({
     initRecognizer();
 
     return () => {
-      recognizer?.destroy();
+      sessionTokenRef.current += 1;
+      recognizerRef.current?.destroy();
+      recognizerRef.current = null;
     };
   }, []);
 
+  useEffect(() => {
+    if (wordId === undefined) {
+      return;
+    }
+
+    sessionTokenRef.current += 1;
+    setIsListening(false);
+    setInput('');
+    setTranscript('');
+    recognizerRef.current?.abort();
+  }, [wordId]);
+
   const handleVoiceInput = async () => {
+    const recognizer = recognizerRef.current;
     if (!recognizer || isListening) {
       return;
     }
 
+    const sessionToken = sessionTokenRef.current + 1;
+    sessionTokenRef.current = sessionToken;
     setIsListening(true);
     setTranscript('');
 
     try {
       const result = await recognizer.start();
+      if (sessionTokenRef.current !== sessionToken) {
+        return;
+      }
       setInput(result.transcript);
       setTranscript(result.transcript);
       setIsListening(false);
+      recognizer.stop();
 
       // Auto-submit after recognition
-      if (result.transcript.trim().length > 0) {
+      const trimmedTranscript = result.transcript.trim();
+      if (trimmedTranscript.length > 0) {
+        const submitToken = sessionTokenRef.current;
         setTimeout(() => {
-          onSubmit(result.transcript);
+          if (sessionTokenRef.current !== submitToken) {
+            return;
+          }
+          onSubmit(trimmedTranscript);
         }, 500);
       }
     } catch (error) {
+      if (sessionTokenRef.current !== sessionToken) {
+        return;
+      }
       console.error('Speech recognition error:', error);
       setIsListening(false);
     }

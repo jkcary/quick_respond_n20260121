@@ -198,7 +198,7 @@ export const useTestStore = create<TestState>((set, get) => ({
 
     set({
       currentSession: updatedSession,
-      lastResult: judgment,
+      lastResult: null,
       userInput: '',
     });
 
@@ -212,15 +212,10 @@ export const useTestStore = create<TestState>((set, get) => ({
       }
     }
 
-    // Auto-advance after a delay (only if correct)
-    if (judgment.correct) {
-      setTimeout(() => {
-        const state = get();
-        // Only auto-advance if we're still on the same word
-        if (state.currentSession?.results.length === updatedSession.results.length) {
-          get().nextWord();
-        }
-      }, 1500);
+    // Auto-advance immediately on submitted answers
+    const state = get();
+    if (state.currentSession?.results.length === updatedSession.results.length) {
+      get().nextWord();
     }
   },
 

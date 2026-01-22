@@ -14,7 +14,7 @@ import { Button, Modal, LoadingSpinner } from '@/components/common';
 import { LLMGateway } from '@/core/llm';
 import { formatScore, formatDuration } from '@/utils/formatters';
 import { getGradeBookForGrade } from '@/types';
-import type { TestSession } from '@/types';
+import type { TestSession, VocabularyItem } from '@/types';
 
 export const TestPage: React.FC = () => {
   const navigate = useNavigate();
@@ -35,6 +35,7 @@ export const TestPage: React.FC = () => {
 
   const [showSummary, setShowSummary] = useState(false);
   const [completedSession, setCompletedSession] = useState<TestSession | null>(null);
+  const [isSkipping, setIsSkipping] = useState(false);
   const [gateway] = useState(() => {
     if (config.apiKey) {
       return new LLMGateway({
@@ -82,19 +83,39 @@ export const TestPage: React.FC = () => {
     }
   }, [currentSession?.endTime]);
 
+  
+
   const handleSubmit = async (input: string) => {
-    if (!currentWord || !gateway || isJudging) {
+    if (!currentWord || isJudging) {
+      return;
+    }
+
+    const trimmedInput = input.trim();
+    if (trimmedInput.length === 0) {
+      setIsSkipping(true);
+      try {
+        await submitAnswer('', {
+          correct: false,
+          correction: getDefaultCorrection(currentWord),
+        });
+      } finally {
+        setIsSkipping(false);
+      }
+      return;
+    }
+
+    if (!gateway) {
       return;
     }
 
     setJudging(true);
 
     try {
-      const judgment = await gateway.judge(currentWord.word, input);
-      await submitAnswer(input, judgment);
+      const judgment = await gateway.judge(currentWord.word, trimmedInput);
+      await submitAnswer(trimmedInput, judgment);
     } catch (error) {
       console.error('Judgment failed:', error);
-      await submitAnswer(input, {
+      await submitAnswer(trimmedInput, {
         correct: false,
         correction: 'System error, please try again',
       });
@@ -105,6 +126,26 @@ export const TestPage: React.FC = () => {
 
   const handleEndTest = () => {
     endTest();
+  };
+
+  const getDefaultCorrection = (word: VocabularyItem): string => {
+    return Array.isArray(word.chinese) ? word.chinese.filter(Boolean).join('; ') : '';
+  };
+
+  const handleNextWord = async () => {
+    if (!currentWord || isJudging || lastResult || isSkipping) {
+      return;
+    }
+
+    setIsSkipping(true);
+    try {
+      await submitAnswer('', {
+        correct: false,
+        correction: getDefaultCorrection(currentWord),
+      });
+    } finally {
+      setIsSkipping(false);
+    }
   };
 
   const handleCloseSummary = () => {
@@ -221,6 +262,7 @@ export const TestPage: React.FC = () => {
             onSubmit={handleSubmit}
             disabled={isJudging}
             placeholder="Enter Chinese translation..."
+            wordId={currentWord.id}
           />
         )}
 
@@ -233,9 +275,18 @@ export const TestPage: React.FC = () => {
 
         {/* End test button */}
         <div className="flex justify-center pt-4">
+          <div className="flex items-center gap-4">
           <Button variant="ghost" onClick={handleEndTest}>
             End Test
           </Button>
+          <Button
+            variant="primary"
+            onClick={handleNextWord}
+            disabled={isJudging || Boolean(lastResult) || isSkipping}
+          >
+            Next
+          </Button>
+          </div>
         </div>
       </div>
 

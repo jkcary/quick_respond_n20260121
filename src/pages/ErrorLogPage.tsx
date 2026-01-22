@@ -1,5 +1,5 @@
 /**
- * Review Page - Error log review with VST cards
+ * Error Log Page - Dedicated error log with VST review
  */
 
 import React, { useEffect, useState } from 'react';
@@ -8,7 +8,7 @@ import { useErrorStore } from '@/store/errorStore';
 import { Card, Button } from '@/components/common';
 import { ErrorList, VSTCard, ExportPanel } from '@/components/review';
 
-const ReviewPage: React.FC = () => {
+const ErrorLogPage: React.FC = () => {
   const navigate = useNavigate();
   const {
     loadErrorLog,
@@ -70,17 +70,41 @@ const ReviewPage: React.FC = () => {
   const unmasteredCount = getUnmasteredCount();
   const masteredCount = getMasteredCount();
 
+  useEffect(() => {
+    if (filter === 'mastered') {
+      setFilter('all');
+    }
+  }, [filter, setFilter]);
+
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      navigate(-1);
+      return;
+    }
+
+    navigate('/');
+  };
+
+  const handleFilterChange = (nextFilter: 'all' | 'unmastered' | 'mastered') => {
+    if (nextFilter === 'mastered') {
+      navigate('/mastered');
+      return;
+    }
+
+    setFilter(nextFilter);
+  };
+
   return (
     <div className="min-h-screen bg-slate-900 p-6">
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-cyan-400 mb-2">Error Review</h1>
-            <p className="text-slate-400">Review and master your error words</p>
+            <h1 className="text-3xl font-bold text-cyan-400 mb-2">Error Log</h1>
+            <p className="text-slate-400">Track and review your error words</p>
           </div>
-          <Button variant="ghost" onClick={() => navigate('/')}>
-            ← Back to Home
+          <Button variant="ghost" onClick={handleBack}>
+            返回首页
           </Button>
         </div>
 
@@ -115,13 +139,16 @@ const ReviewPage: React.FC = () => {
           {/* Error list */}
           <div className="lg:col-span-2">
             <Card>
-              <h2 className="text-xl font-semibold text-slate-200 mb-4">
-                Error Log
-              </h2>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-semibold text-slate-200">Error Log</h2>
+                <Button variant="ghost" size="sm" onClick={handleBack}>
+                  返回
+                </Button>
+              </div>
               <ErrorList
                 errors={errors}
                 onSelectWord={handleSelectWord}
-                onFilterChange={setFilter}
+                onFilterChange={handleFilterChange}
                 currentFilter={filter}
               />
             </Card>
@@ -158,4 +185,4 @@ const ReviewPage: React.FC = () => {
   );
 };
 
-export default ReviewPage;
+export default ErrorLogPage;
