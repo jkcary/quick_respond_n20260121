@@ -1,0 +1,2545 @@
+[
+  {
+    "id": "g4s1-0",
+    "en": "classroom",
+    "zh": "教室",
+    "phonics": "/ˈklɑːsruːm/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 1",
+    "syllables": [
+      "class",
+      "room"
+    ],
+    "phrases": [
+      {
+        "en": "in the classroom",
+        "zh": "在教室里"
+      },
+      {
+        "en": "clean the classroom",
+        "zh": "打扫教室"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "We learn new things in the classroom.",
+        "zh": "我们在教室里学习新东西。"
+      },
+      {
+        "en": "The teacher writes on the blackboard in the classroom.",
+        "zh": "老师在教室里的黑板上写字。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-1",
+    "en": "window",
+    "zh": "窗户",
+    "phonics": "/ˈwɪndəʊ/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 1",
+    "syllables": [
+      "win",
+      "dow"
+    ],
+    "phrases": [
+      {
+        "en": "open a window",
+        "zh": "打开窗户"
+      },
+      {
+        "en": "close the window",
+        "zh": "关上窗户"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The window lets sunlight into the room.",
+        "zh": "窗户让阳光照进房间里。"
+      },
+      {
+        "en": "She opened the window to get some fresh air.",
+        "zh": "她打开窗户呼吸一些新鲜空气。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-2",
+    "en": "blackboard",
+    "zh": "黑板",
+    "phonics": "/ˈblækbɔːd/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 1",
+    "syllables": [
+      "black",
+      "board"
+    ],
+    "sentences": [
+      {
+        "en": "The teacher writes on the blackboard.",
+        "zh": "老师在黑板上写字。"
+      },
+      {
+        "en": "We can see words on the blackboard.",
+        "zh": "我们能在黑板上看到字。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-3",
+    "en": "light",
+    "zh": "电灯",
+    "phonics": "/laɪt/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 1",
+    "syllables": [
+      "light"
+    ],
+    "phrases": [
+      {
+        "en": "turn on the light",
+        "zh": "开灯"
+      },
+      {
+        "en": "soft light",
+        "zh": "柔和的光线"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The sun gives us light.",
+        "zh": "太阳给我们光。"
+      },
+      {
+        "en": "Please turn on the light.",
+        "zh": "请打开灯。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-4",
+    "en": "picture",
+    "zh": "图画",
+    "phonics": "/ˈpɪktʃə(r)/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 1",
+    "syllables": [
+      "pic",
+      "ture"
+    ],
+    "phrases": [
+      {
+        "en": "draw a picture",
+        "zh": "画一幅画"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I draw a picture.",
+        "zh": "我画了一幅画。"
+      },
+      {
+        "en": "This is a beautiful picture.",
+        "zh": "这是一幅美丽的画。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-5",
+    "en": "door",
+    "zh": "门",
+    "phonics": "/dɔː(r)/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 1",
+    "syllables": [
+      "door"
+    ],
+    "phrases": [
+      {
+        "en": "open the door",
+        "zh": "打开门"
+      },
+      {
+        "en": "close the door",
+        "zh": "关上门"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "Please open the door.",
+        "zh": "请打开门。"
+      },
+      {
+        "en": "The door is red.",
+        "zh": "这扇门是红色的。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-6",
+    "en": "teacher's desk",
+    "zh": "讲台",
+    "unit": "Unit 1",
+    "sentences": [
+      {
+        "en": "The teacher's desk is in front of the classroom.",
+        "zh": "讲台在教室的前面。"
+      },
+      {
+        "en": "There are some books on the teacher's desk.",
+        "zh": "讲台上面有一些书。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-7",
+    "en": "computer",
+    "zh": "计算机",
+    "phonics": "/kəmˈpjuːtə(r)/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 1",
+    "syllables": [
+      "com",
+      "pu",
+      "ter"
+    ],
+    "phrases": [
+      {
+        "en": "use a computer",
+        "zh": "使用电脑"
+      },
+      {
+        "en": "computer screen",
+        "zh": "电脑屏幕"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-8",
+    "en": "fan",
+    "zh": "风扇",
+    "phonics": "/fæn/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 1",
+    "syllables": [
+      "fan"
+    ],
+    "phrases": [
+      {
+        "en": "electric fan",
+        "zh": "电风扇"
+      },
+      {
+        "en": "fan the flames",
+        "zh": "煽风点火"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "He is a big fan of basketball.",
+        "zh": "他是个篮球迷。"
+      },
+      {
+        "en": "She waves a fan to cool down.",
+        "zh": "她摇着扇子降温。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-9",
+    "en": "wall",
+    "zh": "墙壁",
+    "phonics": "/wɔːl/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 1",
+    "syllables": [
+      "wall"
+    ],
+    "phrases": [
+      {
+        "en": "build a wall",
+        "zh": "砌墙"
+      },
+      {
+        "en": "climb the wall",
+        "zh": "爬墙"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The wall is white.",
+        "zh": "这面墙是白色的。"
+      },
+      {
+        "en": "We paint the wall blue.",
+        "zh": "我们把墙刷成蓝色。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-10",
+    "en": "floor",
+    "zh": "地板",
+    "phonics": "/flɔː(r)/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 1",
+    "syllables": [
+      "floor"
+    ],
+    "phrases": [
+      {
+        "en": "on the floor",
+        "zh": "在地板上"
+      },
+      {
+        "en": "mop the floor",
+        "zh": "拖地"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "We live on the third floor of the building.",
+        "zh": "我们住在这栋楼的三楼。"
+      },
+      {
+        "en": "Please sweep the floor before leaving.",
+        "zh": "离开前请打扫地板。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-11",
+    "en": "really",
+    "zh": "（表示兴趣或惊讶）真的",
+    "phonics": "/ˈrɪəli/",
+    "partOfSpeech": "adv",
+    "unit": "Unit 1",
+    "syllables": [
+      "real",
+      "ly"
+    ],
+    "phrases": [
+      {
+        "en": "really good",
+        "zh": "非常好"
+      },
+      {
+        "en": "really fast",
+        "zh": "非常快"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "He really likes playing football.",
+        "zh": "他真的喜欢踢足球。"
+      },
+      {
+        "en": "This book is really interesting.",
+        "zh": "这本书真的很有趣。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-12",
+    "en": "near",
+    "zh": "距离近",
+    "phonics": "/nɪə(r)/",
+    "partOfSpeech": "prep",
+    "unit": "Unit 1",
+    "syllables": [
+      "near"
+    ],
+    "phrases": [
+      {
+        "en": "near the park",
+        "zh": "在公园附近"
+      },
+      {
+        "en": "near the river",
+        "zh": "在河边附近"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "My school is near the park.",
+        "zh": "我的学校在公园附近。"
+      },
+      {
+        "en": "She lives near the supermarket.",
+        "zh": "她住在超市附近。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-13",
+    "en": "TV",
+    "zh": "电视",
+    "phonics": "/ˌtiː ˈviː/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 1",
+    "syllables": [
+      "TV"
+    ],
+    "phrases": [
+      {
+        "en": "watch TV",
+        "zh": "看电视"
+      },
+      {
+        "en": "TV show",
+        "zh": "电视节目"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "We watch cartoons on TV.",
+        "zh": "我们在电视上看卡通片。"
+      },
+      {
+        "en": "My family has a big TV in the living room.",
+        "zh": "我家客厅里有一台大电视。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-14",
+    "en": "clean",
+    "zh": "打扫",
+    "phonics": "/kliːn/",
+    "partOfSpeech": "verb",
+    "unit": "Unit 1",
+    "syllables": [
+      "clean"
+    ],
+    "phrases": [
+      {
+        "en": "clean the room",
+        "zh": "打扫房间"
+      },
+      {
+        "en": "clean the desk",
+        "zh": "清理书桌"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I need to clean my room.",
+        "zh": "我需要打扫我的房间。"
+      },
+      {
+        "en": "She helps her mom clean the table.",
+        "zh": "她帮妈妈擦桌子。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-15",
+    "en": "help",
+    "zh": "帮助",
+    "phonics": "/help/",
+    "partOfSpeech": "verb",
+    "unit": "Unit 1",
+    "syllables": [
+      "help"
+    ],
+    "phrases": [
+      {
+        "en": "ask for help",
+        "zh": "寻求帮助"
+      },
+      {
+        "en": "offer help",
+        "zh": "提供帮助"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "Can you help me with my homework?",
+        "zh": "你能帮我做家庭作业吗？"
+      },
+      {
+        "en": "She always offers to help others.",
+        "zh": "她总是主动提出帮助别人。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-16",
+    "en": "schoolbag",
+    "zh": "书包",
+    "phonics": "/ˈskuːlbæɡ/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 2",
+    "syllables": [
+      "school",
+      "bag"
+    ],
+    "phrases": [
+      {
+        "en": "carry a schoolbag",
+        "zh": "背着书包"
+      },
+      {
+        "en": "a new schoolbag",
+        "zh": "一个新书包"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I carry my books in my schoolbag.",
+        "zh": "我用书包装我的书。"
+      },
+      {
+        "en": "Her schoolbag is blue and white.",
+        "zh": "她的书包是蓝白相间的。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-17",
+    "en": "maths book",
+    "zh": "数学书",
+    "phonics": "/mæθs bʊk/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 2",
+    "syllables": [
+      "mæθs",
+      "bʊk"
+    ],
+    "phrases": [
+      {
+        "en": "maths book",
+        "zh": "数学书"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I need my maths book for the class.",
+        "zh": "我上课需要我的数学书。"
+      },
+      {
+        "en": "The maths book has many interesting problems.",
+        "zh": "这本数学书有很多有趣的题目。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-18",
+    "en": "English book",
+    "zh": "英语书",
+    "phonics": "/ˈɪŋɡlɪʃ bʊk/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 2",
+    "syllables": [
+      "Eng",
+      "lish book"
+    ],
+    "phrases": [
+      {
+        "en": "read an English book",
+        "zh": "读一本英语书"
+      },
+      {
+        "en": "buy an English book",
+        "zh": "买一本英语书"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I am reading an English book.",
+        "zh": "我正在读一本英语书。"
+      },
+      {
+        "en": "She bought a new English book yesterday.",
+        "zh": "她昨天买了一本新的英语书。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-19",
+    "en": "Chinese book",
+    "zh": "语文书",
+    "phonics": "/ˌtʃaɪˈniːz bʊk/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 2",
+    "syllables": [
+      "Chi",
+      "nese book"
+    ],
+    "phrases": [
+      {
+        "en": "read a Chinese book",
+        "zh": "读一本中文书"
+      },
+      {
+        "en": "write a Chinese book",
+        "zh": "写一本中文书"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I like reading Chinese books.",
+        "zh": "我喜欢读中文书。"
+      },
+      {
+        "en": "This Chinese book is very interesting.",
+        "zh": "这本中文书非常有趣。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-20",
+    "en": "storybook",
+    "zh": "故事书",
+    "phonics": "/ˈstɔːribʊk/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 2",
+    "syllables": [
+      "sto",
+      "ry",
+      "book"
+    ],
+    "phrases": [
+      {
+        "en": "read a storybook",
+        "zh": "读一本故事书"
+      },
+      {
+        "en": "a beautiful storybook",
+        "zh": "一本漂亮的故事书"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I like reading a storybook before bed.",
+        "zh": "我喜欢睡前读一本故事书。"
+      },
+      {
+        "en": "She has a colorful storybook with many pictures.",
+        "zh": "她有一本带有很多图画的彩色故事书。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-21",
+    "en": "candy",
+    "zh": "糖果",
+    "phonics": "/ˈkændi/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 2",
+    "syllables": [
+      "can",
+      "dy"
+    ],
+    "phrases": [
+      {
+        "en": "a piece of candy",
+        "zh": "一块糖果"
+      },
+      {
+        "en": "eat candy",
+        "zh": "吃糖果"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I like to eat candy.",
+        "zh": "我喜欢吃糖果。"
+      },
+      {
+        "en": "The candy is sweet.",
+        "zh": "糖果是甜的。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-22",
+    "en": "notebook",
+    "zh": "笔记本",
+    "phonics": "/ˈnəʊtbʊk/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 2",
+    "syllables": [
+      "note",
+      "book"
+    ],
+    "phrases": [
+      {
+        "en": "write in a notebook",
+        "zh": "在笔记本上写"
+      },
+      {
+        "en": "carry a notebook",
+        "zh": "携带笔记本"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I write notes in my notebook.",
+        "zh": "我在我的笔记本上写笔记。"
+      },
+      {
+        "en": "My notebook has many pages.",
+        "zh": "我的笔记本有很多页。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-23",
+    "en": "toy",
+    "zh": "玩具",
+    "phonics": "/tɔɪ/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 2",
+    "syllables": [
+      "toy"
+    ],
+    "phrases": [
+      {
+        "en": "a toy car",
+        "zh": "一辆玩具车"
+      },
+      {
+        "en": "play with toys",
+        "zh": "玩玩具"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The child is playing with a toy.",
+        "zh": "这个孩子正在玩一个玩具。"
+      },
+      {
+        "en": "I bought a new toy car yesterday.",
+        "zh": "我昨天买了一辆新玩具车。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-24",
+    "en": "key",
+    "zh": "钥匙",
+    "phonics": "/kiː/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 2",
+    "syllables": [
+      "key"
+    ],
+    "phrases": [
+      {
+        "en": "a set of keys",
+        "zh": "一串钥匙"
+      },
+      {
+        "en": "turn the key",
+        "zh": "转动钥匙"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The key unlocks the door.",
+        "zh": "钥匙打开了门。"
+      },
+      {
+        "en": "I need a key to start the car.",
+        "zh": "我需要一把钥匙来启动汽车。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-25",
+    "en": "wow",
+    "zh": "哇；呀",
+    "phonics": "/waʊ/",
+    "partOfSpeech": "interj",
+    "unit": "Unit 2",
+    "syllables": [
+      "wow"
+    ],
+    "phrases": [
+      {
+        "en": "wow at the view",
+        "zh": "对景色惊叹"
+      },
+      {
+        "en": "wow factor",
+        "zh": "惊叹因素"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "Wow, that's a beautiful rainbow!",
+        "zh": "哇，那是一道美丽的彩虹！"
+      },
+      {
+        "en": "She said 'wow' when she saw the surprise gift.",
+        "zh": "当她看到惊喜礼物时，她说了声“哇”。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-26",
+    "en": "lost",
+    "zh": "丢失（lose的过去式形式）",
+    "phonics": "/lɒst/",
+    "partOfSpeech": "verb",
+    "unit": "Unit 2",
+    "syllables": [
+      "lost"
+    ],
+    "phrases": [
+      {
+        "en": "get lost",
+        "zh": "滚开"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I lost my keys yesterday.",
+        "zh": "我昨天丢了我的钥匙。"
+      },
+      {
+        "en": "She is worried because her cat is lost.",
+        "zh": "她很担心，因为她的猫丢了。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-27",
+    "en": "so much",
+    "zh": "非常地",
+    "phonics": "/mətʃ/",
+    "partOfSpeech": "adv",
+    "unit": "Unit 2",
+    "syllables": [
+      "so",
+      "much"
+    ],
+    "phrases": [
+      {
+        "en": "so much fun",
+        "zh": "如此多乐趣"
+      },
+      {
+        "en": "so much trouble",
+        "zh": "如此多麻烦"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "There is so much water in the bottle.",
+        "zh": "瓶子里有很多水。"
+      },
+      {
+        "en": "She has so much homework to do.",
+        "zh": "她有很多作业要做。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-28",
+    "en": "cute",
+    "zh": "可爱的",
+    "phonics": "/kjuːt/",
+    "partOfSpeech": "adj",
+    "unit": "Unit 2",
+    "syllables": [
+      "cute"
+    ],
+    "phrases": [
+      {
+        "en": "a cute puppy",
+        "zh": "一只可爱的小狗"
+      },
+      {
+        "en": "cute little cat",
+        "zh": "可爱的小猫"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The little cat is so cute.",
+        "zh": "这只小猫太可爱了。"
+      },
+      {
+        "en": "She made a cute drawing for her mom.",
+        "zh": "她为妈妈画了一幅可爱的画。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-29",
+    "en": "strong",
+    "zh": "强壮的",
+    "phonics": "/strɒŋ/",
+    "partOfSpeech": "adj",
+    "unit": "Unit 3",
+    "syllables": [
+      "strong"
+    ],
+    "phrases": [
+      {
+        "en": "strong wind",
+        "zh": "强风"
+      },
+      {
+        "en": "strong coffee",
+        "zh": "浓咖啡"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "She has a strong body.",
+        "zh": "她有一个强壮的身体。"
+      },
+      {
+        "en": "The strong wind blows hard.",
+        "zh": "强风猛烈地吹着。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-30",
+    "en": "friendly",
+    "zh": "友好的",
+    "phonics": "/ˈfrendli/",
+    "partOfSpeech": "adj",
+    "unit": "Unit 3",
+    "syllables": [
+      "friend",
+      "ly"
+    ],
+    "sentences": [
+      {
+        "en": "My neighbor is a friendly person.",
+        "zh": "我的邻居是一个友善的人。"
+      },
+      {
+        "en": "She gave me a friendly smile.",
+        "zh": "她给了我一个友善的微笑。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-31",
+    "en": "quiet",
+    "zh": "安静的",
+    "phonics": "/ˈkwaɪət/",
+    "partOfSpeech": "adj",
+    "unit": "Unit 3",
+    "syllables": [
+      "quiet"
+    ],
+    "phrases": [
+      {
+        "en": "keep quiet",
+        "zh": "保持安静"
+      },
+      {
+        "en": "quiet down",
+        "zh": "安静下来"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "Please be quiet in the library.",
+        "zh": "图书馆里请保持安静。"
+      },
+      {
+        "en": "The baby is sleeping, so we need to keep quiet.",
+        "zh": "宝宝在睡觉，所以我们需要保持安静。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-32",
+    "en": "hair",
+    "zh": "头发",
+    "phonics": "/heə(r)/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 3",
+    "syllables": [
+      "hair"
+    ],
+    "phrases": [
+      {
+        "en": "long hair",
+        "zh": "长发"
+      },
+      {
+        "en": "curly hair",
+        "zh": "卷发"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "Her hair is long and black.",
+        "zh": "她的头发又长又黑。"
+      },
+      {
+        "en": "I need to wash my hair today.",
+        "zh": "我今天需要洗头。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-33",
+    "en": "shoe",
+    "zh": "鞋",
+    "phonics": "/ʃuː/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 3",
+    "syllables": [
+      "shoe"
+    ],
+    "phrases": [
+      {
+        "en": "a pair of shoes",
+        "zh": "一双鞋"
+      },
+      {
+        "en": "shoe store",
+        "zh": "鞋店"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I wear a shoe on my foot.",
+        "zh": "我脚上穿了一只鞋。"
+      },
+      {
+        "en": "This shoe is red and new.",
+        "zh": "这只鞋是红色的并且是新的。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-34",
+    "en": "glasses",
+    "zh": "眼镜",
+    "phonics": "/ˈɡlɑːsɪz/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 3",
+    "syllables": [
+      "glass",
+      "es"
+    ],
+    "phrases": [
+      {
+        "en": "wear glasses",
+        "zh": "戴眼镜"
+      },
+      {
+        "en": "a pair of glasses",
+        "zh": "一副眼镜"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "She wears glasses to see clearly.",
+        "zh": "她戴眼镜是为了看清楚。"
+      },
+      {
+        "en": "My father's glasses are on the table.",
+        "zh": "我爸爸的眼镜在桌子上。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-35",
+    "en": "his",
+    "zh": "他的",
+    "phonics": "/hɪz/",
+    "partOfSpeech": "pron",
+    "unit": "Unit 3",
+    "syllables": [
+      "his"
+    ],
+    "phrases": [
+      {
+        "en": "his book",
+        "zh": "他的书"
+      },
+      {
+        "en": "his mother",
+        "zh": "他的母亲"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-36",
+    "en": "or",
+    "zh": "或者",
+    "phonics": "/ɔː(r)/",
+    "partOfSpeech": "conj",
+    "unit": "Unit 3",
+    "syllables": [
+      "or"
+    ],
+    "phrases": [
+      {
+        "en": "either or",
+        "zh": "要么...要么..."
+      },
+      {
+        "en": "or else",
+        "zh": "否则；要不然"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "You can choose coffee or tea.",
+        "zh": "你可以选择咖啡或者茶。"
+      },
+      {
+        "en": "Is this a cat or a dog?",
+        "zh": "这是一只猫还是一只狗？"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-37",
+    "en": "right",
+    "zh": "正确的；对的",
+    "phonics": "/raɪt/",
+    "partOfSpeech": "adj",
+    "unit": "Unit 3",
+    "syllables": [
+      "right"
+    ],
+    "phrases": [
+      {
+        "en": "turn right",
+        "zh": "向右转"
+      },
+      {
+        "en": "on the right",
+        "zh": "在右边"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "Turn right at the corner.",
+        "zh": "在拐角处向右转。"
+      },
+      {
+        "en": "You are right about the answer.",
+        "zh": "你对这个答案的看法是正确的。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-38",
+    "en": "hat",
+    "zh": "（常指带檐的）帽子",
+    "phonics": "/hæt/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 3",
+    "syllables": [
+      "hat"
+    ],
+    "phrases": [
+      {
+        "en": "a red hat",
+        "zh": "一顶红色的帽子"
+      },
+      {
+        "en": "wear a hat",
+        "zh": "戴帽子"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "She wears a red hat.",
+        "zh": "她戴着一顶红色的帽子。"
+      },
+      {
+        "en": "My hat is on the table.",
+        "zh": "我的帽子在桌子上。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-39",
+    "en": "her",
+    "zh": "她的",
+    "phonics": "/hɜː(r)/",
+    "partOfSpeech": "pron",
+    "unit": "Unit 3",
+    "syllables": [
+      "her"
+    ],
+    "phrases": [
+      {
+        "en": "her book",
+        "zh": "她的书"
+      },
+      {
+        "en": "her idea",
+        "zh": "她的想法"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "This is her book.",
+        "zh": "这是她的书。"
+      },
+      {
+        "en": "She gave her pen to me.",
+        "zh": "她把她的钢笔给了我。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-40",
+    "en": "bedroom",
+    "zh": "卧室",
+    "phonics": "/ˈbedruːm/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 4",
+    "syllables": [
+      "bed",
+      "room"
+    ],
+    "phrases": [
+      {
+        "en": "clean the bedroom",
+        "zh": "打扫卧室"
+      },
+      {
+        "en": "decorate the bedroom",
+        "zh": "装饰卧室"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I keep my toys in the bedroom.",
+        "zh": "我把我的玩具放在卧室里。"
+      },
+      {
+        "en": "She likes to read books in her bedroom.",
+        "zh": "她喜欢在她的卧室里看书。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-41",
+    "en": "living room",
+    "zh": "客厅；起居室",
+    "phonics": "/ˈlɪvɪŋ ruːm/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 4",
+    "syllables": [
+      "liv",
+      "ing",
+      "room"
+    ],
+    "phrases": [
+      {
+        "en": "clean the living room",
+        "zh": "打扫客厅"
+      },
+      {
+        "en": "decorate the living room",
+        "zh": "装饰客厅"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "We often watch TV in the living room.",
+        "zh": "我们经常在客厅看电视。"
+      },
+      {
+        "en": "The sofa is in the living room.",
+        "zh": "沙发在客厅里。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-42",
+    "en": "study",
+    "zh": "书房",
+    "phonics": "/ˈstʌdi/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 4",
+    "syllables": [
+      "stu",
+      "dy"
+    ],
+    "phrases": [
+      {
+        "en": "study hard",
+        "zh": "努力学习"
+      },
+      {
+        "en": "study abroad",
+        "zh": "出国留学"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I study English every day.",
+        "zh": "我每天学习英语。"
+      },
+      {
+        "en": "We need to study hard for the exam.",
+        "zh": "我们需要为考试努力学习。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-43",
+    "en": "kitchen",
+    "zh": "厨房",
+    "phonics": "/ˈkɪtʃɪn/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 4",
+    "syllables": [
+      "kitch",
+      "en"
+    ],
+    "phrases": [
+      {
+        "en": "clean the kitchen",
+        "zh": "打扫厨房"
+      },
+      {
+        "en": "cook in the kitchen",
+        "zh": "在厨房做饭"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I cook meals in the kitchen.",
+        "zh": "我在厨房做饭。"
+      },
+      {
+        "en": "The kitchen has a big table.",
+        "zh": "厨房里有一张大桌子。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-44",
+    "en": "bathroom",
+    "zh": "浴室；洗手间",
+    "phonics": "/ˈbɑːθruːm/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 4",
+    "syllables": [
+      "bath",
+      "room"
+    ],
+    "sentences": [
+      {
+        "en": "I need to go to the bathroom.",
+        "zh": "我需要去洗手间。"
+      },
+      {
+        "en": "The bathroom is next to the bedroom.",
+        "zh": "洗手间在卧室旁边。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-45",
+    "en": "bed",
+    "zh": "床",
+    "phonics": "/bed/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 4",
+    "syllables": [
+      "bed"
+    ],
+    "phrases": [
+      {
+        "en": "make the bed",
+        "zh": "整理床铺"
+      },
+      {
+        "en": "go to bed",
+        "zh": "上床睡觉"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I sleep in a bed every night.",
+        "zh": "我每晚都睡在床上。"
+      },
+      {
+        "en": "The bed is in my bedroom.",
+        "zh": "床在我的卧室里。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-46",
+    "en": "phone",
+    "zh": "电话",
+    "phonics": "/fəʊn/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 4",
+    "syllables": [
+      "phone"
+    ],
+    "phrases": [
+      {
+        "en": "make a phone call",
+        "zh": "打电话"
+      },
+      {
+        "en": "answer the phone",
+        "zh": "接电话"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-47",
+    "en": "table",
+    "zh": "桌子",
+    "phonics": "/ˈteɪbl/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 4",
+    "syllables": [
+      "ta",
+      "ble"
+    ],
+    "phrases": [
+      {
+        "en": "a wooden table",
+        "zh": "一张木桌"
+      },
+      {
+        "en": "clean the table",
+        "zh": "擦桌子"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The teacher wrote on the blackboard with a piece of chalk and then drew a table to organize the data.",
+        "zh": "老师用一支粉笔在黑板上写字，然后画了一个表格来整理数据。"
+      },
+      {
+        "en": "There are many books and a lamp on the wooden table in my study.",
+        "zh": "我书房的木质桌子上有很多书和一盏台灯。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-48",
+    "en": "sofa",
+    "zh": "长沙发",
+    "phonics": "/ˈsəʊfə/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 4",
+    "syllables": [
+      "so",
+      "fa"
+    ],
+    "phrases": [
+      {
+        "en": "a comfortable sofa",
+        "zh": "一个舒适的沙发"
+      },
+      {
+        "en": "sofa cushions",
+        "zh": "沙发靠垫"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The sofa is soft and comfortable.",
+        "zh": "沙发柔软又舒适。"
+      },
+      {
+        "en": "We often sit on the sofa to watch TV.",
+        "zh": "我们经常坐在沙发上看电视。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-49",
+    "en": "fridge",
+    "zh": "冰箱",
+    "phonics": "/frɪdʒ/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 4",
+    "syllables": [
+      "fridge"
+    ],
+    "phrases": [
+      {
+        "en": "open the fridge",
+        "zh": "打开冰箱"
+      },
+      {
+        "en": "in the fridge",
+        "zh": "在冰箱里"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "We keep milk in the fridge to keep it fresh.",
+        "zh": "我们把牛奶放在冰箱里保鲜。"
+      },
+      {
+        "en": "My mom bought a new fridge yesterday.",
+        "zh": "我妈妈昨天买了一个新冰箱。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-50",
+    "en": "find",
+    "zh": "找到",
+    "phonics": "/faɪnd/",
+    "partOfSpeech": "verb",
+    "unit": "Unit 4",
+    "syllables": [
+      "find"
+    ],
+    "phrases": [
+      {
+        "en": "find a book",
+        "zh": "找一本书"
+      },
+      {
+        "en": "find the key",
+        "zh": "找到钥匙"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I need to find my book.",
+        "zh": "我需要找到我的书。"
+      },
+      {
+        "en": "Can you help me find the key?",
+        "zh": "你能帮我找到钥匙吗？"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-51",
+    "en": "them",
+    "zh": "他（她、它）们",
+    "phonics": "/ðəm/",
+    "partOfSpeech": "pron",
+    "unit": "Unit 4",
+    "syllables": [
+      "them"
+    ],
+    "phrases": [
+      {
+        "en": "help them",
+        "zh": "帮助他们"
+      },
+      {
+        "en": "teach them",
+        "zh": "教他们"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I gave them a book.",
+        "zh": "我给了他们一本书。"
+      },
+      {
+        "en": "They are my friends, and I like them.",
+        "zh": "他们是我的朋友，我喜欢他们。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-52",
+    "en": "beef",
+    "zh": "牛肉",
+    "phonics": "/biːf/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 5",
+    "syllables": [
+      "beef"
+    ],
+    "phrases": [
+      {
+        "en": "braised beef",
+        "zh": "红烧牛肉"
+      },
+      {
+        "en": "beef steak",
+        "zh": "牛排"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I like to eat beef for dinner.",
+        "zh": "我喜欢晚餐吃牛肉。"
+      },
+      {
+        "en": "Beef is a kind of red meat.",
+        "zh": "牛肉是一种红肉。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-53",
+    "en": "chicken",
+    "zh": "鸡肉",
+    "phonics": "/ˈtʃɪkɪn/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 5",
+    "syllables": [
+      "chick",
+      "en"
+    ],
+    "phrases": [
+      {
+        "en": "roast chicken",
+        "zh": "烤鸡"
+      },
+      {
+        "en": "chicken soup",
+        "zh": "鸡汤"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I like to eat chicken for dinner.",
+        "zh": "我喜欢晚餐吃鸡肉。"
+      },
+      {
+        "en": "The chicken is running in the yard.",
+        "zh": "小鸡正在院子里跑。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-54",
+    "en": "noodles",
+    "zh": "面条",
+    "phonics": "/ˈnuːdlz/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 5",
+    "syllables": [
+      "nood",
+      "les"
+    ],
+    "phrases": [
+      {
+        "en": "cook noodles",
+        "zh": "煮面条"
+      },
+      {
+        "en": "eat noodles",
+        "zh": "吃面条"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I like eating noodles for lunch.",
+        "zh": "我喜欢午餐吃面条。"
+      },
+      {
+        "en": "Noodles are a kind of popular food in China.",
+        "zh": "面条是中国的一种受欢迎的食物。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-55",
+    "en": "soup",
+    "zh": "汤",
+    "phonics": "/suːp/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 5",
+    "syllables": [
+      "soup"
+    ],
+    "phrases": [
+      {
+        "en": "hot soup",
+        "zh": "热汤"
+      },
+      {
+        "en": "soup bowl",
+        "zh": "汤碗"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I like to eat soup for lunch.",
+        "zh": "我午餐喜欢喝汤。"
+      },
+      {
+        "en": "My mom makes delicious soup.",
+        "zh": "我妈妈做美味的汤。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-56",
+    "en": "vegetable",
+    "zh": "蔬菜",
+    "phonics": "/ˈvedʒtəbl/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 5",
+    "syllables": [
+      "veg",
+      "e",
+      "ta",
+      "ble"
+    ],
+    "phrases": [
+      {
+        "en": "fresh vegetable",
+        "zh": "新鲜蔬菜"
+      },
+      {
+        "en": "vegetable salad",
+        "zh": "蔬菜沙拉"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I like to eat fresh vegetable every day.",
+        "zh": "我喜欢每天吃新鲜的蔬菜。"
+      },
+      {
+        "en": "She is washing the vegetable in the kitchen.",
+        "zh": "她正在厨房里洗蔬菜。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-57",
+    "en": "chopsticks",
+    "zh": "筷子",
+    "phonics": "/ˈtʃɒpstɪks/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 5",
+    "syllables": [
+      "chop",
+      "sticks"
+    ],
+    "phrases": [
+      {
+        "en": "use chopsticks",
+        "zh": "使用筷子"
+      },
+      {
+        "en": "chopsticks set",
+        "zh": "筷子套装"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "Chinese people often use chopsticks to eat.",
+        "zh": "中国人经常用筷子吃饭。"
+      },
+      {
+        "en": "I need a pair of chopsticks for dinner.",
+        "zh": "我晚餐需要一双筷子。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-58",
+    "en": "bowl",
+    "zh": "碗",
+    "phonics": "/bəʊl/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 5",
+    "syllables": [
+      "bowl"
+    ],
+    "phrases": [
+      {
+        "en": "a big bowl",
+        "zh": "一个大碗"
+      },
+      {
+        "en": "wash the bowl",
+        "zh": "洗碗"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "My mom put soup in the bowl.",
+        "zh": "我妈妈把汤放进了碗里。"
+      },
+      {
+        "en": "I eat rice with a bowl.",
+        "zh": "我用碗吃米饭。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-59",
+    "en": "fork",
+    "zh": "餐叉",
+    "phonics": "/fɔːk/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 5",
+    "syllables": [
+      "fork"
+    ],
+    "phrases": [
+      {
+        "en": "fork a repository",
+        "zh": "分叉一个仓库"
+      },
+      {
+        "en": "use a fork",
+        "zh": "使用叉子"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "He used a fork to eat the cake.",
+        "zh": "他用叉子吃蛋糕。"
+      },
+      {
+        "en": "There is a fork on the dinner table.",
+        "zh": "餐桌上有一把叉子。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-60",
+    "en": "knife",
+    "zh": "刀",
+    "phonics": "/naɪf/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 5",
+    "syllables": [
+      "knife"
+    ],
+    "phrases": [
+      {
+        "en": "sharp knife",
+        "zh": "锋利的刀"
+      },
+      {
+        "en": "use a knife",
+        "zh": "使用刀"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "He uses a knife to cut the bread.",
+        "zh": "他用一把刀来切面包。"
+      },
+      {
+        "en": "The knife is on the kitchen table.",
+        "zh": "那把刀在厨房的桌子上。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-61",
+    "en": "spoon",
+    "zh": "勺",
+    "phonics": "/spuːn/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 5",
+    "syllables": [
+      "spoon"
+    ],
+    "phrases": [
+      {
+        "en": "a metal spoon",
+        "zh": "一把金属勺子"
+      },
+      {
+        "en": "use a spoon",
+        "zh": "使用勺子"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-62",
+    "en": "dinner",
+    "zh": "（中午或晚上吃的）正餐",
+    "phonics": "/ˈdɪnə(r)/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 5",
+    "syllables": [
+      "din",
+      "ner"
+    ],
+    "phrases": [
+      {
+        "en": "have dinner",
+        "zh": "吃晚餐"
+      },
+      {
+        "en": "cook dinner",
+        "zh": "做晚餐"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "We usually have dinner at 7 pm.",
+        "zh": "我们通常在晚上7点吃晚餐。"
+      },
+      {
+        "en": "My favorite food for dinner is noodles.",
+        "zh": "我晚餐最喜欢的食物是面条。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-63",
+    "en": "ready",
+    "zh": "准备好",
+    "phonics": "/ˈredi/",
+    "partOfSpeech": "adj",
+    "unit": "Unit 5",
+    "syllables": [
+      "rea",
+      "dy"
+    ],
+    "phrases": [
+      {
+        "en": "get ready",
+        "zh": "准备好"
+      },
+      {
+        "en": "ready to go",
+        "zh": "准备出发"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The students are ready for the exam.",
+        "zh": "学生们准备好考试了。"
+      },
+      {
+        "en": "Please get ready to start the class.",
+        "zh": "请准备开始上课。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-64",
+    "en": "help yourself",
+    "zh": "为（自己）取用",
+    "phonics": "/jɔːˈself/",
+    "partOfSpeech": "phrase",
+    "unit": "Unit 5",
+    "syllables": [
+      "your",
+      "self"
+    ],
+    "phrases": [
+      {
+        "en": "help yourself",
+        "zh": "请自便"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "Please help yourself to some fruit.",
+        "zh": "请随便吃些水果。"
+      },
+      {
+        "en": "Help yourself to the books on the shelf.",
+        "zh": "请自取书架上的书。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-65",
+    "en": "pass",
+    "zh": "给；递",
+    "phonics": "/pɑːs/",
+    "partOfSpeech": "verb",
+    "unit": "Unit 5",
+    "syllables": [
+      "pass"
+    ],
+    "phrases": [
+      {
+        "en": "pass the exam",
+        "zh": "通过考试"
+      },
+      {
+        "en": "pass the ball",
+        "zh": "传球"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I will pass the exam with hard work.",
+        "zh": "通过努力学习，我会通过考试。"
+      },
+      {
+        "en": "Please pass the book to me.",
+        "zh": "请把那本书递给我。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-66",
+    "en": "try",
+    "zh": "试；尝试",
+    "phonics": "/traɪ/",
+    "partOfSpeech": "verb",
+    "unit": "Unit 5",
+    "syllables": [
+      "try"
+    ],
+    "phrases": [
+      {
+        "en": "try again",
+        "zh": "再试一次"
+      },
+      {
+        "en": "try to do",
+        "zh": "尝试去做"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I will try my best to learn English.",
+        "zh": "我会尽我最大的努力学习英语。"
+      },
+      {
+        "en": "You should try to solve the problem by yourself.",
+        "zh": "你应该尝试自己解决这个问题。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-67",
+    "en": "parents",
+    "zh": "父母",
+    "phonics": "/ˈpeərənts/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 6",
+    "syllables": [
+      "par",
+      "ents"
+    ],
+    "phrases": [
+      {
+        "en": "my parents",
+        "zh": "我的父母"
+      },
+      {
+        "en": "parents' love",
+        "zh": "父母的爱"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "My parents love me very much.",
+        "zh": "我的父母非常爱我。"
+      },
+      {
+        "en": "Parents take care of their children every day.",
+        "zh": "父母每天照顾他们的孩子。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-68",
+    "en": "cousin",
+    "zh": "同辈表亲（或堂亲）",
+    "phonics": "/ˈkʌzn/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 6",
+    "syllables": [
+      "cous",
+      "in"
+    ],
+    "phrases": [
+      {
+        "en": "my cousin",
+        "zh": "我的堂兄/堂弟/堂姐/堂妹/表哥/表弟/表姐/表妹"
+      },
+      {
+        "en": "visit cousin",
+        "zh": "拜访表亲"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "My cousin and I often play games together.",
+        "zh": "我和表兄弟姐妹经常一起玩游戏。"
+      },
+      {
+        "en": "She visited her cousin in New York last summer.",
+        "zh": "去年夏天她去纽约看望了她的堂兄弟姐妹。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-69",
+    "en": "uncle",
+    "zh": "舅父；叔父；伯父；姑父；姨夫",
+    "phonics": "/ˈʌŋkl/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 6",
+    "syllables": [
+      "un",
+      "cle"
+    ],
+    "phrases": [
+      {
+        "en": "my uncle",
+        "zh": "我的叔叔"
+      },
+      {
+        "en": "uncle Tom",
+        "zh": "汤姆叔叔"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "My uncle is a doctor.",
+        "zh": "我的叔叔是一名医生。"
+      },
+      {
+        "en": "I often play basketball with my uncle.",
+        "zh": "我经常和我的叔叔一起打篮球。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-70",
+    "en": "aunt",
+    "zh": "姑母；姨母",
+    "phonics": "/ɑːnt/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 6",
+    "syllables": [
+      "aunt"
+    ],
+    "phrases": [
+      {
+        "en": "my aunt",
+        "zh": "我的阿姨"
+      },
+      {
+        "en": "visit aunt",
+        "zh": "看望阿姨"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "My aunt often cooks delicious meals for me.",
+        "zh": "我的阿姨经常给我做美味的饭菜。"
+      },
+      {
+        "en": "She visited her aunt in the countryside last weekend.",
+        "zh": "她上周末去乡下看望了她的阿姨。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-71",
+    "en": "baby brother",
+    "zh": "婴儿小弟弟",
+    "phonics": "/ˈbeɪbi ˈbrʌðə(r)/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 6",
+    "syllables": [
+      "ba",
+      "by broth",
+      "er"
+    ],
+    "phrases": [
+      {
+        "en": "my baby brother",
+        "zh": "我的弟弟"
+      },
+      {
+        "en": "the baby brother",
+        "zh": "这个弟弟"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "My baby brother is playing with a toy car.",
+        "zh": "我的小弟弟正在玩一辆玩具车。"
+      },
+      {
+        "en": "I love to read stories to my baby brother before bed.",
+        "zh": "我喜欢在睡前给我的小弟弟读故事。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-72",
+    "en": "doctor",
+    "zh": "医生",
+    "phonics": "/ˈdɒktə(r)/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 6",
+    "syllables": [
+      "doc",
+      "tor"
+    ],
+    "phrases": [
+      {
+        "en": "see a doctor",
+        "zh": "看医生"
+      },
+      {
+        "en": "visit a doctor",
+        "zh": "拜访医生"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "A doctor helps sick people feel better.",
+        "zh": "医生帮助生病的人感觉好些。"
+      },
+      {
+        "en": "My mother wants to be a doctor when she grows up.",
+        "zh": "我妈妈长大后想成为一名医生。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-73",
+    "en": "cook",
+    "zh": "厨师",
+    "phonics": "/kʊk/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 6",
+    "syllables": [
+      "cook"
+    ],
+    "phrases": [
+      {
+        "en": "cook dinner",
+        "zh": "做晚餐"
+      },
+      {
+        "en": "cook meals",
+        "zh": "做饭"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "My mom likes to cook delicious meals for our family.",
+        "zh": "我妈妈喜欢为我们家做美味的饭菜。"
+      },
+      {
+        "en": "Can you teach me how to cook scrambled eggs?",
+        "zh": "你能教我怎么做炒鸡蛋吗？"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-74",
+    "en": "driver",
+    "zh": "司机",
+    "phonics": "/ˈdraɪvə(r)/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 6",
+    "syllables": [
+      "driv",
+      "er"
+    ],
+    "phrases": [
+      {
+        "en": "hire a driver",
+        "zh": "雇佣司机"
+      },
+      {
+        "en": "driver's license",
+        "zh": "驾驶执照"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-75",
+    "en": "farmer",
+    "zh": "农民",
+    "phonics": "/ˈfɑːmə(r)/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 6",
+    "syllables": [
+      "far",
+      "mer"
+    ],
+    "phrases": [
+      {
+        "en": "a hardworking farmer",
+        "zh": "一位勤劳的农民"
+      },
+      {
+        "en": "farmer's market",
+        "zh": "农贸市场"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The farmer works hard in the field every day.",
+        "zh": "这位农民每天在田里辛勤劳作。"
+      },
+      {
+        "en": "My grandfather is a kind farmer who grows vegetables.",
+        "zh": "我的爷爷是一位种植蔬菜的善良农民。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-76",
+    "en": "nurse",
+    "zh": "护士",
+    "phonics": "/nɜːs/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 6",
+    "syllables": [
+      "nurse"
+    ],
+    "phrases": [
+      {
+        "en": "a nurse",
+        "zh": "一名护士"
+      },
+      {
+        "en": "nurse station",
+        "zh": "护士站"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The nurse takes good care of the patients.",
+        "zh": "护士悉心照顾病人。"
+      },
+      {
+        "en": "My sister wants to be a nurse when she grows up.",
+        "zh": "我姐姐长大后想成为一名护士。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-77",
+    "en": "people",
+    "zh": "人们",
+    "phonics": "/ˈpiːpl/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 6",
+    "syllables": [
+      "peo",
+      "ple"
+    ],
+    "phrases": [
+      {
+        "en": "many people",
+        "zh": "许多人"
+      },
+      {
+        "en": "people's lives",
+        "zh": "人们的生活"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "People are talking in the park.",
+        "zh": "人们正在公园里交谈。"
+      },
+      {
+        "en": "Many people like to read books.",
+        "zh": "许多人喜欢读书。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-78",
+    "en": "but",
+    "zh": "但是",
+    "phonics": "/bʌt/",
+    "partOfSpeech": "conj",
+    "unit": "Unit 6",
+    "syllables": [
+      "but"
+    ],
+    "phrases": [
+      {
+        "en": "but also",
+        "zh": "而且"
+      },
+      {
+        "en": "but now",
+        "zh": "但是现在"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I wanted to go out, but it started raining.",
+        "zh": "我想出去，但是开始下雨了。"
+      },
+      {
+        "en": "She is small but very strong.",
+        "zh": "她个子小但很强壮。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-79",
+    "en": "little",
+    "zh": "小的",
+    "phonics": "/ˈlɪtl/",
+    "partOfSpeech": "adj",
+    "unit": "Unit 6",
+    "syllables": [
+      "lit",
+      "tle"
+    ],
+    "phrases": [
+      {
+        "en": "a little girl",
+        "zh": "一个小女孩"
+      },
+      {
+        "en": "little water",
+        "zh": "少量水"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The cat is little.",
+        "zh": "这只猫很小。"
+      },
+      {
+        "en": "She has a little dog.",
+        "zh": "她有一只小狗。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-80",
+    "en": "puppy",
+    "zh": "小狗",
+    "phonics": "/ˈpʌpi/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 6",
+    "syllables": [
+      "pup",
+      "py"
+    ],
+    "phrases": [
+      {
+        "en": "cute puppy",
+        "zh": "可爱的小狗"
+      },
+      {
+        "en": "play with a puppy",
+        "zh": "和小狗玩耍"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The puppy is playing with a ball.",
+        "zh": "这只小狗正在玩球。"
+      },
+      {
+        "en": "I love my cute puppy very much.",
+        "zh": "我非常爱我可爱的小狗。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-81",
+    "en": "football player",
+    "zh": "足球运动员",
+    "phonics": "/ˈfʊtbɔːl ˈpleɪə(r)/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 6",
+    "syllables": [
+      "foot",
+      "ball play",
+      "er"
+    ],
+    "phrases": [
+      {
+        "en": "professional football player",
+        "zh": "职业足球运动员"
+      },
+      {
+        "en": "talented football player",
+        "zh": "有天赋的足球运动员"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "A football player trains hard every day to improve skills.",
+        "zh": "一名足球运动员每天刻苦训练以提升技能。"
+      },
+      {
+        "en": "The football player scored a goal in the final minute of the game.",
+        "zh": "这位足球运动员在比赛最后一分钟进了一个球。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-82",
+    "en": "job",
+    "zh": "工作",
+    "phonics": "/dʒɒb/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 6",
+    "syllables": [
+      "job"
+    ],
+    "phrases": [
+      {
+        "en": "find a job",
+        "zh": "找工作"
+      },
+      {
+        "en": "job interview",
+        "zh": "工作面试"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "My father has a good job.",
+        "zh": "我爸爸有一份好工作。"
+      },
+      {
+        "en": "She wants to find a new job.",
+        "zh": "她想找一份新工作。"
+      }
+    ]
+  },
+  {
+    "id": "g4s1-83",
+    "en": "basketball",
+    "zh": "篮球",
+    "phonics": "/ˈbɑːskɪtbɔːl/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 6",
+    "syllables": [
+      "bas",
+      "ket",
+      "ball"
+    ],
+    "phrases": [
+      {
+        "en": "play basketball",
+        "zh": "打篮球"
+      },
+      {
+        "en": "basketball court",
+        "zh": "篮球场"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I like playing basketball with my friends.",
+        "zh": "我喜欢和我的朋友们一起打篮球。"
+      },
+      {
+        "en": "Basketball is a popular sport around the world.",
+        "zh": "篮球是一项在全世界流行的运动。"
+      }
+    ]
+  }
+]

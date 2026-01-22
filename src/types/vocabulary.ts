@@ -4,23 +4,79 @@
  */
 
 /**
+ * Phrase translation pair
+ */
+export interface Phrase {
+  /** English phrase */
+  en: string;
+  /** Chinese translation */
+  zh: string;
+}
+
+/**
+ * Sentence translation pair
+ */
+export interface Sentence {
+  /** English sentence */
+  en: string;
+  /** Chinese translation */
+  zh: string;
+}
+
+/**
  * Represents a single vocabulary item from the word bank
+ * Based on PEP textbook JSON structure
  */
 export interface VocabularyItem {
-  /** Unique identifier (e.g., "g5v2_001") */
+  /** Unique identifier (e.g., "g3s1-0") */
   id: string;
 
   /** English word */
+  en: string;
+
+  /** Chinese translation */
+  zh: string;
+
+  /** IPA phonetic notation (e.g., "/ˈruːlər/") */
+  phonics: string;
+
+  /** Part of speech (e.g., "noun", "verb", "adjective") */
+  partOfSpeech: string;
+
+  /** Unit identifier (e.g., "Unit 1") */
+  unit: string;
+
+  /** Syllable breakdown for pronunciation practice */
+  syllables: string[];
+
+  /** Common phrases using this word */
+  phrases: Phrase[];
+
+  /** Example sentences using this word */
+  sentences: Sentence[];
+
+  // Legacy compatibility properties (computed from new structure)
+  // These are automatically populated by the loader for backward compatibility
+  /** @deprecated Use 'en' instead */
   word: string;
 
-  /** IPA phonetic notation (e.g., "/ˈtel.ɪ.skoʊp/") */
+  /** @deprecated Use 'phonics' instead */
   phonetic: string;
 
-  /** Chinese translations (array to support multiple meanings) */
+  /** @deprecated Use 'zh' instead */
   chinese: string[];
 
-  /** Example sentence in English */
+  /** @deprecated Use 'sentences[0].en' instead */
   sentence: string;
+
+  /** @deprecated Use 'sentences[0].en' instead */
+  exampleSentence: string;
+
+  /** @deprecated Use 'sentences[0].zh' instead */
+  exampleChinese: string;
+
+  /** @deprecated Derived from ID (e.g., "g3s1-0" -> grade 3) */
+  gradeLevel: number;
 
   /**
    * Optional image URL

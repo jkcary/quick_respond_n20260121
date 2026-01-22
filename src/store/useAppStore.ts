@@ -11,7 +11,6 @@ import type {
   DiagnosisSession,
   Word,
   DiagnosisResult,
-  DEFAULT_CONFIG,
 } from '@/types';
 import { StorageKeys } from '@/types';
 
@@ -117,7 +116,7 @@ export const useAppStore = create<AppState>()(
           startTime: Date.now(),
           words,
           results: [],
-          gradeLevel: get().config.gradeLevel,
+          gradeLevel: get().config.gradeLevel ?? 5,
         };
         set({ currentSession: session });
       },

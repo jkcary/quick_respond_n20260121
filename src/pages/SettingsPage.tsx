@@ -1,180 +1,151 @@
 /**
- * Settings Page - Configuration Interface
- * Allows users to set grade level and API credentials
+ * Settings Page - Configuration interface
  */
 
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '@/store/useAppStore';
+import { Card, Button } from '@/components/common';
+import { GradeSelector, LLMConfigForm, APITester, type LLMFormData } from '@/components/config';
+import { toast } from '@/components/common';
+import type { LLMProvider } from '@/types';
 
-const SettingsPage = () => {
+const SettingsPage: React.FC = () => {
+  const navigate = useNavigate();
   const config = useAppStore((state) => state.config);
   const updateConfig = useAppStore((state) => state.updateConfig);
 
-  const [formData, setFormData] = useState(config);
-  const [saved, setSaved] = useState(false);
+  const [selectedGrade, setSelectedGrade] = useState(config.gradeLevel || 5);
+  const [autoPlayAudio, setAutoPlayAudio] = useState(config.autoPlayPronunciation ?? true);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    updateConfig(formData);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+  const handleGradeChange = (grade: number) => {
+    setSelectedGrade(grade);
+    updateConfig({ gradeLevel: grade });
+    toast.success(`Grade level updated to ${grade}`);
   };
 
-  const providers = [
-    { value: 'deepseek', label: 'DeepSeek', baseUrl: 'https://api.deepseek.com/v1' },
-    { value: 'openai', label: 'OpenAI', baseUrl: 'https://api.openai.com/v1' },
-    { value: 'custom', label: 'Custom Provider', baseUrl: '' },
-  ];
+  const handleLLMConfigSave = (data: LLMFormData) => {
+    updateConfig({
+      apiProvider: data.provider as any,
+      apiKey: data.apiKey,
+      apiBaseUrl: data.baseUrl,
+    });
+    toast.success('LLM configuration saved');
+  };
+
+  const handleAutoPlayToggle = () => {
+    const newValue = !autoPlayAudio;
+    setAutoPlayAudio(newValue);
+    updateConfig({ autoPlayPronunciation: newValue });
+    toast.success(`Auto-play ${newValue ? 'enabled' : 'disabled'}`);
+  };
+
+  const currentLLMConfig = {
+    provider: (config.apiProvider || 'deepseek') as LLMProvider,
+    apiKey: config.apiKey || '',
+    modelName: config.apiProvider === 'deepseek' ? 'deepseek-chat' : 'gpt-3.5-turbo',
+    enabled: true,
+    baseUrl: config.apiBaseUrl,
+  };
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <div className="card-cyber animate-slide-up">
-        <h2 className="text-3xl mb-4">Settings</h2>
-        <p className="text-cyber-secondary mb-6">
-          Configure your learning experience
-        </p>
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Grade Level */}
+    <div className="min-h-screen bg-slate-900 p-6">
+      <div className="max-w-4xl mx-auto space-y-6">
+        {/* Header */}
+        <div className="flex items-center justify-between">
           <div>
-            <label className="block text-cyber-primary font-medium mb-2">
-              Grade Level
-            </label>
-            <select
-              value={formData.gradeLevel}
-              onChange={(e) =>
-                setFormData({ ...formData, gradeLevel: Number(e.target.value) })
-              }
-              className="input-cyber"
-            >
-              {[3, 4, 5, 6, 7, 8, 9].map((grade) => (
-                <option key={grade} value={grade}>
-                  Grade {grade}
-                </option>
-              ))}
-            </select>
-            <p className="text-sm text-cyber-secondary mt-2">
-              Select your current grade to get appropriate vocabulary
-            </p>
+            <h1 className="text-3xl font-bold text-cyan-400 mb-2">Settings</h1>
+            <p className="text-slate-400">Configure your learning experience</p>
           </div>
-
-          {/* API Provider */}
-          <div>
-            <label className="block text-cyber-primary font-medium mb-2">
-              LLM Provider
-            </label>
-            <select
-              value={formData.apiProvider}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  apiProvider: e.target.value as any,
-                  apiBaseUrl:
-                    providers.find((p) => p.value === e.target.value)
-                      ?.baseUrl || '',
-                })
-              }
-              className="input-cyber"
-            >
-              {providers.map((provider) => (
-                <option key={provider.value} value={provider.value}>
-                  {provider.label}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* API Key */}
-          <div>
-            <label className="block text-cyber-primary font-medium mb-2">
-              API Key
-            </label>
-            <input
-              type="password"
-              value={formData.apiKey}
-              onChange={(e) =>
-                setFormData({ ...formData, apiKey: e.target.value })
-              }
-              placeholder="sk-..."
-              className="input-cyber"
-            />
-            <p className="text-sm text-cyber-secondary mt-2">
-              Your API key is stored locally and never shared
-            </p>
-          </div>
-
-          {/* Custom Base URL */}
-          {formData.apiProvider === 'custom' && (
-            <div>
-              <label className="block text-cyber-primary font-medium mb-2">
-                Custom Base URL
-              </label>
-              <input
-                type="url"
-                value={formData.apiBaseUrl || ''}
-                onChange={(e) =>
-                  setFormData({ ...formData, apiBaseUrl: e.target.value })
-                }
-                placeholder="https://api.example.com/v1"
-                className="input-cyber"
-              />
-            </div>
-          )}
-
-          {/* Voice Settings */}
-          <div className="space-y-3">
-            <label className="flex items-center gap-3 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={formData.voiceEnabled}
-                onChange={(e) =>
-                  setFormData({ ...formData, voiceEnabled: e.target.checked })
-                }
-                className="w-5 h-5 rounded bg-cyber-bg border-cyber-primary text-cyber-primary focus:ring-cyber-primary"
-              />
-              <span className="text-cyber-primary">Enable Voice Synthesis</span>
-            </label>
-
-            <label className="flex items-center gap-3 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={formData.autoPlayPronunciation}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    autoPlayPronunciation: e.target.checked,
-                  })
-                }
-                className="w-5 h-5 rounded bg-cyber-bg border-cyber-primary text-cyber-primary focus:ring-cyber-primary"
-              />
-              <span className="text-cyber-primary">
-                Auto-play Pronunciation
-              </span>
-            </label>
-          </div>
-
-          {/* Save Button */}
-          <div className="flex items-center gap-4">
-            <button type="submit" className="btn-cyber flex-1">
-              Save Configuration
-            </button>
-            {saved && (
-              <span className="text-cyber-primary animate-slide-up">✓ Saved!</span>
-            )}
-          </div>
-        </form>
-
-        {/* Info Box */}
-        <div className="mt-8 bg-cyber-bg rounded-lg p-4">
-          <h3 className="text-cyber-primary font-medium mb-2">
-            Recommended Providers
-          </h3>
-          <ul className="text-sm text-cyber-secondary space-y-1">
-            <li>• DeepSeek: Cost-effective, fast responses</li>
-            <li>• OpenAI: High accuracy, natural feedback</li>
-            <li>• Custom: Use your own compatible API endpoint</li>
-          </ul>
+          <Button variant="ghost" onClick={() => navigate('/')}>
+            ← Back to Home
+          </Button>
         </div>
+
+        {/* Grade Level */}
+        <Card>
+          <h2 className="text-xl font-semibold text-slate-200 mb-4">
+            Vocabulary Level
+          </h2>
+          <GradeSelector
+            value={selectedGrade as any}
+            onChange={handleGradeChange}
+          />
+        </Card>
+
+        {/* LLM Configuration */}
+        <Card>
+          <h2 className="text-xl font-semibold text-slate-200 mb-4">
+            LLM Provider
+          </h2>
+          <LLMConfigForm
+            initialData={{
+              provider: currentLLMConfig.provider,
+              apiKey: currentLLMConfig.apiKey,
+              model: currentLLMConfig.modelName,
+              baseUrl: currentLLMConfig.baseUrl,
+            }}
+            onSave={handleLLMConfigSave}
+          />
+        </Card>
+
+        {/* API Connection Test */}
+        <Card>
+          <APITester config={currentLLMConfig} />
+        </Card>
+
+        {/* Audio Settings */}
+        <Card>
+          <h2 className="text-xl font-semibold text-slate-200 mb-4">
+            Audio Settings
+          </h2>
+          <div className="space-y-4">
+            <label className="flex items-center justify-between cursor-pointer group">
+              <div className="flex-1">
+                <div className="text-slate-200 font-medium group-hover:text-cyan-400 transition">
+                  Auto-play Pronunciation
+                </div>
+                <div className="text-sm text-slate-400 mt-1">
+                  Automatically play word pronunciation when shown
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={handleAutoPlayToggle}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                  autoPlayAudio ? 'bg-cyan-500' : 'bg-slate-700'
+                }`}
+              >
+                <span
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                    autoPlayAudio ? 'translate-x-6' : 'translate-x-1'
+                  }`}
+                />
+              </button>
+            </label>
+          </div>
+        </Card>
+
+        {/* About */}
+        <Card>
+          <h2 className="text-xl font-semibold text-slate-200 mb-4">
+            About
+          </h2>
+          <div className="space-y-2 text-sm text-slate-400">
+            <p>
+              <strong className="text-slate-300">English AI Agent</strong> - Version 1.0.0
+            </p>
+            <p>
+              An intelligent vocabulary learning assistant powered by AI
+            </p>
+            <div className="pt-4 border-t border-slate-700 mt-4">
+              <p className="text-slate-500 text-xs">
+                Your data is stored locally and never sent to external servers.
+                API keys are used only for LLM judgment requests.
+              </p>
+            </div>
+          </div>
+        </Card>
       </div>
     </div>
   );

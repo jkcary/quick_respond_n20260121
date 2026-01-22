@@ -1,0 +1,1475 @@
+[
+  {
+    "id": "g3s1-0",
+    "en": "ruler",
+    "zh": "尺子",
+    "phonics": "/ˈruːlər/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 1",
+    "syllables": [
+      "ru",
+      "ler"
+    ],
+    "phrases": [
+      {
+        "en": "use a ruler",
+        "zh": "使用尺子"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I have a ruler.",
+        "zh": "我有一把尺子。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-1",
+    "en": "pencil",
+    "zh": "铅笔",
+    "phonics": "/ˈpensl/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 1",
+    "syllables": [
+      "pen",
+      "cil"
+    ],
+    "phrases": [
+      {
+        "en": "a pencil",
+        "zh": "一支铅笔"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "This is my pencil.",
+        "zh": "这是我的铅笔。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-2",
+    "en": "eraser",
+    "zh": "橡皮",
+    "phonics": "/ɪˈreɪzər/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 1",
+    "syllables": [
+      "e",
+      "ras",
+      "er"
+    ],
+    "phrases": [
+      {
+        "en": "an eraser",
+        "zh": "一块橡皮"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I need an eraser.",
+        "zh": "我需要一块橡皮。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-3",
+    "en": "crayon",
+    "zh": "蜡笔",
+    "phonics": "/ˈkreɪɑːn/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 1",
+    "syllables": [
+      "cray",
+      "on"
+    ],
+    "phrases": [
+      {
+        "en": "a crayon",
+        "zh": "一支蜡笔"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I have a red crayon.",
+        "zh": "我有一支红色蜡笔。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-4",
+    "en": "bag",
+    "zh": "包",
+    "phonics": "/bæɡ/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 1",
+    "syllables": [
+      "bag"
+    ],
+    "phrases": [
+      {
+        "en": "school bag",
+        "zh": "书包"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "My bag is blue.",
+        "zh": "我的书包是蓝色的。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-5",
+    "en": "pen",
+    "zh": "钢笔",
+    "phonics": "/pen/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 1",
+    "syllables": [
+      "pen"
+    ],
+    "phrases": [
+      {
+        "en": "a pen",
+        "zh": "一支钢笔"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I have a pen.",
+        "zh": "我有一支钢笔。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-6",
+    "en": "pencil box",
+    "zh": "铅笔盒",
+    "unit": "Unit 1"
+  },
+  {
+    "id": "g3s1-7",
+    "en": "book",
+    "zh": "书",
+    "phonics": "/bʊk/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 1",
+    "syllables": [
+      "book"
+    ],
+    "phrases": [
+      {
+        "en": "my book",
+        "zh": "我的书"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I have a book.",
+        "zh": "我有一本书。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-8",
+    "en": "no",
+    "zh": "不",
+    "phonics": "/nəʊ/",
+    "partOfSpeech": "adv",
+    "unit": "Unit 1",
+    "syllables": [
+      "no"
+    ],
+    "phrases": [
+      {
+        "en": "no problem",
+        "zh": "没问题"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "No, thank you.",
+        "zh": "不,谢谢。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-9",
+    "en": "your",
+    "zh": "你(们)的",
+    "phonics": "/jɔːr/",
+    "partOfSpeech": "pron",
+    "unit": "Unit 1",
+    "syllables": [
+      "your"
+    ],
+    "phrases": [
+      {
+        "en": "your book",
+        "zh": "你的书"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "Is this your pen?",
+        "zh": "这是你的钢笔吗?"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-10",
+    "en": "red",
+    "zh": "红色;红色的",
+    "phonics": "/red/",
+    "partOfSpeech": "adj&noun",
+    "unit": "Unit 2",
+    "syllables": [
+      "red"
+    ],
+    "phrases": [
+      {
+        "en": "red apple",
+        "zh": "红苹果"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I like red.",
+        "zh": "我喜欢红色。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-11",
+    "en": "green",
+    "zh": "绿色;绿色的",
+    "phonics": "/ɡriːn/",
+    "partOfSpeech": "adj&noun",
+    "unit": "Unit 2",
+    "syllables": [
+      "green"
+    ],
+    "phrases": [
+      {
+        "en": "green tree",
+        "zh": "绿树"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The tree is green.",
+        "zh": "树是绿色的。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-12",
+    "en": "yellow",
+    "zh": "黄色;黄色的",
+    "phonics": "/ˈjeləʊ/",
+    "partOfSpeech": "adj&noun",
+    "unit": "Unit 2",
+    "syllables": [
+      "yel",
+      "low"
+    ],
+    "phrases": [
+      {
+        "en": "yellow banana",
+        "zh": "黄香蕉"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I see yellow.",
+        "zh": "我看到黄色。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-13",
+    "en": "blue",
+    "zh": "蓝色;蓝色的",
+    "phonics": "/bluː/",
+    "partOfSpeech": "adj&noun",
+    "unit": "Unit 2",
+    "syllables": [
+      "blue"
+    ],
+    "phrases": [
+      {
+        "en": "blue sky",
+        "zh": "蓝天"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The sky is blue.",
+        "zh": "天空是蓝色的。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-14",
+    "en": "black",
+    "zh": "黑色;黑色的",
+    "phonics": "/blæk/",
+    "partOfSpeech": "adj&noun",
+    "unit": "Unit 2",
+    "syllables": [
+      "black"
+    ],
+    "phrases": [
+      {
+        "en": "black cat",
+        "zh": "黑猫"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I have a black pen.",
+        "zh": "我有一支黑色钢笔。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-15",
+    "en": "brown",
+    "zh": "棕色;棕色的",
+    "phonics": "/braʊn/",
+    "partOfSpeech": "adj&noun",
+    "unit": "Unit 2",
+    "syllables": [
+      "brown"
+    ],
+    "phrases": [
+      {
+        "en": "brown bear",
+        "zh": "棕熊"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The bear is brown.",
+        "zh": "熊是棕色的。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-16",
+    "en": "white",
+    "zh": "白色;白色的",
+    "phonics": "/waɪt/",
+    "partOfSpeech": "adj&noun",
+    "unit": "Unit 2",
+    "syllables": [
+      "white"
+    ],
+    "phrases": [
+      {
+        "en": "white cloud",
+        "zh": "白云"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I like white.",
+        "zh": "我喜欢白色。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-17",
+    "en": "orange",
+    "zh": "橙色;橙色的",
+    "phonics": "/ˈɒrɪndʒ/",
+    "partOfSpeech": "adj&noun",
+    "unit": "Unit 2",
+    "syllables": [
+      "or",
+      "ange"
+    ],
+    "phrases": [
+      {
+        "en": "orange juice",
+        "zh": "橙汁"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I see orange.",
+        "zh": "我看到橙色。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-18",
+    "en": "OK",
+    "zh": "好;行",
+    "phonics": "/ˌəʊ ˈkeɪ/",
+    "partOfSpeech": "adj&adv",
+    "unit": "Unit 2",
+    "syllables": [
+      "O",
+      "K"
+    ],
+    "phrases": [
+      {
+        "en": "OK, great",
+        "zh": "好的,很好"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "OK, I will.",
+        "zh": "好的,我会的。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-19",
+    "en": "mum",
+    "zh": "妈妈",
+    "phonics": "/mʌm/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 2",
+    "syllables": [
+      "mum"
+    ],
+    "phrases": [
+      {
+        "en": "my mum",
+        "zh": "我的妈妈"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I love my mum.",
+        "zh": "我爱我的妈妈。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-20",
+    "en": "face",
+    "zh": "脸",
+    "phonics": "/feɪs/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 3",
+    "syllables": [
+      "face"
+    ],
+    "phrases": [
+      {
+        "en": "my face",
+        "zh": "我的脸"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I wash my face.",
+        "zh": "我洗脸。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-21",
+    "en": "ear",
+    "zh": "耳朵",
+    "phonics": "/ɪər/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 3",
+    "syllables": [
+      "ear"
+    ],
+    "phrases": [
+      {
+        "en": "my ear",
+        "zh": "我的耳朵"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I have two ears.",
+        "zh": "我有两只耳朵。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-22",
+    "en": "eye",
+    "zh": "眼睛",
+    "phonics": "/aɪ/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 3",
+    "syllables": [
+      "eye"
+    ],
+    "phrases": [
+      {
+        "en": "my eye",
+        "zh": "我的眼睛"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I have two eyes.",
+        "zh": "我有两只眼睛。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-23",
+    "en": "nose",
+    "zh": "鼻子",
+    "phonics": "/nəʊz/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 3",
+    "syllables": [
+      "nose"
+    ],
+    "phrases": [
+      {
+        "en": "my nose",
+        "zh": "我的鼻子"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "Touch your nose.",
+        "zh": "摸你的鼻子。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-24",
+    "en": "mouth",
+    "zh": "嘴",
+    "phonics": "/maʊθ/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 3",
+    "syllables": [
+      "mouth"
+    ],
+    "phrases": [
+      {
+        "en": "my mouth",
+        "zh": "我的嘴"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "Open your mouth.",
+        "zh": "张开你的嘴。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-25",
+    "en": "arm",
+    "zh": "胳膊",
+    "phonics": "/ɑːrm/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 3",
+    "syllables": [
+      "arm"
+    ],
+    "phrases": [
+      {
+        "en": "my arm",
+        "zh": "我的胳膊"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "Wave your arms.",
+        "zh": "挥动你的胳膊。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-26",
+    "en": "hand",
+    "zh": "手",
+    "phonics": "/hænd/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 3",
+    "syllables": [
+      "hand"
+    ],
+    "phrases": [
+      {
+        "en": "my hand",
+        "zh": "我的手"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "Clap your hands.",
+        "zh": "拍拍你的手。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-27",
+    "en": "head",
+    "zh": "头",
+    "phonics": "/hed/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 3",
+    "syllables": [
+      "head"
+    ],
+    "phrases": [
+      {
+        "en": "my head",
+        "zh": "我的头"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "Shake your head.",
+        "zh": "摇摇你的头。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-28",
+    "en": "body",
+    "zh": "身体",
+    "phonics": "/ˈbɑːdi/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 3",
+    "syllables": [
+      "bod",
+      "y"
+    ],
+    "phrases": [
+      {
+        "en": "my body",
+        "zh": "我的身体"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "This is my body.",
+        "zh": "这是我的身体。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-29",
+    "en": "leg",
+    "zh": "腿",
+    "phonics": "/leɡ/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 3",
+    "syllables": [
+      "leg"
+    ],
+    "phrases": [
+      {
+        "en": "my leg",
+        "zh": "我的腿"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "Shake your legs.",
+        "zh": "摇摇你的腿。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-30",
+    "en": "foot",
+    "zh": "脚",
+    "phonics": "/fʊt/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 3",
+    "syllables": [
+      "foot"
+    ],
+    "phrases": [
+      {
+        "en": "my foot",
+        "zh": "我的脚"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "Stamp your foot.",
+        "zh": "跺跺你的脚。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-31",
+    "en": "school",
+    "zh": "学校",
+    "phonics": "/skuːl/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 3",
+    "syllables": [
+      "school"
+    ],
+    "phrases": [
+      {
+        "en": "go to school",
+        "zh": "去上学"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I go to school.",
+        "zh": "我去上学。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-32",
+    "en": "duck",
+    "zh": "鸭子",
+    "phonics": "/dʌk/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 4",
+    "syllables": [
+      "duck"
+    ],
+    "phrases": [
+      {
+        "en": "a duck",
+        "zh": "一只鸭子"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I see a duck.",
+        "zh": "我看到一只鸭子。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-33",
+    "en": "pig",
+    "zh": "猪",
+    "phonics": "/pɪɡ/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 4",
+    "syllables": [
+      "pig"
+    ],
+    "phrases": [
+      {
+        "en": "a pig",
+        "zh": "一头猪"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The pig is fat.",
+        "zh": "这头猪很胖。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-34",
+    "en": "cat",
+    "zh": "猫",
+    "phonics": "/kæt/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 4",
+    "syllables": [
+      "cat"
+    ],
+    "phrases": [
+      {
+        "en": "a cat",
+        "zh": "一只猫"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I have a cat.",
+        "zh": "我有一只猫。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-35",
+    "en": "bear",
+    "zh": "熊",
+    "phonics": "/beər/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 4",
+    "syllables": [
+      "bear"
+    ],
+    "phrases": [
+      {
+        "en": "a bear",
+        "zh": "一只熊"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The bear is big.",
+        "zh": "熊很大。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-36",
+    "en": "dog",
+    "zh": "狗",
+    "phonics": "/dɔːɡ/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 4",
+    "syllables": [
+      "dog"
+    ],
+    "phrases": [
+      {
+        "en": "a dog",
+        "zh": "一只狗"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I like dogs.",
+        "zh": "我喜欢狗。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-37",
+    "en": "elephant",
+    "zh": "大象",
+    "phonics": "/ˈelɪfənt/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 4",
+    "syllables": [
+      "el",
+      "e",
+      "phant"
+    ],
+    "phrases": [
+      {
+        "en": "big elephant",
+        "zh": "大象"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The elephant is big.",
+        "zh": "大象很大。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-38",
+    "en": "monkey",
+    "zh": "猴子",
+    "phonics": "/ˈmʌŋki/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 4",
+    "syllables": [
+      "mon",
+      "key"
+    ],
+    "phrases": [
+      {
+        "en": "a monkey",
+        "zh": "一只猴子"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The monkey is funny.",
+        "zh": "猴子很有趣。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-39",
+    "en": "bird",
+    "zh": "鸟",
+    "phonics": "/bɜːrd/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 4",
+    "syllables": [
+      "bird"
+    ],
+    "phrases": [
+      {
+        "en": "a bird",
+        "zh": "一只鸟"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I see a bird.",
+        "zh": "我看到一只鸟。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-40",
+    "en": "tiger",
+    "zh": "老虎",
+    "phonics": "/ˈtaɪɡər/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 4",
+    "syllables": [
+      "ti",
+      "ger"
+    ],
+    "phrases": [
+      {
+        "en": "a tiger",
+        "zh": "一只老虎"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The tiger is big.",
+        "zh": "老虎很大。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-41",
+    "en": "panda",
+    "zh": "大熊猫",
+    "phonics": "/ˈpændə/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 4",
+    "syllables": [
+      "pan",
+      "da"
+    ],
+    "phrases": [
+      {
+        "en": "cute panda",
+        "zh": "可爱的熊猫"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I like pandas.",
+        "zh": "我喜欢熊猫。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-42",
+    "en": "zoo",
+    "zh": "动物园",
+    "phonics": "/zuː/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 4",
+    "syllables": [
+      "zoo"
+    ],
+    "phrases": [
+      {
+        "en": "go to the zoo",
+        "zh": "去动物园"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "Let's go to the zoo.",
+        "zh": "我们去动物园吧。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-43",
+    "en": "funny",
+    "zh": "滑稽的;好笑的",
+    "phonics": "/ˈfʌni/",
+    "partOfSpeech": "adj",
+    "unit": "Unit 4",
+    "syllables": [
+      "fun",
+      "ny"
+    ],
+    "phrases": [
+      {
+        "en": "very funny",
+        "zh": "非常有趣"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "It is funny.",
+        "zh": "它很有趣。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-44",
+    "en": "bread",
+    "zh": "面包",
+    "phonics": "/bred/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 5",
+    "syllables": [
+      "bread"
+    ],
+    "phrases": [
+      {
+        "en": "some bread",
+        "zh": "一些面包"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I like bread.",
+        "zh": "我喜欢面包。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-45",
+    "en": "juice",
+    "zh": "果汁",
+    "phonics": "/dʒuːs/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 5",
+    "syllables": [
+      "juice"
+    ],
+    "phrases": [
+      {
+        "en": "orange juice",
+        "zh": "橙汁"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I want some juice.",
+        "zh": "我想要一些果汁。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-46",
+    "en": "egg",
+    "zh": "蛋",
+    "phonics": "/eɡ/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 5",
+    "syllables": [
+      "egg"
+    ],
+    "phrases": [
+      {
+        "en": "an egg",
+        "zh": "一个蛋"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I have an egg.",
+        "zh": "我有一个蛋。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-47",
+    "en": "milk",
+    "zh": "牛奶",
+    "phonics": "/mɪlk/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 5",
+    "syllables": [
+      "milk"
+    ],
+    "phrases": [
+      {
+        "en": "drink milk",
+        "zh": "喝牛奶"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I like milk.",
+        "zh": "我喜欢牛奶。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-48",
+    "en": "water",
+    "zh": "水",
+    "phonics": "/ˈwɔːtər/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 5",
+    "syllables": [
+      "wa",
+      "ter"
+    ],
+    "phrases": [
+      {
+        "en": "drink water",
+        "zh": "喝水"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I want some water.",
+        "zh": "我想要一些水。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-49",
+    "en": "cake",
+    "zh": "蛋糕",
+    "phonics": "/keɪk/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 5",
+    "syllables": [
+      "cake"
+    ],
+    "phrases": [
+      {
+        "en": "a cake",
+        "zh": "一个蛋糕"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I like cake.",
+        "zh": "我喜欢蛋糕。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-50",
+    "en": "fish",
+    "zh": "鱼肉;鱼",
+    "phonics": "/fɪʃ/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 5",
+    "syllables": [
+      "fish"
+    ],
+    "phrases": [
+      {
+        "en": "eat fish",
+        "zh": "吃鱼"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I like fish.",
+        "zh": "我喜欢鱼。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-51",
+    "en": "rice",
+    "zh": "米饭",
+    "phonics": "/raɪs/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 5",
+    "syllables": [
+      "rice"
+    ],
+    "phrases": [
+      {
+        "en": "eat rice",
+        "zh": "吃米饭"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I have some rice.",
+        "zh": "我有一些米饭。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-52",
+    "en": "one",
+    "zh": "一",
+    "phonics": "/wʌn/",
+    "partOfSpeech": "num",
+    "unit": "Unit 6",
+    "syllables": [
+      "one"
+    ],
+    "phrases": [
+      {
+        "en": "one apple",
+        "zh": "一个苹果"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I have one pen.",
+        "zh": "我有一支钢笔。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-53",
+    "en": "two",
+    "zh": "二",
+    "phonics": "/tuː/",
+    "partOfSpeech": "num",
+    "unit": "Unit 6",
+    "syllables": [
+      "two"
+    ],
+    "phrases": [
+      {
+        "en": "two books",
+        "zh": "两本书"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I see two cats.",
+        "zh": "我看到两只猫。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-54",
+    "en": "three",
+    "zh": "三",
+    "phonics": "/θriː/",
+    "partOfSpeech": "num",
+    "unit": "Unit 6",
+    "syllables": [
+      "three"
+    ],
+    "phrases": [
+      {
+        "en": "three pens",
+        "zh": "三支钢笔"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I have three crayons.",
+        "zh": "我有三支蜡笔。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-55",
+    "en": "four",
+    "zh": "四",
+    "phonics": "/fɔːr/",
+    "partOfSpeech": "num",
+    "unit": "Unit 6",
+    "syllables": [
+      "four"
+    ],
+    "phrases": [
+      {
+        "en": "four birds",
+        "zh": "四只鸟"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I see four ducks.",
+        "zh": "我看到四只鸭子。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-56",
+    "en": "five",
+    "zh": "五",
+    "phonics": "/faɪv/",
+    "partOfSpeech": "num",
+    "unit": "Unit 6",
+    "syllables": [
+      "five"
+    ],
+    "phrases": [
+      {
+        "en": "five eggs",
+        "zh": "五个蛋"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I have five pencils.",
+        "zh": "我有五支铅笔。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-57",
+    "en": "six",
+    "zh": "六",
+    "phonics": "/sɪks/",
+    "partOfSpeech": "num",
+    "unit": "Unit 6",
+    "syllables": [
+      "six"
+    ],
+    "phrases": [
+      {
+        "en": "six books",
+        "zh": "六本书"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I see six plates.",
+        "zh": "我看到六个盘子。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-58",
+    "en": "seven",
+    "zh": "七",
+    "phonics": "/ˈsevn/",
+    "partOfSpeech": "num",
+    "unit": "Unit 6",
+    "syllables": [
+      "sev",
+      "en"
+    ],
+    "phrases": [
+      {
+        "en": "seven days",
+        "zh": "七天"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I have seven crayons.",
+        "zh": "我有七支蜡笔。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-59",
+    "en": "eight",
+    "zh": "八",
+    "phonics": "/eɪt/",
+    "partOfSpeech": "num",
+    "unit": "Unit 6",
+    "syllables": [
+      "eight"
+    ],
+    "phrases": [
+      {
+        "en": "eight pens",
+        "zh": "八支钢笔"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I see eight birds.",
+        "zh": "我看到八只鸟。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-60",
+    "en": "nine",
+    "zh": "九",
+    "phonics": "/naɪn/",
+    "partOfSpeech": "num",
+    "unit": "Unit 6",
+    "syllables": [
+      "nine"
+    ],
+    "phrases": [
+      {
+        "en": "nine cats",
+        "zh": "九只猫"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I have nine books.",
+        "zh": "我有九本书。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-61",
+    "en": "ten",
+    "zh": "十",
+    "phonics": "/ten/",
+    "partOfSpeech": "num",
+    "unit": "Unit 6",
+    "syllables": [
+      "ten"
+    ],
+    "phrases": [
+      {
+        "en": "ten apples",
+        "zh": "十个苹果"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I see ten ducks.",
+        "zh": "我看到十只鸭子。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-62",
+    "en": "brother",
+    "zh": "兄;弟",
+    "phonics": "/ˈbrʌðər/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 6",
+    "syllables": [
+      "broth",
+      "er"
+    ],
+    "phrases": [
+      {
+        "en": "my brother",
+        "zh": "我的哥哥/弟弟"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "He is my brother.",
+        "zh": "他是我的哥哥。"
+      }
+    ]
+  },
+  {
+    "id": "g3s1-63",
+    "en": "plate",
+    "zh": "盘子",
+    "phonics": "/pleɪt/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 6",
+    "syllables": [
+      "plate"
+    ],
+    "phrases": [
+      {
+        "en": "a plate",
+        "zh": "一个盘子"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I have a plate.",
+        "zh": "我有一个盘子。"
+      }
+    ]
+  }
+]

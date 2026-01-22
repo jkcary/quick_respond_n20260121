@@ -10,23 +10,42 @@ import { LLMConfig, LLMProvider } from './llm';
  */
 export interface AppConfig {
   /** Currently selected grade level */
-  currentGrade: GradeLevel;
+  currentGrade?: GradeLevel;
 
   /**
    * LLM provider configurations
    * Key: provider name
    * Value: provider config
    */
-  llmConfigs: Record<LLMProvider, LLMConfig>;
+  llmConfigs?: Record<LLMProvider, LLMConfig>;
 
   /** Currently active LLM provider */
-  activeLLMProvider: LLMProvider;
+  activeLLMProvider?: LLMProvider;
 
   /** UI preferences */
-  preferences: UserPreferences;
+  preferences?: UserPreferences;
 
   /** Feature flags */
-  features: FeatureFlags;
+  features?: FeatureFlags;
+
+  // ==================== Legacy Fields (Backward Compatibility) ====================
+  /** @deprecated Use currentGrade instead */
+  gradeLevel?: number;
+
+  /** @deprecated Use activeLLMProvider instead */
+  apiProvider?: 'deepseek' | 'openai' | 'custom';
+
+  /** @deprecated Configure via llmConfigs instead */
+  apiKey?: string;
+
+  /** @deprecated Configure via llmConfigs instead */
+  apiBaseUrl?: string;
+
+  /** @deprecated Use preferences.autoPlayTTS instead */
+  voiceEnabled?: boolean;
+
+  /** @deprecated Use preferences.autoPlayTTS instead */
+  autoPlayPronunciation?: boolean;
 }
 
 /**

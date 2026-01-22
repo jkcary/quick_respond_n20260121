@@ -3,7 +3,10 @@
     "allow": [
       "Bash(npm create:*)",
       "Bash(dir:*)",
-      "Bash(findstr:*)"
+      "Bash(findstr:*)",
+      "Bash(npm run build:*)",
+      "Bash(find:*)",
+      "Bash(curl:*)"
     ]
   }
 }

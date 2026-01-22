@@ -1,0 +1,2708 @@
+[
+  {
+    "id": "g6s2-0",
+    "en": "younger",
+    "zh": "（young的比较级）更年轻的",
+    "phonics": "/ˈjʌŋɡə(r)/",
+    "partOfSpeech": "adj",
+    "unit": "Unit 1",
+    "syllables": [
+      "young",
+      "er"
+    ],
+    "phrases": [
+      {
+        "en": "younger sister",
+        "zh": "妹妹"
+      },
+      {
+        "en": "younger brother",
+        "zh": "弟弟"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "My younger sister is five years old.",
+        "zh": "我的妹妹五岁了。"
+      },
+      {
+        "en": "He is younger than his brother.",
+        "zh": "他比他哥哥年轻。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-1",
+    "en": "older",
+    "zh": "（old的比较级）更年长的",
+    "phonics": "/ˈəʊldə(r)/",
+    "partOfSpeech": "adj",
+    "unit": "Unit 1",
+    "syllables": [
+      "ol",
+      "der"
+    ],
+    "phrases": [
+      {
+        "en": "older brother",
+        "zh": "哥哥"
+      },
+      {
+        "en": "older sister",
+        "zh": "姐姐"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "My older brother is tall.",
+        "zh": "我的哥哥很高。"
+      },
+      {
+        "en": "She looks older than her age.",
+        "zh": "她看起来比实际年龄大。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-2",
+    "en": "taller",
+    "zh": "（tall的比较级）更高的",
+    "phonics": "/ˈtɔːlə(r)/",
+    "partOfSpeech": "adj",
+    "unit": "Unit 1",
+    "syllables": [
+      "tal",
+      "ler"
+    ],
+    "phrases": [
+      {
+        "en": "taller than",
+        "zh": "比……高"
+      },
+      {
+        "en": "much taller",
+        "zh": "高得多"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "Tom is taller than his brother.",
+        "zh": "汤姆比他弟弟高。"
+      },
+      {
+        "en": "The giraffe is taller than the elephant.",
+        "zh": "长颈鹿比大象高。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-3",
+    "en": "shorter",
+    "zh": "（short的比较级）更矮的；更短的",
+    "phonics": "/ˈʃɔːtə(r)/",
+    "partOfSpeech": "adj",
+    "unit": "Unit 1",
+    "syllables": [
+      "short",
+      "er"
+    ],
+    "phrases": [
+      {
+        "en": "a shorter path",
+        "zh": "一条更短的路径"
+      },
+      {
+        "en": "shorter than before",
+        "zh": "比以前更短"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "A shorter path is easier to walk.",
+        "zh": "一条更短的路更容易走。"
+      },
+      {
+        "en": "My hair is shorter than yours.",
+        "zh": "我的头发比你的短。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-4",
+    "en": "longer",
+    "zh": "（long的比较级）更长的",
+    "phonics": "/ˈlɒŋɡə(r)/",
+    "partOfSpeech": "adj",
+    "unit": "Unit 1",
+    "syllables": [
+      "lon",
+      "ger"
+    ],
+    "phrases": [
+      {
+        "en": "a longer time",
+        "zh": "更长的时间"
+      },
+      {
+        "en": "longer than before",
+        "zh": "比以前更长"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "This pencil is longer than that one.",
+        "zh": "这支铅笔比那支长。"
+      },
+      {
+        "en": "She has longer hair than her sister.",
+        "zh": "她的头发比她姐姐/妹妹的长。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-5",
+    "en": "thinner",
+    "zh": "（thin的比较级）更瘦的",
+    "phonics": "/ˈθɪnə(r)/",
+    "partOfSpeech": "adj",
+    "unit": "Unit 1",
+    "syllables": [
+      "thin",
+      "ner"
+    ],
+    "phrases": [
+      {
+        "en": "apply thinner",
+        "zh": "使用稀释剂"
+      },
+      {
+        "en": "thinner layer",
+        "zh": "更薄的层"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The ice cream cone is thinner than the cup.",
+        "zh": "蛋筒冰淇淋比杯子更细。"
+      },
+      {
+        "en": "She used a thinner brush to paint the details.",
+        "zh": "她用更细的画笔来画细节。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-6",
+    "en": "heavier",
+    "zh": "（heavy的比较级）更重的",
+    "phonics": "/ˈheviə(r)/",
+    "partOfSpeech": "adj",
+    "unit": "Unit 1",
+    "syllables": [
+      "heav",
+      "ier"
+    ],
+    "phrases": [
+      {
+        "en": "heavier weight",
+        "zh": "更重的重量"
+      },
+      {
+        "en": "heavier than",
+        "zh": "比……更重"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-7",
+    "en": "bigger",
+    "zh": "（big的比较级）更大的",
+    "phonics": "/ˈbɪɡə(r)/",
+    "partOfSpeech": "adj",
+    "unit": "Unit 1",
+    "syllables": [
+      "big",
+      "ger"
+    ],
+    "phrases": [
+      {
+        "en": "a bigger house",
+        "zh": "一个更大的房子"
+      },
+      {
+        "en": "become bigger",
+        "zh": "变得更大"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "A basketball is bigger than a tennis ball.",
+        "zh": "篮球比网球大。"
+      },
+      {
+        "en": "My new house is bigger than the old one.",
+        "zh": "我的新房子比旧房子大。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-8",
+    "en": "smaller",
+    "zh": "（small的比较级）更小的",
+    "phonics": "/ˈsmɔːlə(r)/",
+    "partOfSpeech": "adj",
+    "unit": "Unit 1",
+    "syllables": [
+      "smal",
+      "ler"
+    ],
+    "phrases": [
+      {
+        "en": "a smaller size",
+        "zh": "更小的尺寸"
+      },
+      {
+        "en": "smaller than before",
+        "zh": "比以前更小"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "This apple is smaller than that one.",
+        "zh": "这个苹果比那个小。"
+      },
+      {
+        "en": "She chose the smaller book from the shelf.",
+        "zh": "她从书架上选了更小的那本书。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-9",
+    "en": "stronger",
+    "zh": "（strong的比较级）更强壮的",
+    "phonics": "/ˈstrɒŋɡə(r)/",
+    "partOfSpeech": "adj",
+    "unit": "Unit 1",
+    "syllables": [
+      "strong",
+      "er"
+    ],
+    "phrases": [
+      {
+        "en": "stronger than before",
+        "zh": "比以前更强"
+      },
+      {
+        "en": "get stronger",
+        "zh": "变得更强"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "Exercise makes you stronger.",
+        "zh": "锻炼使你更强壮。"
+      },
+      {
+        "en": "A stronger body can do more work.",
+        "zh": "更强壮的身体能做更多工作。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-10",
+    "en": "dinosaur",
+    "zh": "恐龙",
+    "phonics": "/ˈdaɪnəsɔː(r)/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 1",
+    "syllables": [
+      "di",
+      "no",
+      "saur"
+    ],
+    "phrases": [
+      {
+        "en": "dinosaur fossil",
+        "zh": "恐龙化石"
+      },
+      {
+        "en": "dinosaur park",
+        "zh": "恐龙公园"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "Dinosaurs lived millions of years ago.",
+        "zh": "恐龙生活在数百万年前。"
+      },
+      {
+        "en": "Some dinosaurs were very large, like the T-Rex.",
+        "zh": "有些恐龙非常大，比如霸王龙。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-11",
+    "en": "hall",
+    "zh": "大厅",
+    "phonics": "/hɔːl/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 1",
+    "syllables": [
+      "hall"
+    ],
+    "phrases": [
+      {
+        "en": "conference hall",
+        "zh": "会议厅"
+      },
+      {
+        "en": "entrance hall",
+        "zh": "门厅"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "We can have a party in the hall.",
+        "zh": "我们可以在大厅举办派对。"
+      },
+      {
+        "en": "The hall is big and bright.",
+        "zh": "这个大厅又大又明亮。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-12",
+    "en": "metre",
+    "zh": "米（美式英语：meter）",
+    "phonics": "/ˈmiːtə(r)/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 1",
+    "syllables": [
+      "me",
+      "tre"
+    ],
+    "phrases": [
+      {
+        "en": "one metre",
+        "zh": "一米"
+      },
+      {
+        "en": "metre stick",
+        "zh": "米尺"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The room is five metres long.",
+        "zh": "这个房间有五米长。"
+      },
+      {
+        "en": "He walked 100 metres this morning.",
+        "zh": "他今天早上走了100米。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-13",
+    "en": "than",
+    "zh": "比",
+    "phonics": "/ðæn/",
+    "partOfSpeech": "prep",
+    "unit": "Unit 1",
+    "syllables": [
+      "than"
+    ],
+    "phrases": [
+      {
+        "en": "more than",
+        "zh": "多于"
+      },
+      {
+        "en": "less than",
+        "zh": "少于"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "She is taller than her brother.",
+        "zh": "她比她哥哥高。"
+      },
+      {
+        "en": "This book is more interesting than that one.",
+        "zh": "这本书比那本更有趣。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-14",
+    "en": "both",
+    "zh": "两个都",
+    "phonics": "/bəʊθ/",
+    "partOfSpeech": "det",
+    "unit": "Unit 1",
+    "syllables": [
+      "both"
+    ],
+    "phrases": [
+      {
+        "en": "both",
+        "zh": "两者都"
+      },
+      {
+        "en": "both",
+        "zh": "两者都"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "Both of my parents are teachers.",
+        "zh": "我的父母都是老师。"
+      },
+      {
+        "en": "She likes both swimming and running.",
+        "zh": "她既喜欢游泳也喜欢跑步。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-15",
+    "en": "kilogram",
+    "zh": "千克；公斤",
+    "phonics": "/ˈkɪləɡræm/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 1",
+    "syllables": [
+      "kilo",
+      "gram"
+    ],
+    "phrases": [
+      {
+        "en": "a kilogram of apples",
+        "zh": "一千克苹果"
+      },
+      {
+        "en": "weigh in kilograms",
+        "zh": "以千克为单位称重"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "A kilogram is a unit of mass equal to 1000 grams.",
+        "zh": "一千克是等于1000克的质量单位。"
+      },
+      {
+        "en": "My backpack weighs about two kilograms.",
+        "zh": "我的背包重约两千克。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-16",
+    "en": "countryside",
+    "zh": "乡村",
+    "phonics": "/ˈkʌntrisaɪd/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 1",
+    "syllables": [
+      "coun",
+      "try",
+      "side"
+    ],
+    "phrases": [
+      {
+        "en": "quiet countryside",
+        "zh": "宁静的乡村"
+      },
+      {
+        "en": "beautiful countryside",
+        "zh": "美丽的乡村"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The countryside is full of green fields and fresh air.",
+        "zh": "乡村到处是绿色的田野和新鲜的空气。"
+      },
+      {
+        "en": "Many people like to visit the countryside to relax.",
+        "zh": "许多人喜欢去乡村放松。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-17",
+    "en": "lower",
+    "zh": "（low的比较级）更低地",
+    "phonics": "/ˈləʊə(r)/",
+    "partOfSpeech": "adj",
+    "unit": "Unit 1",
+    "syllables": [
+      "low",
+      "er"
+    ],
+    "phrases": [
+      {
+        "en": "lower the volume",
+        "zh": "降低音量"
+      },
+      {
+        "en": "lower the temperature",
+        "zh": "降低温度"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "Please write the word in lower case.",
+        "zh": "请用小写字母写这个单词。"
+      },
+      {
+        "en": "Lower case letters are smaller than upper case ones.",
+        "zh": "小写字母比大写字母小。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-18",
+    "en": "shadow",
+    "zh": "阴影；影子",
+    "phonics": "/ˈʃædəʊ/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 1",
+    "syllables": [
+      "sha",
+      "dow"
+    ],
+    "phrases": [
+      {
+        "en": "in the shadow",
+        "zh": "在阴影里"
+      },
+      {
+        "en": "cast a shadow",
+        "zh": "投下阴影"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The shadow grows longer in the afternoon.",
+        "zh": "影子在下午变得更长。"
+      },
+      {
+        "en": "A tree's shadow moves with the sun.",
+        "zh": "树的影子随着太阳移动。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-19",
+    "en": "smarter",
+    "zh": "（smart的比较级）更聪明的",
+    "phonics": "/ˈsmɑːtə(r)/",
+    "partOfSpeech": "adj",
+    "unit": "Unit 1",
+    "syllables": [
+      "smart",
+      "er"
+    ],
+    "phrases": [
+      {
+        "en": "smarter decisions",
+        "zh": "更明智的决策"
+      },
+      {
+        "en": "get smarter",
+        "zh": "变得更聪明"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-20",
+    "en": "become",
+    "zh": "开始变得；变成",
+    "phonics": "/bɪˈkʌm/",
+    "partOfSpeech": "verb",
+    "unit": "Unit 1",
+    "syllables": [
+      "be",
+      "come"
+    ],
+    "phrases": [
+      {
+        "en": "become a teacher",
+        "zh": "成为一名教师"
+      },
+      {
+        "en": "become stronger",
+        "zh": "变得更强壮"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I want to become a teacher when I grow up.",
+        "zh": "我长大后想成为一名老师。"
+      },
+      {
+        "en": "Water can become ice when it is cold.",
+        "zh": "天冷的时候水会变成冰。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-21",
+    "en": "cleaned",
+    "zh": "（clean的过去式）打扫",
+    "phonics": "/kliːnd/",
+    "partOfSpeech": "verb",
+    "unit": "Unit 2",
+    "syllables": [
+      "cleaned"
+    ],
+    "phrases": [
+      {
+        "en": "clean the room",
+        "zh": "打扫房间"
+      },
+      {
+        "en": "clean the desk",
+        "zh": "清理书桌"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The room is clean after we cleaned it.",
+        "zh": "我们打扫后，房间很干净。"
+      },
+      {
+        "en": "She cleaned her desk before starting homework.",
+        "zh": "她在开始做作业前打扫了书桌。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-22",
+    "en": "stayed",
+    "zh": "（stay的过去式）停留；待",
+    "phonics": "/steɪd/",
+    "partOfSpeech": "verb",
+    "unit": "Unit 2",
+    "syllables": [
+      "stayed"
+    ],
+    "phrases": [
+      {
+        "en": "stayed at home",
+        "zh": "待在家里"
+      },
+      {
+        "en": "stayed up late",
+        "zh": "熬夜"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "She stayed at home yesterday.",
+        "zh": "她昨天待在家里。"
+      },
+      {
+        "en": "We stayed in a small hotel during the trip.",
+        "zh": "我们旅行期间住在一家小旅馆里。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-23",
+    "en": "washed",
+    "zh": "（wash的过去式）洗",
+    "phonics": "/wɒʃt/",
+    "partOfSpeech": "verb",
+    "unit": "Unit 2",
+    "syllables": [
+      "washed"
+    ],
+    "phrases": [
+      {
+        "en": "washed clothes",
+        "zh": "洗过的衣服"
+      },
+      {
+        "en": "washed dishes",
+        "zh": "洗过的盘子"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "She washed her hands before eating.",
+        "zh": "她吃饭前洗了手。"
+      },
+      {
+        "en": "My mother washed the clothes yesterday.",
+        "zh": "我妈妈昨天洗了衣服。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-24",
+    "en": "watched",
+    "zh": "（watch的过去式）看",
+    "phonics": "/wɒtʃt/",
+    "partOfSpeech": "verb",
+    "unit": "Unit 2",
+    "syllables": [
+      "watched"
+    ],
+    "phrases": [
+      {
+        "en": "have watched a movie",
+        "zh": "看过一部电影"
+      },
+      {
+        "en": "watched the game yesterday",
+        "zh": "昨天看了比赛"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-25",
+    "en": "had",
+    "zh": "（have的过去式）患病；得病",
+    "phonics": "/hæd/",
+    "partOfSpeech": "verb",
+    "unit": "Unit 2",
+    "syllables": [
+      "had"
+    ],
+    "phrases": [
+      {
+        "en": "had breakfast",
+        "zh": "吃了早餐"
+      },
+      {
+        "en": "had finished",
+        "zh": "已经完成"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "She had a cat yesterday.",
+        "zh": "她昨天有一只猫。"
+      },
+      {
+        "en": "We had dinner at six o'clock.",
+        "zh": "我们六点钟吃了晚饭。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-26",
+    "en": "had a cold",
+    "zh": "感冒",
+    "unit": "Unit 2",
+    "sentences": [
+      {
+        "en": "She had a cold last week.",
+        "zh": "她上周感冒了。"
+      },
+      {
+        "en": "My brother had a cold and stayed home.",
+        "zh": "我弟弟感冒了，呆在家里。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-27",
+    "en": "slept",
+    "zh": "（sleep的过去式）睡觉",
+    "phonics": "/slept/",
+    "partOfSpeech": "verb",
+    "unit": "Unit 2",
+    "syllables": [
+      "slept"
+    ],
+    "phrases": [
+      {
+        "en": "slept well",
+        "zh": "睡得好"
+      },
+      {
+        "en": "slept late",
+        "zh": "睡过头了"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "She slept for eight hours last night.",
+        "zh": "她昨晚睡了八个小时。"
+      },
+      {
+        "en": "The baby slept soundly in the cradle.",
+        "zh": "婴儿在摇篮里睡得很香。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-28",
+    "en": "read",
+    "zh": "（read的过去式）读",
+    "phonics": "/red/",
+    "partOfSpeech": "verb",
+    "unit": "Unit 2",
+    "syllables": [
+      "read"
+    ],
+    "phrases": [
+      {
+        "en": "read a book",
+        "zh": "读一本书"
+      },
+      {
+        "en": "read carefully",
+        "zh": "仔细阅读"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I like to read books every day.",
+        "zh": "我喜欢每天读书。"
+      },
+      {
+        "en": "Can you read this English story?",
+        "zh": "你能读这个英语故事吗？"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-29",
+    "en": "saw",
+    "zh": "（see的过去式）看见",
+    "phonics": "/sɔː/",
+    "partOfSpeech": "verb",
+    "unit": "Unit 2",
+    "syllables": [
+      "saw"
+    ],
+    "phrases": [
+      {
+        "en": "saw a tree",
+        "zh": "看见一棵树"
+      },
+      {
+        "en": "saw a movie",
+        "zh": "看了一场电影"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I saw a bird in the tree.",
+        "zh": "我看见树上有一只鸟。"
+      },
+      {
+        "en": "She saw her friend at the park yesterday.",
+        "zh": "她昨天在公园看见了她的朋友。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-30",
+    "en": "last",
+    "zh": "最近的；上一个的",
+    "phonics": "/lɑːst/",
+    "partOfSpeech": "adj",
+    "unit": "Unit 2",
+    "syllables": [
+      "last"
+    ],
+    "phrases": [
+      {
+        "en": "last year",
+        "zh": "去年"
+      },
+      {
+        "en": "last week",
+        "zh": "上周"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "This is the last book on the shelf.",
+        "zh": "这是书架上的最后一本书。"
+      },
+      {
+        "en": "She came last in the race.",
+        "zh": "她在比赛中得了最后一名。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-31",
+    "en": "yesterday",
+    "zh": "昨天",
+    "phonics": "/ˈjestədeɪ/",
+    "partOfSpeech": "adv",
+    "unit": "Unit 2",
+    "syllables": [
+      "yes",
+      "ter",
+      "day"
+    ],
+    "phrases": [
+      {
+        "en": "the day before today",
+        "zh": "昨天"
+      },
+      {
+        "en": "yesterday morning",
+        "zh": "昨天早上"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "Yesterday was Monday.",
+        "zh": "昨天是星期一。"
+      },
+      {
+        "en": "I went to the park yesterday.",
+        "zh": "我昨天去了公园。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-32",
+    "en": "before",
+    "zh": "在⋯⋯之前",
+    "phonics": "/bɪˈfɔː(r)/",
+    "partOfSpeech": "prep",
+    "unit": "Unit 2",
+    "syllables": [
+      "be",
+      "fore"
+    ],
+    "phrases": [
+      {
+        "en": "before the event",
+        "zh": "事件之前"
+      },
+      {
+        "en": "come before",
+        "zh": "在……之前来"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I need to finish my homework before dinner.",
+        "zh": "我需要在晚饭前完成作业。"
+      },
+      {
+        "en": "She arrived at the station before the train left.",
+        "zh": "她在火车离开前到达了车站。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-33",
+    "en": "drank",
+    "zh": "（drink的过去式）喝",
+    "phonics": "/dræŋk/",
+    "partOfSpeech": "verb",
+    "unit": "Unit 2",
+    "syllables": [
+      "drank"
+    ],
+    "phrases": [
+      {
+        "en": "drank water",
+        "zh": "喝了水"
+      },
+      {
+        "en": "drank coffee",
+        "zh": "喝了咖啡"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "She drank a glass of milk for breakfast.",
+        "zh": "她早餐喝了一杯牛奶。"
+      },
+      {
+        "en": "They drank some juice at the party yesterday.",
+        "zh": "他们昨天在派对上喝了一些果汁。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-34",
+    "en": "show",
+    "zh": "演出",
+    "phonics": "/ʃəʊ/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 2",
+    "syllables": [
+      "show"
+    ],
+    "phrases": [
+      {
+        "en": "show me",
+        "zh": "给我看"
+      },
+      {
+        "en": "show off",
+        "zh": "炫耀"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "Please show me your book.",
+        "zh": "请给我看你的书。"
+      },
+      {
+        "en": "She can show us the way.",
+        "zh": "她可以给我们指路。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-35",
+    "en": "magazine",
+    "zh": "杂志",
+    "phonics": "/ˌmæɡəˈziːn/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 2",
+    "syllables": [
+      "mag",
+      "a",
+      "zine"
+    ],
+    "phrases": [
+      {
+        "en": "read a magazine",
+        "zh": "阅读杂志"
+      },
+      {
+        "en": "subscribe to a magazine",
+        "zh": "订阅杂志"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "She reads a magazine every weekend.",
+        "zh": "她每个周末都读一本杂志。"
+      },
+      {
+        "en": "My father bought a new magazine yesterday.",
+        "zh": "我爸爸昨天买了一本新杂志。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-36",
+    "en": "better",
+    "zh": "（well的比较级）更好的",
+    "phonics": "/ˈbetə(r)/",
+    "partOfSpeech": "adj",
+    "unit": "Unit 2",
+    "syllables": [
+      "bet",
+      "ter"
+    ],
+    "phrases": [
+      {
+        "en": "better idea",
+        "zh": "更好的主意"
+      },
+      {
+        "en": "better way",
+        "zh": "更好的方法"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "She is better at English than me.",
+        "zh": "她比我更擅长英语。"
+      },
+      {
+        "en": "This book is better than that one.",
+        "zh": "这本书比那本更好。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-37",
+    "en": "faster",
+    "zh": "（fast的比较级）更快的",
+    "phonics": "/ˈfɑːstə(r)/",
+    "partOfSpeech": "adj",
+    "unit": "Unit 2",
+    "syllables": [
+      "fas",
+      "ter"
+    ],
+    "phrases": [
+      {
+        "en": "run faster",
+        "zh": "跑得更快"
+      },
+      {
+        "en": "work faster",
+        "zh": "工作更快"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "He runs faster than his brother.",
+        "zh": "他跑得比他哥哥快。"
+      },
+      {
+        "en": "Can you finish the work faster?",
+        "zh": "你能更快完成这项工作吗？"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-38",
+    "en": "hotel",
+    "zh": "旅馆",
+    "phonics": "/həʊˈtel/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 2",
+    "syllables": [
+      "ho",
+      "tel"
+    ],
+    "phrases": [
+      {
+        "en": "book a hotel",
+        "zh": "预订酒店"
+      },
+      {
+        "en": "stay at a hotel",
+        "zh": "住在酒店"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "We stayed at a hotel during our vacation.",
+        "zh": "我们假期期间住在一家酒店。"
+      },
+      {
+        "en": "The hotel has a swimming pool and a restaurant.",
+        "zh": "这家酒店有一个游泳池和一家餐厅。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-39",
+    "en": "fixed",
+    "zh": "（fix的过去式）修理",
+    "phonics": "/fɪkst/",
+    "partOfSpeech": "verb",
+    "unit": "Unit 2",
+    "syllables": [
+      "fixed"
+    ],
+    "phrases": [
+      {
+        "en": "fixed time",
+        "zh": "固定时间"
+      },
+      {
+        "en": "fixed position",
+        "zh": "固定位置"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The price of this book is fixed.",
+        "zh": "这本书的价格是固定的。"
+      },
+      {
+        "en": "We have a fixed time for the meeting.",
+        "zh": "我们开会有固定的时间。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-40",
+    "en": "broken",
+    "zh": "破损的",
+    "phonics": "/ˈbrəʊkən/",
+    "partOfSpeech": "adj",
+    "unit": "Unit 2",
+    "syllables": [
+      "bro",
+      "ken"
+    ],
+    "phrases": [
+      {
+        "en": "broken glass",
+        "zh": "破碎的玻璃"
+      },
+      {
+        "en": "broken heart",
+        "zh": "破碎的心"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The old chair is broken.",
+        "zh": "这把旧椅子坏了。"
+      },
+      {
+        "en": "He tried to fix the broken toy.",
+        "zh": "他试图修理那个坏了的玩具。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-41",
+    "en": "lamp",
+    "zh": "台灯",
+    "phonics": "/læmp/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 2",
+    "syllables": [
+      "lamp"
+    ],
+    "phrases": [
+      {
+        "en": "turn on the lamp",
+        "zh": "打开灯"
+      },
+      {
+        "en": "a bright lamp",
+        "zh": "一盏明亮的灯"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The lamp on the desk is bright.",
+        "zh": "桌子上的灯很亮。"
+      },
+      {
+        "en": "I turn on the lamp when it's dark.",
+        "zh": "天黑的时候我会打开灯。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-42",
+    "en": "loud",
+    "zh": "喧闹的；大声的",
+    "phonics": "/laʊd/",
+    "partOfSpeech": "adj",
+    "unit": "Unit 2",
+    "syllables": [
+      "loud"
+    ],
+    "phrases": [
+      {
+        "en": "a loud noise",
+        "zh": "一声巨响"
+      },
+      {
+        "en": "speak loud",
+        "zh": "大声说话"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The music is too loud.",
+        "zh": "音乐太大声了。"
+      },
+      {
+        "en": "Please don't speak so loud.",
+        "zh": "请不要这么大声说话。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-43",
+    "en": "enjoy",
+    "zh": "享受⋯⋯乐趣；喜爱",
+    "phonics": "/ɪnˈdʒɔɪ/",
+    "partOfSpeech": "verb",
+    "unit": "Unit 2",
+    "syllables": [
+      "en",
+      "joy"
+    ],
+    "phrases": [
+      {
+        "en": "enjoy the moment",
+        "zh": "享受当下"
+      },
+      {
+        "en": "enjoy reading books",
+        "zh": "喜欢读书"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I enjoy reading books.",
+        "zh": "我喜欢读书。"
+      },
+      {
+        "en": "We enjoy playing games together.",
+        "zh": "我们喜欢一起玩游戏。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-44",
+    "en": "stay",
+    "zh": "暂住；逗留",
+    "phonics": "/steɪ/",
+    "partOfSpeech": "verb",
+    "unit": "Unit 2",
+    "syllables": [
+      "stay"
+    ],
+    "phrases": [
+      {
+        "en": "stay here",
+        "zh": "待在这里"
+      },
+      {
+        "en": "stay calm",
+        "zh": "保持冷静"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I want to stay at home today.",
+        "zh": "我今天想待在家里。"
+      },
+      {
+        "en": "Please stay here and wait for me.",
+        "zh": "请待在这里等我。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-45",
+    "en": "went",
+    "zh": "（go的过去式）去",
+    "phonics": "/went/",
+    "partOfSpeech": "verb",
+    "unit": "Unit 3",
+    "syllables": [
+      "went"
+    ],
+    "phrases": [
+      {
+        "en": "went out",
+        "zh": "出去了"
+      },
+      {
+        "en": "went home",
+        "zh": "回家了"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "She went to the park yesterday.",
+        "zh": "她昨天去了公园。"
+      },
+      {
+        "en": "They went shopping after lunch.",
+        "zh": "他们午饭后去购物了。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-46",
+    "en": "camp",
+    "zh": "野营",
+    "phonics": "/kæmp/",
+    "partOfSpeech": "verb&noun",
+    "unit": "Unit 3",
+    "syllables": [
+      "camp"
+    ],
+    "phrases": [
+      {
+        "en": "go camping",
+        "zh": "去露营"
+      },
+      {
+        "en": "summer camp",
+        "zh": "夏令营"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "We will go to summer camp next week.",
+        "zh": "我们下周要去夏令营。"
+      },
+      {
+        "en": "They set up a camp by the river.",
+        "zh": "他们在河边搭了一个营地。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-47",
+    "en": "went camping",
+    "zh": "（尤指在假日）野营",
+    "unit": "Unit 3",
+    "sentences": [
+      {
+        "en": "We went camping in the mountains last weekend.",
+        "zh": "上周末我们去山里露营了。"
+      },
+      {
+        "en": "She loves to go camping with her family during summer.",
+        "zh": "夏天她喜欢和家人一起去露营。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-48",
+    "en": "fish",
+    "zh": "钓鱼；捕鱼",
+    "phonics": "/fɪʃ/",
+    "partOfSpeech": "verb",
+    "unit": "Unit 3",
+    "syllables": [
+      "fish"
+    ],
+    "phrases": [
+      {
+        "en": "a fish",
+        "zh": "一条鱼"
+      },
+      {
+        "en": "fish tank",
+        "zh": "鱼缸"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The fish swims in the river.",
+        "zh": "鱼在河里游。"
+      },
+      {
+        "en": "I like to eat fish for dinner.",
+        "zh": "我晚餐喜欢吃鱼。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-49",
+    "en": "went fishing",
+    "zh": "去钓鱼",
+    "unit": "Unit 3",
+    "sentences": [
+      {
+        "en": "He went fishing with his father yesterday.",
+        "zh": "他昨天和他爸爸去钓鱼了。"
+      },
+      {
+        "en": "We often go fishing by the river on weekends.",
+        "zh": "我们周末经常去河边钓鱼。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-50",
+    "en": "rode",
+    "zh": "（ride的过去式）骑（马；自行车）",
+    "phonics": "/rəʊd/",
+    "partOfSpeech": "verb",
+    "unit": "Unit 3",
+    "syllables": [
+      "rode"
+    ],
+    "phrases": [
+      {
+        "en": "rode a bike",
+        "zh": "骑自行车"
+      },
+      {
+        "en": "rode a horse",
+        "zh": "骑马"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "They rode horses through the park yesterday.",
+        "zh": "他们昨天骑马穿过了公园。"
+      },
+      {
+        "en": "She rode her bike to school this morning.",
+        "zh": "她今天早上骑自行车去上学了。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-51",
+    "en": "hurt",
+    "zh": "（hurt的过去式）（使）受伤",
+    "phonics": "/hɜː(r)t/",
+    "partOfSpeech": "verb",
+    "unit": "Unit 3",
+    "syllables": [
+      "hurt"
+    ],
+    "phrases": [
+      {
+        "en": "get hurt",
+        "zh": "受伤"
+      },
+      {
+        "en": "hurt badly",
+        "zh": "伤得很重"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "He fell off the bike and hurt his knee.",
+        "zh": "他从自行车上摔下来，伤到了膝盖。"
+      },
+      {
+        "en": "The sharp stone might hurt your feet.",
+        "zh": "这块尖石头可能会弄伤你的脚。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-52",
+    "en": "ate",
+    "zh": "（eat的过去式）吃",
+    "phonics": "/eɪt/",
+    "partOfSpeech": "verb",
+    "unit": "Unit 3",
+    "syllables": [
+      "ate"
+    ],
+    "phrases": [
+      {
+        "en": "I ate an apple",
+        "zh": "我吃了一个苹果"
+      },
+      {
+        "en": "She ate quickly",
+        "zh": "她吃得很快"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I ate an apple this morning.",
+        "zh": "我今天早上吃了一个苹果。"
+      },
+      {
+        "en": "She ate dinner at seven o'clock.",
+        "zh": "她七点钟吃了晚饭。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-53",
+    "en": "took",
+    "zh": "（take的过去式）拍照",
+    "phonics": "/tʊk/",
+    "partOfSpeech": "verb",
+    "unit": "Unit 3",
+    "syllables": [
+      "took"
+    ],
+    "phrases": [
+      {
+        "en": "took a walk",
+        "zh": "散步"
+      },
+      {
+        "en": "took place",
+        "zh": "发生"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "It took me an hour to finish my homework.",
+        "zh": "完成作业花了我一个小时。"
+      },
+      {
+        "en": "The journey took three days by train.",
+        "zh": "这次旅行乘火车花了三天时间。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-54",
+    "en": "took pictures",
+    "zh": "照相",
+    "unit": "Unit 3",
+    "sentences": [
+      {
+        "en": "She took pictures of the beautiful sunset.",
+        "zh": "她拍了美丽日落的照片。"
+      },
+      {
+        "en": "We took pictures together at the park yesterday.",
+        "zh": "我们昨天在公园一起拍了照片。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-55",
+    "en": "bought",
+    "zh": "（buy的过去式）买",
+    "phonics": "/bɔːt/",
+    "partOfSpeech": "verb",
+    "unit": "Unit 3",
+    "syllables": [
+      "bought"
+    ],
+    "phrases": [
+      {
+        "en": "bought a book",
+        "zh": "买了一本书"
+      },
+      {
+        "en": "bought some food",
+        "zh": "买了一些食物"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "She bought a new book yesterday.",
+        "zh": "她昨天买了一本新书。"
+      },
+      {
+        "en": "My parents bought me a bicycle for my birthday.",
+        "zh": "我父母为我的生日买了一辆自行车。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-56",
+    "en": "gift",
+    "zh": "礼物",
+    "phonics": "/ɡɪft/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 3",
+    "syllables": [
+      "gift"
+    ],
+    "phrases": [
+      {
+        "en": "a beautiful gift",
+        "zh": "一份漂亮的礼物"
+      },
+      {
+        "en": "receive a gift",
+        "zh": "收到一份礼物"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "She gave me a gift on my birthday.",
+        "zh": "她在我生日那天给了我一份礼物。"
+      },
+      {
+        "en": "The gift is wrapped in red paper.",
+        "zh": "这个礼物是用红纸包装的。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-57",
+    "en": "fell",
+    "zh": "（fall的过去式）摔倒",
+    "phonics": "/fel/",
+    "partOfSpeech": "verb",
+    "unit": "Unit 3",
+    "syllables": [
+      "fell"
+    ],
+    "phrases": [
+      {
+        "en": "fell down",
+        "zh": "摔倒"
+      },
+      {
+        "en": "fell off",
+        "zh": "掉落"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The apple fell from the tree.",
+        "zh": "苹果从树上掉了下来。"
+      },
+      {
+        "en": "She fell down when running.",
+        "zh": "她跑步时摔倒了。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-58",
+    "en": "off",
+    "zh": "从（某处）落下",
+    "phonics": "/ɒf/",
+    "partOfSpeech": "prep",
+    "unit": "Unit 3",
+    "syllables": [
+      "off"
+    ],
+    "sentences": [
+      {
+        "en": "The light is off.",
+        "zh": "灯是关着的。"
+      },
+      {
+        "en": "Please turn off the TV.",
+        "zh": "请关掉电视。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-59",
+    "en": "Labour Day",
+    "zh": "劳动节",
+    "phonics": "/ˈleɪbə(r) ˌdeɪ/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 3",
+    "syllables": [
+      "la",
+      "bour",
+      "day"
+    ],
+    "phrases": [
+      {
+        "en": "celebrate Labour Day",
+        "zh": "庆祝劳动节"
+      },
+      {
+        "en": "Labour Day holiday",
+        "zh": "劳动节假期"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "Labour Day is a holiday to honor workers.",
+        "zh": "劳动节是一个向劳动者致敬的节日。"
+      },
+      {
+        "en": "People often have a day off on Labour Day.",
+        "zh": "人们通常在劳动节放假一天。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-60",
+    "en": "mule",
+    "zh": "骡子",
+    "phonics": "/mjuːl/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 3",
+    "syllables": [
+      "mule"
+    ],
+    "sentences": [
+      {
+        "en": "A mule is a hybrid animal, usually the offspring of a male donkey and a female horse.",
+        "zh": "骡子是一种杂交动物，通常是公驴和母马的后代。"
+      },
+      {
+        "en": "Mules are known for their strength and endurance, often used as working animals.",
+        "zh": "骡子以其力量和耐力著称，常被用作役用动物。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-61",
+    "en": "Turpan",
+    "zh": "吐鲁番",
+    "phonics": "/ˈtʊəˈpɑːn/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 3",
+    "syllables": [
+      "Tur",
+      "pan"
+    ],
+    "phrases": [
+      {
+        "en": "Turpan Basin",
+        "zh": "吐鲁番盆地"
+      },
+      {
+        "en": "Turpan grapes",
+        "zh": "吐鲁番葡萄"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "Turpan is a famous city in Xinjiang, China, known for its grapes and hot weather.",
+        "zh": "吐鲁番是中国新疆的一座著名城市，以葡萄和炎热的天气而闻名。"
+      },
+      {
+        "en": "Many tourists visit Turpan to experience its unique desert scenery and delicious fruits.",
+        "zh": "许多游客前往吐鲁番体验其独特的沙漠风光和美味的水果。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-62",
+    "en": "could",
+    "zh": "（can的过去式）能",
+    "phonics": "/kəd/",
+    "partOfSpeech": "modal",
+    "unit": "Unit 3",
+    "syllables": [
+      "could"
+    ],
+    "phrases": [
+      {
+        "en": "could you help",
+        "zh": "你能帮忙吗"
+      },
+      {
+        "en": "could have done",
+        "zh": "本可以做"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I could swim when I was five.",
+        "zh": "我五岁时就会游泳了。"
+      },
+      {
+        "en": "Could you pass me the book, please?",
+        "zh": "请问你能把书递给我吗？"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-63",
+    "en": "till",
+    "zh": "直到",
+    "phonics": "/tɪl/",
+    "partOfSpeech": "prep",
+    "unit": "Unit 3",
+    "syllables": [
+      "till"
+    ],
+    "phrases": [
+      {
+        "en": "wait till tomorrow",
+        "zh": "等到明天"
+      },
+      {
+        "en": "open till midnight",
+        "zh": "营业到午夜"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "We will wait till the rain stops.",
+        "zh": "我们会等到雨停。"
+      },
+      {
+        "en": "She worked till midnight yesterday.",
+        "zh": "她昨天工作到午夜。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-64",
+    "en": "beach",
+    "zh": "海滩；沙滩",
+    "phonics": "/biːtʃ/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 3",
+    "syllables": [
+      "beach"
+    ],
+    "phrases": [
+      {
+        "en": "sunny beach",
+        "zh": "阳光明媚的海滩"
+      },
+      {
+        "en": "walk on the beach",
+        "zh": "在海滩上散步"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "We like to play on the beach.",
+        "zh": "我们喜欢在沙滩上玩。"
+      },
+      {
+        "en": "The beach is full of sand and shells.",
+        "zh": "沙滩上满是沙子和贝壳。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-65",
+    "en": "basket",
+    "zh": "篮；筐",
+    "phonics": "/ˈbɑːskɪt/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 3",
+    "syllables": [
+      "bas",
+      "ket"
+    ],
+    "phrases": [
+      {
+        "en": "a shopping basket",
+        "zh": "一个购物篮"
+      },
+      {
+        "en": "carry the basket",
+        "zh": "提着篮子"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "She carries a basket to the market.",
+        "zh": "她提着一个篮子去市场。"
+      },
+      {
+        "en": "The cat is sitting in the empty basket.",
+        "zh": "猫正坐在空篮子里。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-66",
+    "en": "part",
+    "zh": "角色",
+    "phonics": "/pɑː(r)t/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 3",
+    "syllables": [
+      "part"
+    ],
+    "phrases": [
+      {
+        "en": "a part of",
+        "zh": "一部分"
+      },
+      {
+        "en": "play a part",
+        "zh": "起作用"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "This is a part of the machine.",
+        "zh": "这是机器的一部分。"
+      },
+      {
+        "en": "I need to find the right part for the bike.",
+        "zh": "我需要找到自行车合适的零件。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-67",
+    "en": "licked",
+    "zh": "（lick的过去式）舔",
+    "phonics": "/lɪkt/",
+    "partOfSpeech": "verb",
+    "unit": "Unit 3",
+    "syllables": [
+      "licked"
+    ],
+    "phrases": [
+      {
+        "en": "licked the ice cream",
+        "zh": "舔了冰淇淋"
+      },
+      {
+        "en": "licked his lips",
+        "zh": "舔了舔嘴唇"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The cat licked the milk from the bowl.",
+        "zh": "猫舔了碗里的牛奶。"
+      },
+      {
+        "en": "She licked the ice cream cone happily.",
+        "zh": "她开心地舔着冰淇淋蛋筒。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-68",
+    "en": "laughed",
+    "zh": "（laugh的过去式）笑",
+    "phonics": "/lɑːft/",
+    "partOfSpeech": "verb",
+    "unit": "Unit 3",
+    "syllables": [
+      "laugh"
+    ],
+    "phrases": [
+      {
+        "en": "laughed happily",
+        "zh": "开心地笑了"
+      },
+      {
+        "en": "laughed loudly",
+        "zh": "大声地笑了"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-69",
+    "en": "dining hall",
+    "zh": "饭厅",
+    "phonics": "/ˈdaɪnɪŋ ˌhɔːl/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 4",
+    "syllables": [
+      "din",
+      "ing",
+      "hall"
+    ],
+    "phrases": [
+      {
+        "en": "dining hall",
+        "zh": "餐厅"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "Students often eat lunch in the dining hall.",
+        "zh": "学生们经常在食堂吃午饭。"
+      },
+      {
+        "en": "The dining hall is usually crowded during meal times.",
+        "zh": "食堂在用餐时间通常很拥挤。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-70",
+    "en": "grass",
+    "zh": "草坪",
+    "phonics": "/ɡrɑːs/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 4",
+    "syllables": [
+      "grass"
+    ],
+    "phrases": [
+      {
+        "en": "green grass",
+        "zh": "绿色的草"
+      },
+      {
+        "en": "cut the grass",
+        "zh": "割草"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The grass in the yard is green and soft.",
+        "zh": "院子里的草又绿又软。"
+      },
+      {
+        "en": "We should not step on the grass in the park.",
+        "zh": "我们不应该踩公园里的草。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-71",
+    "en": "gym",
+    "zh": "体育馆",
+    "phonics": "/dʒɪm/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 4",
+    "syllables": [
+      "gym"
+    ],
+    "phrases": [
+      {
+        "en": "go to the gym",
+        "zh": "去健身房"
+      },
+      {
+        "en": "gym equipment",
+        "zh": "健身房器材"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-72",
+    "en": "ago",
+    "zh": "以前",
+    "phonics": "/əˈɡəʊ/",
+    "partOfSpeech": "adv",
+    "unit": "Unit 4",
+    "syllables": [
+      "a",
+      "go"
+    ],
+    "phrases": [
+      {
+        "en": "a few days ago",
+        "zh": "几天前"
+      },
+      {
+        "en": "long ago",
+        "zh": "很久以前"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "She left the room five minutes ago.",
+        "zh": "她五分钟前离开了房间。"
+      },
+      {
+        "en": "They finished their homework an hour ago.",
+        "zh": "他们一小时前完成了作业。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-73",
+    "en": "cycling",
+    "zh": "骑自行车运动（或活动）",
+    "phonics": "/ˈsaɪklɪŋ/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 4",
+    "syllables": [
+      "cy",
+      "cling"
+    ],
+    "phrases": [
+      {
+        "en": "go cycling",
+        "zh": "去骑自行车"
+      },
+      {
+        "en": "cycling race",
+        "zh": "自行车比赛"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "Cycling is a fun outdoor activity.",
+        "zh": "骑自行车是一项有趣的户外活动。"
+      },
+      {
+        "en": "I go cycling with my friends every weekend.",
+        "zh": "我每个周末和朋友们一起去骑自行车。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-74",
+    "en": "go cycling",
+    "zh": "去骑自行车",
+    "unit": "Unit 4",
+    "sentences": [
+      {
+        "en": "I like to go cycling in the park on weekends.",
+        "zh": "我喜欢周末在公园骑自行车。"
+      },
+      {
+        "en": "We often go cycling together after school.",
+        "zh": "我们放学后经常一起去骑自行车。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-75",
+    "en": "ice-skate",
+    "zh": "滑冰",
+    "phonics": "/ˈaɪsskeɪt/",
+    "partOfSpeech": "verb",
+    "unit": "Unit 4",
+    "syllables": [
+      "ice",
+      "skate"
+    ],
+    "phrases": [
+      {
+        "en": "ice-skate on the lake",
+        "zh": "在湖上滑冰"
+      },
+      {
+        "en": "learn to ice-skate",
+        "zh": "学习滑冰"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "She loves to ice-skate on the frozen lake in winter.",
+        "zh": "冬天她喜欢在结冰的湖面上滑冰。"
+      },
+      {
+        "en": "We need warm clothes to ice-skate comfortably outdoors.",
+        "zh": "我们需要暖和的衣服才能在户外舒适地滑冰。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-76",
+    "en": "badminton",
+    "zh": "羽毛球运动",
+    "phonics": "/ˈbædmɪntən/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 4",
+    "syllables": [
+      "bad",
+      "min",
+      "ton"
+    ],
+    "phrases": [
+      {
+        "en": "play badminton",
+        "zh": "打羽毛球"
+      },
+      {
+        "en": "badminton court",
+        "zh": "羽毛球场"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I often play badminton with my friends after school.",
+        "zh": "我经常放学后和朋友们打羽毛球。"
+      },
+      {
+        "en": "Badminton is a popular sport that requires rackets and a shuttlecock.",
+        "zh": "羽毛球是一项需要球拍和羽毛球的流行运动。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-77",
+    "en": "star",
+    "zh": "星",
+    "phonics": "/stɑː(r)/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 4",
+    "syllables": [
+      "star"
+    ],
+    "phrases": [
+      {
+        "en": "bright star",
+        "zh": "明亮的星星"
+      },
+      {
+        "en": "movie star",
+        "zh": "电影明星"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The bright star shines in the sky at night.",
+        "zh": "明亮的星星在夜晚的天空中闪耀。"
+      },
+      {
+        "en": "We can see many stars when we look up on a clear night.",
+        "zh": "在晴朗的夜晚抬头看，我们能看到很多星星。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-78",
+    "en": "easy",
+    "zh": "容易的",
+    "phonics": "/ˈiːzi/",
+    "partOfSpeech": "adj",
+    "unit": "Unit 4",
+    "syllables": [
+      "ea",
+      "sy"
+    ],
+    "phrases": [
+      {
+        "en": "take it easy",
+        "zh": "放轻松"
+      },
+      {
+        "en": "easy come easy go",
+        "zh": "来得容易去得快"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "This math problem is easy for me.",
+        "zh": "这道数学题对我来说很简单。"
+      },
+      {
+        "en": "It's easy to learn English with practice.",
+        "zh": "通过练习学习英语很容易。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-79",
+    "en": "look up",
+    "zh": "（在词典中或通过电脑）查阅",
+    "unit": "Unit 4",
+    "sentences": [
+      {
+        "en": "I need to look up the word in the dictionary.",
+        "zh": "我需要在字典里查阅这个单词。"
+      },
+      {
+        "en": "She likes to look up information online.",
+        "zh": "她喜欢在网上查找信息。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-80",
+    "en": "Internet",
+    "zh": "互联网",
+    "phonics": "/ˈɪntənet/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 4",
+    "syllables": [
+      "In",
+      "ter",
+      "net"
+    ],
+    "phrases": [
+      {
+        "en": "on the Internet",
+        "zh": "在互联网上"
+      },
+      {
+        "en": "surf the Internet",
+        "zh": "上网"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I use the Internet to search for information.",
+        "zh": "我使用互联网搜索信息。"
+      },
+      {
+        "en": "The Internet connects people all over the world.",
+        "zh": "互联网连接着世界各地的人们。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-81",
+    "en": "different",
+    "zh": "不同的",
+    "phonics": "/ˈdɪfrənt/",
+    "partOfSpeech": "adj",
+    "unit": "Unit 4",
+    "syllables": [
+      "dif",
+      "fer",
+      "ent"
+    ],
+    "phrases": [
+      {
+        "en": "different types",
+        "zh": "不同类型"
+      },
+      {
+        "en": "different opinions",
+        "zh": "不同意见"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "Cats and dogs are different animals.",
+        "zh": "猫和狗是不同的动物。"
+      },
+      {
+        "en": "Her opinion is different from mine.",
+        "zh": "她的观点和我的不同。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-82",
+    "en": "active",
+    "zh": "积极的；活跃的",
+    "phonics": "/ˈæktɪv/",
+    "partOfSpeech": "adj",
+    "unit": "Unit 4",
+    "syllables": [
+      "ac",
+      "tive"
+    ],
+    "phrases": [
+      {
+        "en": "active participation",
+        "zh": "积极参与"
+      },
+      {
+        "en": "active member",
+        "zh": "活跃成员"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "She is active in class discussions.",
+        "zh": "她在课堂讨论中很积极。"
+      },
+      {
+        "en": "Playing sports keeps him active and healthy.",
+        "zh": "做运动让他保持活跃和健康。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-83",
+    "en": "race",
+    "zh": "赛跑",
+    "phonics": "/reɪs/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 4",
+    "syllables": [
+      "race"
+    ],
+    "phrases": [
+      {
+        "en": "human race",
+        "zh": "人类种族"
+      },
+      {
+        "en": "horse race",
+        "zh": "赛马比赛"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "We will have a race tomorrow.",
+        "zh": "我们明天将有一场比赛。"
+      },
+      {
+        "en": "He won the first prize in the race.",
+        "zh": "他在比赛中获得了一等奖。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-84",
+    "en": "nothing",
+    "zh": "没有什么",
+    "phonics": "/ˈnʌθɪŋ/",
+    "partOfSpeech": "pron",
+    "unit": "Unit 4",
+    "syllables": [
+      "noth",
+      "ing"
+    ],
+    "phrases": [
+      {
+        "en": "nothing",
+        "zh": "没有什么"
+      },
+      {
+        "en": "nothing",
+        "zh": "没有什么"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The word 'nothing' means there is not anything.",
+        "zh": "单词“nothing”的意思是没有任何东西。"
+      },
+      {
+        "en": "If you have nothing, you don't have any objects or things.",
+        "zh": "如果你拥有“nothing”，就意味着你没有任何物品或东西。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-85",
+    "en": "thought",
+    "zh": "（think的过去式）想",
+    "phonics": "/θɔːt/",
+    "partOfSpeech": "verb",
+    "unit": "Unit 4",
+    "syllables": [
+      "thought"
+    ],
+    "phrases": [
+      {
+        "en": "a thought",
+        "zh": "一个想法"
+      },
+      {
+        "en": "deep thought",
+        "zh": "深思"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I need to thought carefully before answering.",
+        "zh": "我需要仔细思考后再回答。"
+      },
+      {
+        "en": "Her thought is different from mine.",
+        "zh": "她的想法和我的不同。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-86",
+    "en": "felt",
+    "zh": "（feel的过去式）感觉",
+    "phonics": "/felt/",
+    "partOfSpeech": "verb",
+    "unit": "Unit 4",
+    "syllables": [
+      "felt"
+    ],
+    "phrases": [
+      {
+        "en": "felt happy",
+        "zh": "感到开心"
+      },
+      {
+        "en": "felt tired",
+        "zh": "感到疲倦"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I felt happy when I saw the rainbow.",
+        "zh": "当我看到彩虹时，我感到很高兴。"
+      },
+      {
+        "en": "She felt the soft fur of the cat.",
+        "zh": "她摸到了猫柔软的皮毛。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-87",
+    "en": "cheetah",
+    "zh": "猎豹",
+    "phonics": "/ˈtʃiːtə/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 4",
+    "syllables": [
+      "chee",
+      "tah"
+    ],
+    "phrases": [
+      {
+        "en": "a fast cheetah",
+        "zh": "一只快速的猎豹"
+      },
+      {
+        "en": "cheetah's speed",
+        "zh": "猎豹的速度"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "A cheetah is the fastest land animal.",
+        "zh": "猎豹是陆地上跑得最快的动物。"
+      },
+      {
+        "en": "Cheetahs have black spots on their yellow fur.",
+        "zh": "猎豹黄色的皮毛上有黑色的斑点。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-88",
+    "en": "trip",
+    "zh": "绊倒",
+    "phonics": "/trɪp/",
+    "partOfSpeech": "verb",
+    "unit": "Unit 4",
+    "syllables": [
+      "trip"
+    ],
+    "phrases": [
+      {
+        "en": "go on a trip",
+        "zh": "去旅行"
+      },
+      {
+        "en": "trip plan",
+        "zh": "旅行计划"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I went on a trip to the mountains last summer.",
+        "zh": "去年夏天我去山里旅行了。"
+      },
+      {
+        "en": "We need to pack our bags for the upcoming trip.",
+        "zh": "我们需要为即将到来的旅行收拾行李。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-89",
+    "en": "woke",
+    "zh": "（wake的过去式）醒",
+    "phonics": "/wəʊk/",
+    "partOfSpeech": "verb",
+    "unit": "Unit 4",
+    "syllables": [
+      "woke"
+    ],
+    "phrases": [
+      {
+        "en": "stay woke",
+        "zh": "保持警觉"
+      },
+      {
+        "en": "woke culture",
+        "zh": "觉醒文化"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "She became woke to social issues after reading the book.",
+        "zh": "她读完这本书后，对社会问题有了清醒的认识。"
+      },
+      {
+        "en": "Being woke means being aware of injustice around you.",
+        "zh": "保持清醒意味着意识到你周围的不公。"
+      }
+    ]
+  },
+  {
+    "id": "g6s2-90",
+    "en": "dream",
+    "zh": "梦",
+    "phonics": "/driːm/",
+    "partOfSpeech": "noun",
+    "unit": "Unit 4",
+    "syllables": [
+      "dream"
+    ],
+    "phrases": [
+      {
+        "en": "have a dream",
+        "zh": "有一个梦想"
+      },
+      {
+        "en": "chase a dream",
+        "zh": "追逐梦想"
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I had a sweet dream last night.",
+        "zh": "我昨晚做了一个甜美的梦。"
+      },
+      {
+        "en": "Her dream is to become a doctor.",
+        "zh": "她的梦想是成为一名医生。"
+      }
+    ]
+  }
+]

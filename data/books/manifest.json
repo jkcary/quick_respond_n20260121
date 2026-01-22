@@ -1,0 +1,106 @@
+[
+  {
+    "id": "g3-s1",
+    "name": "PEP Grade 3 Vol.1",
+    "grade": 3,
+    "semester": 1,
+    "wordCount": 64,
+    "file": "data/books/g3-s1.json"
+  },
+  {
+    "id": "g3-s2",
+    "name": "PEP Grade 3 Vol.2",
+    "grade": 3,
+    "semester": 2,
+    "wordCount": 71,
+    "file": "data/books/g3-s2.json"
+  },
+  {
+    "id": "g4-s1",
+    "name": "PEP Grade 4 Vol.1",
+    "grade": 4,
+    "semester": 1,
+    "wordCount": 84,
+    "file": "data/books/g4-s1.json"
+  },
+  {
+    "id": "g4-s2",
+    "name": "PEP Grade 4 Vol.2",
+    "grade": 4,
+    "semester": 2,
+    "wordCount": 104,
+    "file": "data/books/g4-s2.json"
+  },
+  {
+    "id": "g5-s1",
+    "name": "PEP Grade 5 Vol.1",
+    "grade": 5,
+    "semester": 1,
+    "wordCount": 131,
+    "file": "data/books/g5-s1.json"
+  },
+  {
+    "id": "g5-s2",
+    "name": "PEP Grade 5 Vol.2",
+    "grade": 5,
+    "semester": 2,
+    "wordCount": 154,
+    "file": "data/books/g5-s2.json"
+  },
+  {
+    "id": "g6-s1",
+    "name": "PEP Grade 6 Vol.1",
+    "grade": 6,
+    "semester": 1,
+    "wordCount": 147,
+    "file": "data/books/g6-s1.json"
+  },
+  {
+    "id": "g6-s2",
+    "name": "PEP Grade 6 Vol.2",
+    "grade": 6,
+    "semester": 2,
+    "wordCount": 91,
+    "file": "data/books/g6-s2.json"
+  },
+  {
+    "id": "g7-s1",
+    "name": "PEP Grade 7 Vol.1",
+    "grade": 7,
+    "semester": 1,
+    "wordCount": 385,
+    "file": "data/books/g7-s1.json"
+  },
+  {
+    "id": "g7-s2",
+    "name": "PEP Grade 7 Vol.2",
+    "grade": 7,
+    "semester": 2,
+    "wordCount": 492,
+    "file": "data/books/g7-s2.json"
+  },
+  {
+    "id": "g8-s1",
+    "name": "PEP Grade 8 Vol.1",
+    "grade": 8,
+    "semester": 1,
+    "wordCount": 413,
+    "file": "data/books/g8-s1.json"
+  },
+  {
+    "id": "g8-s2",
+    "name": "PEP Grade 8 Vol.2",
+    "grade": 8,
+    "semester": 2,
+    "wordCount": 468,
+    "file": "data/books/g8-s2.json"
+  },
+  {
+    "id": "g9-full",
+    "name": "Grade 9 Full Volume",
+    "grade": 9,
+    "semester": 3,
+    "wordCount": 576,
+    "file": "data/books/g9-full.json"
+  }
+]
