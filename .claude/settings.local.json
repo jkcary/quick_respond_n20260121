@@ -6,7 +6,9 @@
       "Bash(findstr:*)",
       "Bash(npm run build:*)",
       "Bash(find:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Skill(search-skill)",
+      "Skill(search-skill:*)"
     ]
   }
 }

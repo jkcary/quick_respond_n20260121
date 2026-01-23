@@ -15,6 +15,7 @@ import type {
 import { parseGradeBook } from '@/types';
 import { selectWords, getVocabularyCountForGradeBook, getVocabularyCountUpToGrade } from '@/core/vocabulary';
 import { ErrorLogStorage } from '@/core/storage';
+import { TEST_CONFIG } from '@/config/app.config';
 
 interface TestState {
   // ==================== Session State ====================
@@ -40,6 +41,13 @@ interface TestState {
    * Submit user's answer for judgment
    */
   submitAnswer: (input: string, judgment: JudgmentResult) => Promise<void>;
+
+  /**
+   * Submit a batch of answers for judgment
+   */
+  submitBatch: (
+    entries: Array<{ word: VocabularyItem; input: string; judgment: JudgmentResult }>
+  ) => Promise<void>;
 
   /**
    * End current test session
@@ -82,7 +90,7 @@ interface TestState {
   getScore: () => { correct: number; total: number; percentage: number };
 }
 
-const DEFAULT_WORD_COUNT = 5;
+const DEFAULT_WORD_COUNT = TEST_CONFIG.WORDS_PER_TEST;
 const isGradeBook = (value: GradeLevel | GradeBook): value is GradeBook =>
   typeof value === 'string';
 
@@ -148,7 +156,7 @@ export const useTestStore = create<TestState>((set, get) => ({
   },
 
   nextWord: () => {
-    const { currentSession, currentWordIndex } = get();
+    const { currentSession } = get();
 
     if (!currentSession) {
       return;
@@ -180,20 +188,43 @@ export const useTestStore = create<TestState>((set, get) => ({
       return;
     }
 
-    // Create test result
-    const result: TestResult = {
-      wordId: currentWord.id,
-      word: currentWord.word,
-      userInput: input,
-      correct: judgment.correct,
-      correction: judgment.correction,
-      timestamp: Date.now(),
-    };
+    await get().submitBatch([{ word: currentWord, input, judgment }]);
+  },
 
-    // Update session with result
+  submitBatch: async (entries) => {
+    const { currentSession, currentWordIndex } = get();
+
+    if (!currentSession || entries.length === 0) {
+      return;
+    }
+
+    const errorLogStorage = new ErrorLogStorage();
+    const now = Date.now();
+    const results: TestResult[] = [];
+
+    for (const entry of entries) {
+      const result: TestResult = {
+        wordId: entry.word.id,
+        word: entry.word.word,
+        userInput: entry.input,
+        correct: entry.judgment.correct,
+        correction: entry.judgment.correction,
+        timestamp: now,
+      };
+      results.push(result);
+
+      if (!entry.judgment.correct) {
+        try {
+          await errorLogStorage.addError(entry.word, entry.input, entry.judgment.correction);
+        } catch (error) {
+          console.error('Failed to add error to log:', error);
+        }
+      }
+    }
+
     const updatedSession: TestSession = {
       ...currentSession,
-      results: [...currentSession.results, result],
+      results: [...currentSession.results, ...results],
     };
 
     set({
@@ -202,20 +233,13 @@ export const useTestStore = create<TestState>((set, get) => ({
       userInput: '',
     });
 
-    // If answer is incorrect, add to error log
-    if (!judgment.correct) {
-      try {
-        const errorLogStorage = new ErrorLogStorage();
-        await errorLogStorage.addError(currentWord, input, judgment.correction);
-      } catch (error) {
-        console.error('Failed to add error to log:', error);
-      }
-    }
-
-    // Auto-advance immediately on submitted answers
-    const state = get();
-    if (state.currentSession?.results.length === updatedSession.results.length) {
-      get().nextWord();
+    const nextIndex = currentWordIndex + entries.length;
+    if (nextIndex < currentSession.words.length) {
+      set({
+        currentWordIndex: nextIndex,
+      });
+    } else {
+      get().endTest();
     }
   },
 
@@ -283,7 +307,7 @@ export const useTestStore = create<TestState>((set, get) => ({
     }
 
     const total = currentSession.words.length;
-    const current = Math.min(currentWordIndex + 1, total);
+    const current = Math.min(currentSession.results.length, total);
     const percentage = total > 0 ? Math.round((current / total) * 100) : 0;
 
     return { current, total, percentage };

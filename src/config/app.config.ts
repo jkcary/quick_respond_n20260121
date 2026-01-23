@@ -18,8 +18,8 @@ export const APP_METADATA = {
  * Test configuration constants
  */
 export const TEST_CONFIG = {
-  /** Number of words per test session */
-  WORDS_PER_TEST: 5,
+  /** Number of words per batch */
+  WORDS_PER_TEST: 10,
 
   /** Maximum retry attempts for voice recognition */
   MAX_VOICE_RETRIES: 3,

@@ -167,31 +167,37 @@ export function getGradeBookLabel(gradeBook: GradeBook): string {
 }
 
 /**
- * Test session state for 5-word loop
+ * Test session state for batch-based tests
  */
 export interface TestSession {
-  /** Array of 5 vocabulary items for current test */
+  /** Unique session identifier */
+  id: string;
+
+  /** Session start timestamp */
+  startTime: number;
+
+  /** Session end timestamp */
+  endTime?: number;
+
+  /** Array of vocabulary items for current test */
   words: VocabularyItem[];
-
-  /** Current word index (0-4) */
-  currentIndex: number;
-
-  /** Number of correct answers in this session */
-  correctCount: number;
 
   /** Array of results for each word */
   results: TestResult[];
 
-  /** Session start timestamp */
-  startedAt: number;
+  /** Grade level for the session */
+  gradeLevel: number;
 }
 
 /**
  * Result for a single word in test session
  */
 export interface TestResult {
-  /** Vocabulary item being tested */
-  word: VocabularyItem;
+  /** Vocabulary item identifier */
+  wordId: string;
+
+  /** English word */
+  word: string;
 
   /** User's answer (Chinese translation) */
   userInput: string;
@@ -203,7 +209,10 @@ export interface TestResult {
   correction?: string;
 
   /** Timestamp when answered */
-  answeredAt: number;
+  timestamp: number;
+
+  /** Optional time taken for answer (ms) */
+  timeTaken?: number;
 }
 
 /**
