@@ -27,6 +27,10 @@ export const TEST_CONFIG = {
   /** Debounce delay for voice input (ms) */
   VOICE_INPUT_DEBOUNCE: 500,
 
+  /** Timeout for no speech detected before auto-advancing (ms) */
+  VOICE_SPEECH_TIMEOUT_MS: 2000,
+
+
   /** Auto-advance delay after correct answer (ms) */
   AUTO_ADVANCE_DELAY: 1500,
 

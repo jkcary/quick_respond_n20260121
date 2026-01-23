@@ -7,8 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import { useTestStore } from '@/store/testStore';
 import { useAppStore } from '@/store/useAppStore';
 import { ScorePanel } from './ScorePanel';
-import { Button, Modal, LoadingSpinner, Input } from '@/components/common';
-import { LLMGateway } from '@/core/llm';
+import { Button, Modal, LoadingSpinner } from '@/components/common';
+import { LLMGateway, segmentWithAgent } from '@/core/llm';
 import { SpeechRecognizer } from '@/core/speech';
 import { requestMicrophonePermission, isSpeechRecognitionSupported } from '@/core/speech';
 import { formatDuration } from '@/utils/formatters';
@@ -36,11 +36,17 @@ export const TestPage: React.FC = () => {
   const [completedSession, setCompletedSession] = useState<TestSession | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [answers, setAnswers] = useState<Record<string, string>>({});
-  const [isListening, setIsListening] = useState(false);
-  const [listeningWordId, setListeningWordId] = useState<string | null>(null);
+  const [recordingTranscript, setRecordingTranscript] = useState('');
+  const [segmentedTokens, setSegmentedTokens] = useState<string[]>([]);
+  const [recordingError, setRecordingError] = useState<string | null>(null);
+  const [isRecording, setIsRecording] = useState(false);
+  const [isSegmenting, setIsSegmenting] = useState(false);
+  const [segmentProgress, setSegmentProgress] = useState(0);
   const [voiceEnabled, setVoiceEnabled] = useState(false);
   const recognizerRef = useRef<SpeechRecognizer | null>(null);
-  const sessionTokenRef = useRef(0);
+  const recordingTokenRef = useRef(0);
+  const recordingTranscriptRef = useRef('');
+  const autoSubmitTimerRef = useRef<number | null>(null);
 
   const [gateway] = useState(() => {
     if (config.apiKey) {
@@ -66,6 +72,15 @@ export const TestPage: React.FC = () => {
       return answers[word.id]?.trim() ? count + 1 : count;
     }, 0);
   }, [batchWords, answers]);
+
+  const segmentedDisplay = useMemo(() => {
+    if (segmentedTokens.length === 0) {
+      return '';
+    }
+    return segmentedTokens
+      .map((item) => (item && item.trim() ? item.trim() : '—'))
+      .join(' / ');
+  }, [segmentedTokens]);
 
   const summarySession = completedSession ?? currentSession;
   const summaryTotal = summarySession ? summarySession.words.length : 0;
@@ -106,11 +121,19 @@ export const TestPage: React.FC = () => {
 
     setAnswers(nextAnswers);
     setIsSubmitting(false);
-    setIsListening(false);
-    setListeningWordId(null);
-    sessionTokenRef.current += 1;
+    setIsRecording(false);
+    setRecordingTranscript('');
+    setSegmentedTokens([]);
+    setRecordingError(null);
+    setSegmentProgress(0);
+    recordingTranscriptRef.current = '';
+    recordingTokenRef.current += 1;
     recognizerRef.current?.abort();
-  }, [currentSession?.id, currentWordIndex]);
+    if (autoSubmitTimerRef.current !== null) {
+      window.clearTimeout(autoSubmitTimerRef.current);
+      autoSubmitTimerRef.current = null;
+    }
+  }, [currentSession?.id, currentWordIndex, batchWords]);
 
   // Initialize speech recognizer
   useEffect(() => {
@@ -138,54 +161,36 @@ export const TestPage: React.FC = () => {
     initRecognizer();
 
     return () => {
-      sessionTokenRef.current += 1;
       recognizerRef.current?.destroy();
       recognizerRef.current = null;
     };
   }, []);
 
-  const handleVoiceInput = async (wordId: string) => {
-    const recognizer = recognizerRef.current;
-    if (!recognizer || isListening || isJudging || isSubmitting) {
+  useEffect(() => {
+    if (!isSegmenting) {
       return;
     }
 
-    const sessionToken = sessionTokenRef.current + 1;
-    sessionTokenRef.current = sessionToken;
-    setIsListening(true);
-    setListeningWordId(wordId);
+    setSegmentProgress(10);
+    const interval = window.setInterval(() => {
+      setSegmentProgress((prev) => {
+        if (prev >= 90) {
+          return prev;
+        }
+        return Math.min(90, prev + 5 + Math.random() * 12);
+      });
+    }, 300);
 
-    try {
-      const result = await recognizer.start();
-      if (sessionTokenRef.current !== sessionToken) {
-        return;
-      }
-      const transcript = result.transcript.trim();
-      if (transcript.length > 0) {
-        setAnswers((prev) => ({
-          ...prev,
-          [wordId]: transcript,
-        }));
-      }
-      recognizer.stop();
-    } catch (error) {
-      if (sessionTokenRef.current !== sessionToken) {
-        return;
-      }
-      console.error('Speech recognition error:', error);
-    } finally {
-      if (sessionTokenRef.current === sessionToken) {
-        setIsListening(false);
-        setListeningWordId(null);
-      }
-    }
-  };
+    return () => {
+      window.clearInterval(interval);
+    };
+  }, [isSegmenting]);
 
   const getDefaultCorrection = (word: VocabularyItem): string => {
     return Array.isArray(word.chinese) ? word.chinese.filter(Boolean).join('; ') : '';
   };
 
-  const handleSubmitBatch = useCallback(async () => {
+  const submitBatchWithInputs = useCallback(async (inputs: Record<string, string>) => {
     if (!currentSession || batchWords.length === 0 || isSubmitting || isJudging) {
       return;
     }
@@ -194,32 +199,32 @@ export const TestPage: React.FC = () => {
     setJudging(true);
 
     try {
-      const entries = [] as Array<{ word: VocabularyItem; input: string; judgment: { correct: boolean; correction: string } }>;
+      const entries = await Promise.all(
+        batchWords.map(async (word) => {
+          const input = (inputs[word.id] ?? '').trim();
+          let judgment: { correct: boolean; correction: string };
 
-      for (const word of batchWords) {
-        const input = (answers[word.id] ?? '').trim();
-        let judgment: { correct: boolean; correction: string };
+          if (!gateway) {
+            judgment = {
+              correct: true,
+              correction: getDefaultCorrection(word),
+            };
+          } else if (input.length === 0) {
+            judgment = {
+              correct: false,
+              correction: getDefaultCorrection(word),
+            };
+          } else {
+            const result = await gateway.judge(word.word, input);
+            judgment = {
+              correct: result.correct,
+              correction: result.correction,
+            };
+          }
 
-        if (!gateway) {
-          judgment = {
-            correct: true,
-            correction: getDefaultCorrection(word),
-          };
-        } else if (input.length === 0) {
-          judgment = {
-            correct: false,
-            correction: getDefaultCorrection(word),
-          };
-        } else {
-          const result = await gateway.judge(word.word, input);
-          judgment = {
-            correct: result.correct,
-            correction: result.correction,
-          };
-        }
-
-        entries.push({ word, input, judgment });
-      }
+          return { word, input, judgment };
+        }),
+      );
 
       await submitBatch(entries);
     } catch (error) {
@@ -228,12 +233,255 @@ export const TestPage: React.FC = () => {
       setJudging(false);
       setIsSubmitting(false);
     }
-  }, [currentSession, batchWords, answers, isSubmitting, isJudging, gateway, submitBatch, setJudging]);
+  }, [currentSession, batchWords, isSubmitting, isJudging, gateway, submitBatch, setJudging]);
+
+  const normalizeSegments = useCallback(
+    (segments: string[], targetCount: number) => {
+      if (segments.length === targetCount) {
+        return segments;
+      }
+      if (segments.length > targetCount) {
+        const overflow = segments.slice(targetCount - 1).join(' ');
+        return [...segments.slice(0, targetCount - 1), overflow];
+      }
+      return [...segments, ...Array(targetCount - segments.length).fill('')];
+    },
+    [],
+  );
+
+  // Voice batch recording helpers
+  const segmentAndMatchTranscript = useCallback(
+    async (
+      transcript: string,
+      options: { applyAnswers?: boolean; autoSubmit?: boolean } = {},
+    ) => {
+      if (!currentSession || batchWords.length === 0) {
+        return null;
+      }
+
+      setIsSegmenting(true);
+      setRecordingError(null);
+      const { applyAnswers = true, autoSubmit = false } = options;
+
+      try {
+        const applySegments = (segments: string[]) => {
+          const normalized = normalizeSegments(
+            segments.map((item) => item.trim()),
+            batchWords.length,
+          );
+          const nextAnswers: Record<string, string> = {};
+          normalized.forEach((segment, index) => {
+            const word = batchWords[index];
+            if (word) {
+              nextAnswers[word.id] = segment.trim();
+            }
+          });
+
+          setSegmentedTokens(normalized);
+          if (applyAnswers) {
+            setAnswers(nextAnswers);
+          }
+          if (autoSubmit) {
+            if (autoSubmitTimerRef.current !== null) {
+              window.clearTimeout(autoSubmitTimerRef.current);
+            }
+            autoSubmitTimerRef.current = window.setTimeout(() => {
+              autoSubmitTimerRef.current = null;
+              void submitBatchWithInputs(nextAnswers);
+            }, 800);
+          }
+
+          return nextAnswers;
+        };
+
+        if (gateway) {
+          try {
+            const result = await segmentWithAgent(
+              gateway,
+              transcript,
+              batchWords.map((word) => ({
+                id: word.id,
+                word: word.word,
+                zh: word.zh,
+                chinese: Array.isArray(word.chinese) ? word.chinese : [],
+              })),
+            );
+
+            if (result?.correctedTranscript) {
+              recordingTranscriptRef.current = result.correctedTranscript;
+              setRecordingTranscript(result.correctedTranscript);
+            }
+
+            if (result?.segments?.length) {
+              return applySegments(result.segments);
+            }
+          } catch (error) {
+            console.warn('Segment agent failed, falling back to API.', error);
+          }
+        }
+
+        const response = await fetch(
+          (import.meta.env.VITE_VOICE_SEGMENT_URL as string | undefined) ??
+            '/api/voice/segment-match',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              transcript,
+              matchMode: 'ordered',
+              words: batchWords.map((word, index) => ({
+                index: index + 1,
+                id: word.id,
+                word: word.word,
+                zh: word.zh,
+                chinese: Array.isArray(word.chinese)
+                  ? word.chinese.filter((item) => item && item.trim())
+                  : [],
+              })),
+            }),
+          },
+        );
+
+        if (!response.ok) {
+          const message = await response.text();
+          throw new Error(message || `Segment API failed (${response.status})`);
+        }
+
+        const data = (await response.json()) as {
+          matches?: Array<{ wordId: string; translation: string }>;
+          segments?: string[];
+        };
+
+        if (Array.isArray(data.matches)) {
+          const nextAnswers: Record<string, string> = {};
+          for (const word of batchWords) {
+            const match = data.matches.find((item) => item.wordId === word.id);
+            nextAnswers[word.id] = match?.translation?.trim() ?? '';
+          }
+          const orderedSegments = batchWords.map(
+            (word) => nextAnswers[word.id] ?? '',
+          );
+          setSegmentedTokens(normalizeSegments(orderedSegments, batchWords.length));
+          if (applyAnswers) {
+            setAnswers(nextAnswers);
+          }
+          if (autoSubmit) {
+            if (autoSubmitTimerRef.current !== null) {
+              window.clearTimeout(autoSubmitTimerRef.current);
+            }
+            autoSubmitTimerRef.current = window.setTimeout(() => {
+              autoSubmitTimerRef.current = null;
+              void submitBatchWithInputs(nextAnswers);
+            }, 800);
+          }
+          return nextAnswers;
+        }
+
+        if (Array.isArray(data.segments)) {
+          return applySegments(data.segments);
+        }
+
+        throw new Error('Invalid segment response format');
+      } catch (error) {
+        setRecordingError(
+          error instanceof Error ? error.message : 'Segment request failed',
+        );
+        return null;
+      } finally {
+        setIsSegmenting(false);
+        setSegmentProgress(100);
+        window.setTimeout(() => setSegmentProgress(0), 600);
+      }
+    },
+    [batchWords, currentSession, gateway, normalizeSegments, submitBatchWithInputs],
+  );
+
+  const stopBatchRecording = useCallback(() => {
+    setIsRecording(false);
+    recognizerRef.current?.stop();
+  }, []);
+
+  const startBatchRecording = useCallback(() => {
+    const recognizer = recognizerRef.current;
+    if (!recognizer || isRecording || isSubmitting || isJudging) {
+      return;
+    }
+
+    const sessionToken = recordingTokenRef.current + 1;
+    recordingTokenRef.current = sessionToken;
+    recordingTranscriptRef.current = '';
+    setRecordingTranscript('');
+    setSegmentedTokens([]);
+    setRecordingError(null);
+    setIsRecording(true);
+
+    try {
+      recognizer.updateConfig({ continuous: true, interimResults: true });
+      recognizer.startContinuous(
+        {
+          onResult: (result) => {
+            if (recordingTokenRef.current !== sessionToken) {
+              return;
+            }
+            if (!result.isFinal) {
+              return;
+            }
+            const trimmed = result.transcript.trim();
+            if (!trimmed) {
+              return;
+            }
+            const nextValue = recordingTranscriptRef.current
+              ? `${recordingTranscriptRef.current} ${trimmed}`
+              : trimmed;
+            recordingTranscriptRef.current = nextValue;
+            setRecordingTranscript(nextValue);
+          },
+          onError: (error) => {
+            if (recordingTokenRef.current !== sessionToken) {
+              return;
+            }
+            setIsRecording(false);
+            setRecordingError(
+              error instanceof Error ? error.message : 'Speech recognition error',
+            );
+          },
+          onEnd: () => {
+            if (recordingTokenRef.current !== sessionToken) {
+              return;
+            }
+            setIsRecording(false);
+          },
+        },
+        {
+          speechStartTimeoutMs: TEST_CONFIG.VOICE_SPEECH_TIMEOUT_MS,
+        },
+      );
+    } catch (error) {
+      setIsRecording(false);
+      setRecordingError(
+        error instanceof Error ? error.message : 'Speech recognition error',
+      );
+    }
+  }, [isRecording, isSubmitting, isJudging, segmentAndMatchTranscript]);
+
+  const handleRecordToggle = useCallback(() => {
+    if (isRecording) {
+      stopBatchRecording();
+    } else {
+      startBatchRecording();
+    }
+  }, [isRecording, startBatchRecording, stopBatchRecording]);
+
+  const handleSubmitBatch = useCallback(async () => {
+    await submitBatchWithInputs(answers);
+  }, [answers, submitBatchWithInputs]);
 
   const allFilled = batchWords.length > 0 && batchWords.every((word) => answers[word.id]?.trim());
 
   useEffect(() => {
-    if (!allFilled || isSubmitting || isJudging) {
+    if (!allFilled || isSubmitting || isJudging || autoSubmitTimerRef.current !== null) {
       return;
     }
 
@@ -245,6 +493,9 @@ export const TestPage: React.FC = () => {
   }, [allFilled, isSubmitting, isJudging, handleSubmitBatch]);
 
   const handleEndTest = () => {
+    if (isRecording) {
+      stopBatchRecording();
+    }
     endTest();
   };
 
@@ -341,75 +592,81 @@ export const TestPage: React.FC = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-          {batchWords.map((word) => {
-            const isListeningForWord = isListening && listeningWordId === word.id;
-            return (
-              <div
-                key={word.id}
-                className="bg-slate-800 border border-slate-700 rounded-xl p-4 space-y-3"
-              >
-                <div className="space-y-1">
-                  <div className="text-lg font-semibold text-cyan-300">{word.word}</div>
-                  <div className="text-xs text-slate-400 font-mono">{word.phonetic}</div>
-                </div>
-
-                <Input
-                  type="text"
-                  value={answers[word.id] ?? ''}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setAnswers((prev) => ({
-                      ...prev,
-                      [word.id]: value,
-                    }));
-                  }}
-                  placeholder="中文翻译"
-                  disabled={isJudging || isSubmitting}
-                  fullWidth
-                  rightElement={
-                    voiceEnabled ? (
-                      <button
-                        type="button"
-                        onClick={() => handleVoiceInput(word.id)}
-                        disabled={isJudging || isSubmitting || isListening}
-                        className={`h-8 w-8 flex items-center justify-center rounded-full transition-colors ${
-                          isListeningForWord
-                            ? 'bg-red-500 text-white animate-pulse'
-                            : 'bg-slate-600 text-slate-200 hover:bg-cyan-500'
-                        } disabled:opacity-50 disabled:cursor-not-allowed`}
-                        title="Voice input"
-                        aria-label="Voice input"
-                      >
-                        <svg
-                          className="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M12 1a3 3 0 00-3 3v6a3 3 0 006 0V4a3 3 0 00-3-3zm5 8a5 5 0 01-10 0m5 8v4m0 0H8m4 0h4"
-                          />
-                        </svg>
-                      </button>
-                    ) : undefined
-                  }
+        <div className="flex flex-col items-center gap-3 bg-slate-800 border border-slate-700 rounded-xl p-4">
+          <Button
+            variant={isRecording ? 'secondary' : 'primary'}
+            onClick={handleRecordToggle}
+            disabled={!voiceEnabled || isSubmitting || isJudging || isSegmenting}
+          >
+            {isRecording ? 'Stop Recording' : 'Start Recording'}
+          </Button>
+          <div className="text-xs text-slate-400">
+            {isRecording && 'Recording... Speak all 10 translations in one pass.'}
+            {!isRecording && isSegmenting && 'Segmenting and matching transcript...'}
+            {!isRecording && !isSegmenting && 'Click to record one pass for all 10 words.'}
+          </div>
+          {(isSegmenting || segmentProgress > 0) && (
+            <div className="w-full">
+              <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-cyan-500 transition-all duration-300"
+                  style={{ width: `${segmentProgress}%` }}
                 />
-
-                {isListeningForWord && (
-                  <p className="text-xs text-cyan-400 animate-pulse">Listening...</p>
-                )}
               </div>
-            );
-          })}
+              <div className="mt-1 text-right text-xs text-slate-400">
+                {Math.round(segmentProgress)}%
+              </div>
+            </div>
+          )}
+          <div className="w-full flex items-center gap-3">
+            <div className="flex-1 text-sm text-slate-200 bg-slate-900/60 border border-slate-700 rounded-lg px-3 py-2">
+              {segmentedDisplay || '等待切分结果...'}
+            </div>
+            <Button
+              variant="primary"
+              onClick={() => {
+                const transcript = recordingTranscript.trim()
+                if (transcript) {
+                  void segmentAndMatchTranscript(transcript, { autoSubmit: true })
+                }
+              }}
+              disabled={
+                isRecording ||
+                isSegmenting ||
+                isSubmitting ||
+                isJudging ||
+                recordingTranscript.trim().length === 0
+              }
+            >
+              提交
+            </Button>
+          </div>
+          {recordingError && (
+            <div className="text-xs text-red-400">{recordingError}</div>
+          )}
         </div>
 
-        {(isJudging || isSubmitting) && (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+          {batchWords.map((word) => (
+            <div
+              key={word.id}
+              className="bg-slate-800 border border-slate-700 rounded-xl p-4 space-y-3"
+            >
+              <div className="space-y-1">
+                <div className="text-lg font-semibold text-cyan-300">{word.word}</div>
+                <div className="text-xs text-slate-400 font-mono">{word.phonetic}</div>
+              </div>
+
+            </div>
+          ))}
+        </div>
+
+        {(isJudging || isSubmitting || isSegmenting) && (
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-            <LoadingSpinner size="lg" message="Submitting this batch..." />
+            <LoadingSpinner
+              size="lg"
+              message={isSegmenting ? 'Segmenting transcript...' : 'Submitting this batch...'}
+            />
           </div>
         )}
 

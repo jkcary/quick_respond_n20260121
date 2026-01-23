@@ -25,6 +25,8 @@ interface TestState {
   isJudging: boolean;
   userInput: string;
   lastResult: JudgmentResult | null;
+  totalWordCount: number;
+  gradeSelection: GradeLevel | GradeBook | null;
 
   // ==================== Actions ====================
   /**
@@ -102,6 +104,8 @@ export const useTestStore = create<TestState>((set, get) => ({
   isJudging: false,
   userInput: '',
   lastResult: null,
+  totalWordCount: 0,
+  gradeSelection: null,
 
   // ==================== Actions ====================
   startTest: async (gradeSelection, wordCount) => {
@@ -116,10 +120,11 @@ export const useTestStore = create<TestState>((set, get) => ({
           ? await getVocabularyCountForGradeBook(gradeSelection)
           : await getVocabularyCountUpToGrade(gradeSelection));
       const effectiveCount = totalCount > 0 ? totalCount : DEFAULT_WORD_COUNT;
+      const initialCount = Math.min(DEFAULT_WORD_COUNT * 2, effectiveCount);
 
       // Select words (prioritize errors)
       const selectedWords = await selectWords({
-        count: effectiveCount,
+        count: initialCount,
         ...(isGradeBook(gradeSelection)
           ? { gradeBook: gradeSelection }
           : { gradeLevel: gradeSelection }),
@@ -148,6 +153,8 @@ export const useTestStore = create<TestState>((set, get) => ({
         lastResult: null,
         isListening: false,
         isJudging: false,
+        totalWordCount: effectiveCount,
+        gradeSelection,
       });
     } catch (error) {
       console.error('Failed to start test:', error);
@@ -201,6 +208,8 @@ export const useTestStore = create<TestState>((set, get) => ({
     const errorLogStorage = new ErrorLogStorage();
     const now = Date.now();
     const results: TestResult[] = [];
+    let errorLog: Awaited<ReturnType<ErrorLogStorage['load']>> | null = null;
+    let errorLogDirty = false;
 
     for (const entry of entries) {
       const result: TestResult = {
@@ -215,10 +224,52 @@ export const useTestStore = create<TestState>((set, get) => ({
 
       if (!entry.judgment.correct) {
         try {
-          await errorLogStorage.addError(entry.word, entry.input, entry.judgment.correction);
+          if (!errorLog) {
+            errorLog = await errorLogStorage.load();
+          }
+          if (!('entries' in errorLog)) {
+            (errorLog as { entries: Record<string, unknown> }).entries = {};
+          }
+
+          const logEntries = (errorLog as { entries: Record<string, any> }).entries;
+          const existingEntry = logEntries[entry.word.id];
+          if (existingEntry) {
+            existingEntry.errorCount += 1;
+            existingEntry.lastErrorDate = now;
+            existingEntry.userInputs.push({
+              input: entry.input,
+              correction: entry.judgment.correction,
+              timestamp: now,
+            });
+          } else {
+            logEntries[entry.word.id] = {
+              word: entry.word,
+              errorCount: 1,
+              firstErrorDate: now,
+              lastErrorDate: now,
+              mastered: false,
+              userInputs: [
+                {
+                  input: entry.input,
+                  correction: entry.judgment.correction,
+                  timestamp: now,
+                },
+              ],
+            };
+          }
+
+          errorLogDirty = true;
         } catch (error) {
-          console.error('Failed to add error to log:', error);
+          console.error('Failed to stage error log update:', error);
         }
+      }
+    }
+
+    if (errorLogDirty && errorLog) {
+      try {
+        await errorLogStorage.save(errorLog);
+      } catch (error) {
+        console.error('Failed to save error log:', error);
       }
     }
 
@@ -238,7 +289,67 @@ export const useTestStore = create<TestState>((set, get) => ({
       set({
         currentWordIndex: nextIndex,
       });
-    } else {
+      return;
+    }
+
+    const { totalWordCount, gradeSelection } = get();
+    const targetCount = totalWordCount || currentSession.words.length;
+    if (nextIndex >= targetCount || !gradeSelection) {
+      get().endTest();
+      return;
+    }
+
+    const remainingCount = targetCount - currentSession.words.length;
+    const batchCount = Math.min(DEFAULT_WORD_COUNT * 2, remainingCount);
+
+    try {
+      const latestErrorLog = await errorLogStorage.load();
+      const sampleCount = Math.min(
+        targetCount,
+        currentSession.words.length + batchCount * 3,
+      );
+
+      const sampleSelection = await selectWords({
+        count: sampleCount,
+        ...(isGradeBook(gradeSelection)
+          ? { gradeBook: gradeSelection }
+          : { gradeLevel: gradeSelection }),
+        errorLog: latestErrorLog,
+        prioritizeErrors: true,
+        excludeMastered: true,
+      });
+
+      const existingIds = new Set(currentSession.words.map((word) => word.id));
+      let newWords = sampleSelection.filter((word) => !existingIds.has(word.id));
+
+      if (newWords.length < batchCount && sampleCount < targetCount) {
+        const fullSelection = await selectWords({
+          count: targetCount,
+          ...(isGradeBook(gradeSelection)
+            ? { gradeBook: gradeSelection }
+            : { gradeLevel: gradeSelection }),
+          errorLog: latestErrorLog,
+          prioritizeErrors: true,
+          excludeMastered: true,
+        });
+        newWords = fullSelection.filter((word) => !existingIds.has(word.id));
+      }
+
+      const appended = newWords.slice(0, batchCount);
+      if (appended.length === 0) {
+        get().endTest();
+        return;
+      }
+
+      set({
+        currentSession: {
+          ...currentSession,
+          words: [...currentSession.words, ...appended],
+        },
+        currentWordIndex: nextIndex,
+      });
+    } catch (error) {
+      console.error('Failed to load next batch:', error);
       get().endTest();
     }
   },
@@ -263,6 +374,8 @@ export const useTestStore = create<TestState>((set, get) => ({
           currentWordIndex: 0,
           userInput: '',
           lastResult: null,
+          totalWordCount: 0,
+          gradeSelection: null,
         });
       }, 300);
     }
@@ -276,6 +389,8 @@ export const useTestStore = create<TestState>((set, get) => ({
       isJudging: false,
       userInput: '',
       lastResult: null,
+      totalWordCount: 0,
+      gradeSelection: null,
     });
   },
 

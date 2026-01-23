@@ -7,6 +7,7 @@ import axios, { type AxiosInstance } from 'axios';
 import type { LLMClient, LLMRequest, LLMResponse, JudgmentResult, LLMConfig } from '@/types';
 import { parseJudgment, parseConnectionTest } from '../parser';
 import { JUDGMENT_SYSTEM_PROMPT, createJudgmentUserMessage, CONNECTION_TEST_PROMPT, CONNECTION_TEST_MESSAGE } from '../prompts';
+import { logAIUsage } from '@/utils/aiLogger';
 
 const DEFAULT_BASE_URL = 'https://api.moonshot.cn';
 const DEFAULT_MODEL = 'moonshot-v1-8k';
@@ -82,6 +83,21 @@ export class MoonshotClient implements LLMClient {
 
       const data = response.data;
       const content = data.choices?.[0]?.message?.content || '';
+
+      if (data.usage) {
+        const requestType =
+          request.requestType ??
+          (request.systemPrompt === CONNECTION_TEST_PROMPT ? 'connection_test' : 'judge');
+        void logAIUsage({
+          provider: this.config.provider,
+          model: this.config.modelName || DEFAULT_MODEL,
+          requestType,
+          promptTokens: data.usage.prompt_tokens,
+          completionTokens: data.usage.completion_tokens,
+          totalTokens: data.usage.total_tokens,
+          inputChars: request.userMessage?.length ?? 0,
+        });
+      }
 
       return {
         content,

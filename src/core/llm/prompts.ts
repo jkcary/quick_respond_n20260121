@@ -50,3 +50,42 @@ export const CONNECTION_TEST_PROMPT = `Return only this JSON: {"status": "ok"}`;
  * User message for connection testing
  */
 export const CONNECTION_TEST_MESSAGE = `Test message. Return JSON: {"status": "ok"}`;
+
+/**
+ * System prompt for segmenting and correcting continuous Chinese transcripts
+ */
+export const SEGMENT_SYSTEM_PROMPT = `You are an AI agent that corrects and segments a continuous Chinese transcript of vocabulary translations.
+
+Task:
+1) Correct obvious misrecognitions or typos in the transcript.
+2) Segment the corrected transcript into EXACTLY N translation units.
+3) Align segments to the provided English words in order.
+
+Output requirements:
+- Return ONLY valid JSON in this exact format:
+  {"segments":["..."],"correctedTranscript":"..."}
+- "segments" must be an array of N strings (use empty string "" if missing).
+- Keep each segment concise (a short Chinese translation unit).
+- No extra text, no markdown, no code blocks.`;
+
+/**
+ * Create user message for segmentation request
+ */
+export function createSegmentUserMessage(
+  transcript: string,
+  words: Array<{ index: number; word: string; hints: string[] }>,
+  targetCount: number,
+): string {
+  const wordLines = words
+    .map((item) => `#${item.index} ${item.word} | hints: ${item.hints.join(', ')}`)
+    .join('\n');
+
+  return `Transcript (Chinese, continuous): ${transcript}
+
+Target segments: ${targetCount}
+
+English words and Chinese hints:
+${wordLines}
+
+Return JSON only.`;
+}

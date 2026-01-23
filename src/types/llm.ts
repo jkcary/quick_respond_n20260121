@@ -63,6 +63,9 @@ export interface LLMRequest {
   /** User message (contains word and user input) */
   userMessage: string;
 
+  /** Optional request type for logging (e.g., "judge", "segment") */
+  requestType?: string;
+
   /** Maximum tokens to generate */
   maxTokens?: number;
 

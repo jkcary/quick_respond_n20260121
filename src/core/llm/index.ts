@@ -5,6 +5,7 @@
 export * from './gateway';
 export * from './prompts';
 export * from './parser';
+export * from './segmentAgent';
 export * from './providers/deepseek';
 export * from './providers/openai';
 export * from './providers/anthropic';

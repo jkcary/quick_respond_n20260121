@@ -3,7 +3,15 @@
  * Selects the appropriate LLM client based on configuration
  */
 
-import type { LLMClient, LLMConfig, JudgmentResult, ConnectionTestResult, LLMProvider } from '@/types';
+import type {
+  LLMClient,
+  LLMConfig,
+  JudgmentResult,
+  ConnectionTestResult,
+  LLMProvider,
+  LLMRequest,
+  LLMResponse,
+} from '@/types';
 import { DeepSeekClient } from './providers/deepseek';
 import { OpenAIClient } from './providers/openai';
 import { AnthropicClient } from './providers/anthropic';
@@ -84,6 +92,13 @@ export class LLMGateway {
         correction: `系统错误: ${error instanceof Error ? error.message : 'Unknown error'}`,
       };
     }
+  }
+
+  /**
+   * Send a raw request to the underlying LLM client
+   */
+  async sendRequest(request: LLMRequest): Promise<LLMResponse> {
+    return this.client.sendRequest(request);
   }
 
   /**

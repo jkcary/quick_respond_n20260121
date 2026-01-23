@@ -16,6 +16,7 @@ const ErrorLogPage: React.FC = () => {
     filter,
     setFilter,
     markAsMastered,
+    clearAll,
     getTotalErrorCount,
     getUnmasteredCount,
     getMasteredCount,
@@ -85,6 +86,18 @@ const ErrorLogPage: React.FC = () => {
     navigate('/');
   };
 
+  const handleClearAll = async () => {
+    if (totalErrors === 0) {
+      return;
+    }
+    const confirmed = window.confirm('确定要清空全部错词记录吗？此操作无法撤销。');
+    if (!confirmed) {
+      return;
+    }
+    await clearAll();
+    setSelectedWordId(null);
+  };
+
   const handleFilterChange = (nextFilter: 'all' | 'unmastered' | 'mastered') => {
     if (nextFilter === 'mastered') {
       navigate('/mastered');
@@ -103,9 +116,18 @@ const ErrorLogPage: React.FC = () => {
             <h1 className="text-3xl font-bold text-cyan-400 mb-2">Error Log</h1>
             <p className="text-slate-400">Track and review your error words</p>
           </div>
-          <Button variant="ghost" onClick={handleBack}>
-            返回首页
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="secondary"
+              onClick={handleClearAll}
+              disabled={totalErrors === 0}
+            >
+              清除错词
+            </Button>
+            <Button variant="ghost" onClick={handleBack}>
+              返回首页
+            </Button>
+          </div>
         </div>
 
         {/* Stats */}

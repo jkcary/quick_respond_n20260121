@@ -6,6 +6,7 @@ import axios, { type AxiosInstance } from 'axios';
 import type { LLMClient, LLMRequest, LLMResponse, JudgmentResult, LLMConfig } from '@/types';
 import { parseJudgment, parseConnectionTest } from '../parser';
 import { JUDGMENT_SYSTEM_PROMPT, createJudgmentUserMessage, CONNECTION_TEST_PROMPT, CONNECTION_TEST_MESSAGE } from '../prompts';
+import { logAIUsage } from '@/utils/aiLogger';
 
 const DEFAULT_BASE_URL = 'https://api.anthropic.com';
 const DEFAULT_MODEL = 'claude-3-haiku-20240307';
@@ -80,6 +81,21 @@ export class AnthropicClient implements LLMClient {
 
       const data = response.data;
       const content = data.content?.[0]?.text || '';
+
+      if (data.usage) {
+        const requestType =
+          request.requestType ??
+          (request.systemPrompt === CONNECTION_TEST_PROMPT ? 'connection_test' : 'judge');
+        void logAIUsage({
+          provider: this.config.provider,
+          model: this.config.modelName || DEFAULT_MODEL,
+          requestType,
+          promptTokens: data.usage.input_tokens,
+          completionTokens: data.usage.output_tokens,
+          totalTokens: data.usage.input_tokens + data.usage.output_tokens,
+          inputChars: request.userMessage?.length ?? 0,
+        });
+      }
 
       return {
         content,
