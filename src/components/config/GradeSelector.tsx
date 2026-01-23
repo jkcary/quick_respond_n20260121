@@ -7,6 +7,7 @@ import type { GradeBook } from '@/types';
 import { createGradeBook, getGradeBookLabel, parseGradeBook } from '@/types';
 import { Select } from '@/components/common';
 import { getVocabularyCountForGradeBook } from '@/core/vocabulary';
+import { useI18n } from '@/i18n';
 
 export interface GradeSelectorProps {
   value: GradeBook;
@@ -38,6 +39,7 @@ export const GradeSelector: React.FC<GradeSelectorProps> = ({
   onChange,
   disabled = false,
 }) => {
+  const { t } = useI18n();
   const [wordCounts, setWordCounts] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
 
@@ -75,18 +77,18 @@ export const GradeSelector: React.FC<GradeSelectorProps> = ({
   return (
     <div className="space-y-2">
       <Select
-        label="Grade Level"
+        label={t('settings.gradeLabel')}
         value={value}
         onChange={handleChange}
         disabled={disabled || loading}
         options={GRADE_OPTIONS.map((opt) => ({
           value: opt.value,
-          label: `${opt.label} ${wordCounts[opt.value] ? `(${wordCounts[opt.value]} words)` : ''}`,
+          label: `${opt.label} ${wordCounts[opt.value] ? t('settings.gradeWordsSuffix', { count: wordCounts[opt.value] }) : ''}`,
         }))}
         helperText={
           loading
-            ? 'Loading word counts...'
-            : `Vocabulary includes all words up to ${selectedLabel} (${currentCount} words total)`
+            ? t('settings.gradeLoading')
+            : t('settings.gradeHelper', { label: selectedLabel, count: currentCount })
         }
         fullWidth
       />
@@ -94,9 +96,13 @@ export const GradeSelector: React.FC<GradeSelectorProps> = ({
       {/* Visual grade indicator */}
       <div className="bg-slate-800 rounded-lg p-4 border border-slate-700">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm text-slate-400">Difficulty Level:</span>
+          <span className="text-sm text-slate-400">{t('settings.difficultyLabel')}</span>
           <span className="text-cyan-400 font-medium">
-            {grade <= 4 ? 'Beginner' : grade <= 6 ? 'Intermediate' : 'Advanced'}
+            {grade <= 4
+              ? t('settings.difficultyBeginner')
+              : grade <= 6
+              ? t('settings.difficultyIntermediate')
+              : t('settings.difficultyAdvanced')}
           </span>
         </div>
         <div className="w-full bg-slate-700 rounded-full h-2 overflow-hidden">

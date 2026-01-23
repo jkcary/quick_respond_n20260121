@@ -10,6 +10,7 @@ import { GradeSelector, LLMConfigForm, APITester, type LLMFormData } from '@/com
 import { toast } from '@/components/common';
 import { LLMProvider, type GradeBook, type LLMConfig } from '@/types';
 import { getGradeBookForGrade, getGradeBookLabel, parseGradeBook } from '@/types';
+import { useI18n } from '@/i18n';
 
 const DEFAULT_PROVIDER_SETTINGS: Record<LLMProvider, { model: string; baseUrl: string }> = {
   [LLMProvider.DeepSeek]: {
@@ -49,6 +50,7 @@ const normalizeProvider = (value?: string): LLMProvider => {
 
 const SettingsPage: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useI18n();
   const config = useAppStore((state) => state.config);
   const updateConfig = useAppStore((state) => state.updateConfig);
 
@@ -60,7 +62,7 @@ const SettingsPage: React.FC = () => {
     const { grade } = parseGradeBook(gradeBook);
     setSelectedGradeBook(gradeBook);
     updateConfig({ gradeBook, gradeLevel: grade });
-    toast.success(`Grade level updated to ${getGradeBookLabel(gradeBook)}`);
+    toast.success(t('settings.toastGradeUpdated', { grade: getGradeBookLabel(gradeBook) }));
   };
 
   const handleLLMConfigSave = (data: LLMFormData) => {
@@ -82,14 +84,14 @@ const SettingsPage: React.FC = () => {
       apiKey: data.apiKey,
       apiBaseUrl: data.baseUrl,
     });
-    toast.success('LLM configuration saved');
+    toast.success(t('settings.toastLlmSaved'));
   };
 
   const handleAutoPlayToggle = () => {
     const newValue = !autoPlayAudio;
     setAutoPlayAudio(newValue);
     updateConfig({ autoPlayPronunciation: newValue });
-    toast.success(`Auto-play ${newValue ? 'enabled' : 'disabled'}`);
+    toast.success(newValue ? t('settings.toastAutoPlayOn') : t('settings.toastAutoPlayOff'));
   };
 
   const legacyProvider = normalizeProvider(config.apiProvider);
@@ -142,18 +144,19 @@ const SettingsPage: React.FC = () => {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-cyan-400 mb-2">Settings</h1>
-            <p className="text-slate-400">Configure your learning experience</p>
+            <h1 className="text-3xl font-bold text-cyan-400 mb-2">{t('settings.title')}</h1>
+            <p className="text-slate-400">{t('settings.subtitle')}</p>
           </div>
-          <Button variant="ghost" onClick={() => navigate('/')}>
-            ← Back to Home
+          <Button variant="ghost" onClick={() => navigate('/')}
+          >
+            {t('settings.backHome')}
           </Button>
         </div>
 
         {/* Grade Level */}
         <Card>
           <h2 className="text-xl font-semibold text-slate-200 mb-4">
-            Vocabulary Level
+            {t('settings.sectionVocabulary')}
           </h2>
           <GradeSelector
             value={selectedGradeBook}
@@ -164,7 +167,7 @@ const SettingsPage: React.FC = () => {
         {/* LLM Configuration */}
         <Card>
           <h2 className="text-xl font-semibold text-slate-200 mb-4">
-            LLM Provider
+            {t('settings.sectionLlm')}
           </h2>
           <LLMConfigForm
             initialData={{
@@ -186,16 +189,16 @@ const SettingsPage: React.FC = () => {
         {/* Audio Settings */}
         <Card>
           <h2 className="text-xl font-semibold text-slate-200 mb-4">
-            Audio Settings
+            {t('settings.sectionAudio')}
           </h2>
           <div className="space-y-4">
             <label className="flex items-center justify-between cursor-pointer group">
               <div className="flex-1">
                 <div className="text-slate-200 font-medium group-hover:text-cyan-400 transition">
-                  Auto-play Pronunciation
+                  {t('settings.autoPlayTitle')}
                 </div>
                 <div className="text-sm text-slate-400 mt-1">
-                  Automatically play word pronunciation when shown
+                  {t('settings.autoPlayDesc')}
                 </div>
               </div>
               <button
@@ -218,19 +221,18 @@ const SettingsPage: React.FC = () => {
         {/* About */}
         <Card>
           <h2 className="text-xl font-semibold text-slate-200 mb-4">
-            About
+            {t('settings.sectionAbout')}
           </h2>
           <div className="space-y-2 text-sm text-slate-400">
             <p>
-              <strong className="text-slate-300">English AI Agent</strong> - Version 1.0.0
+              <strong className="text-slate-300">{t('settings.aboutVersion')}</strong>
             </p>
             <p>
-              An intelligent vocabulary learning assistant powered by AI
+              {t('settings.aboutDesc')}
             </p>
             <div className="pt-4 border-t border-slate-700 mt-4">
               <p className="text-slate-500 text-xs">
-                Your data is stored locally and never sent to external servers.
-                API keys are used only for LLM judgment requests.
+                {t('settings.aboutPrivacy')}
               </p>
             </div>
           </div>

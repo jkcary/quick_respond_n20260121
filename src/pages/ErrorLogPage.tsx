@@ -7,9 +7,11 @@ import { useNavigate } from 'react-router-dom';
 import { useErrorStore } from '@/store/errorStore';
 import { Card, Button } from '@/components/common';
 import { ErrorList, VSTCard, ExportPanel } from '@/components/review';
+import { useI18n } from '@/i18n';
 
 const ErrorLogPage: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useI18n();
   const {
     loadErrorLog,
     getFilteredErrors,
@@ -90,7 +92,7 @@ const ErrorLogPage: React.FC = () => {
     if (totalErrors === 0) {
       return;
     }
-    const confirmed = window.confirm('确定要清空全部错词记录吗？此操作无法撤销。');
+    const confirmed = window.confirm(t('errorLog.confirmClear'));
     if (!confirmed) {
       return;
     }
@@ -113,8 +115,8 @@ const ErrorLogPage: React.FC = () => {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-cyan-400 mb-2">Error Log</h1>
-            <p className="text-slate-400">Track and review your error words</p>
+            <h1 className="text-3xl font-bold text-cyan-400 mb-2">{t('errorLog.title')}</h1>
+            <p className="text-slate-400">{t('errorLog.subtitle')}</p>
           </div>
           <div className="flex items-center gap-2">
             <Button
@@ -122,10 +124,10 @@ const ErrorLogPage: React.FC = () => {
               onClick={handleClearAll}
               disabled={totalErrors === 0}
             >
-              清除错词
+              {t('errorLog.clear')}
             </Button>
             <Button variant="ghost" onClick={handleBack}>
-              返回首页
+              {t('errorLog.backHome')}
             </Button>
           </div>
         </div>
@@ -135,7 +137,7 @@ const ErrorLogPage: React.FC = () => {
           <Card>
             <div className="text-center">
               <div className="text-4xl font-bold text-red-400 mb-2">{totalErrors}</div>
-              <div className="text-sm text-slate-400">Total Errors</div>
+              <div className="text-sm text-slate-400">{t('errorLog.statsTotal')}</div>
             </div>
           </Card>
           <Card>
@@ -143,7 +145,7 @@ const ErrorLogPage: React.FC = () => {
               <div className="text-4xl font-bold text-yellow-400 mb-2">
                 {unmasteredCount}
               </div>
-              <div className="text-sm text-slate-400">To Practice</div>
+              <div className="text-sm text-slate-400">{t('errorLog.statsToPractice')}</div>
             </div>
           </Card>
           <Card>
@@ -151,7 +153,7 @@ const ErrorLogPage: React.FC = () => {
               <div className="text-4xl font-bold text-green-400 mb-2">
                 {masteredCount}
               </div>
-              <div className="text-sm text-slate-400">Mastered</div>
+              <div className="text-sm text-slate-400">{t('errorLog.statsMastered')}</div>
             </div>
           </Card>
         </div>
@@ -162,9 +164,9 @@ const ErrorLogPage: React.FC = () => {
           <div className="lg:col-span-2">
             <Card>
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold text-slate-200">Error Log</h2>
+                <h2 className="text-xl font-semibold text-slate-200">{t('errorLog.title')}</h2>
                 <Button variant="ghost" size="sm" onClick={handleBack}>
-                  返回
+                  {t('errorLog.back')}
                 </Button>
               </div>
               <ErrorList

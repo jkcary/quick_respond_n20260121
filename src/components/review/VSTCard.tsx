@@ -7,6 +7,7 @@ import type { ErrorLogEntry } from '@/types';
 import { Button, Card } from '@/components/common';
 import { SpeechSynthesizer } from '@/core/speech';
 import { formatRelativeTime } from '@/utils/formatters';
+import { useI18n } from '@/i18n';
 
 export interface VSTCardProps {
   errorEntry: ErrorLogEntry;
@@ -25,6 +26,7 @@ export const VSTCard: React.FC<VSTCardProps> = ({
   onNext,
   onPrev,
 }) => {
+  const { t } = useI18n();
   const [stage, setStage] = useState<RevealStage>('word');
   const [synthesizer] = useState(() => new SpeechSynthesizer());
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -83,17 +85,17 @@ export const VSTCard: React.FC<VSTCardProps> = ({
             <div className="flex items-center gap-4">
               {onPrev && (
                 <Button variant="ghost" onClick={onPrev} size="sm">
-                  ← Previous
+                  {t('vst.prev')}
                 </Button>
               )}
               {onNext && (
                 <Button variant="ghost" onClick={onNext} size="sm">
-                  Next →
+                  {t('vst.next')}
                 </Button>
               )}
             </div>
             <Button variant="ghost" onClick={onClose} size="sm">
-              Close ✕
+              {t('vst.close')}
             </Button>
           </div>
 
@@ -144,7 +146,7 @@ export const VSTCard: React.FC<VSTCardProps> = ({
                     d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"
                   />
                 </svg>
-                {isSpeaking ? 'Playing...' : 'Replay Pronunciation'}
+                {isSpeaking ? t('vst.playing') : t('vst.replay')}
               </Button>
             </div>
 
@@ -175,7 +177,11 @@ export const VSTCard: React.FC<VSTCardProps> = ({
               {/* Reveal button */}
               {stageIndex < 3 && (
                 <Button onClick={handleRevealNext} variant="primary" size="lg">
-                  Reveal {stageIndex === 0 ? 'Phonetic' : stageIndex === 1 ? 'Translation' : 'Example'}
+                  {stageIndex === 0
+                    ? t('vst.revealPhonetic')
+                    : stageIndex === 1
+                    ? t('vst.revealTranslation')
+                    : t('vst.revealExample')}
                 </Button>
               )}
             </div>
@@ -186,19 +192,19 @@ export const VSTCard: React.FC<VSTCardProps> = ({
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="text-center">
                 <div className="text-3xl font-bold text-red-400">{errorEntry.errorCount}</div>
-                <div className="text-sm text-slate-400">Total Errors</div>
+                <div className="text-sm text-slate-400">{t('vst.statsTotalErrors')}</div>
               </div>
               <div className="text-center">
                 <div className="text-lg font-medium text-slate-300">
                   {formatRelativeTime(errorEntry.lastErrorDate)}
                 </div>
-                <div className="text-sm text-slate-400">Last Error</div>
+                <div className="text-sm text-slate-400">{t('vst.statsLastError')}</div>
               </div>
               <div className="text-center">
                 <div className="text-lg font-medium text-slate-300">
-                  Grade {word.gradeLevel}
+                  {t('vst.statsGrade', { grade: word.gradeLevel })}
                 </div>
-                <div className="text-sm text-slate-400">Difficulty Level</div>
+                <div className="text-sm text-slate-400">{t('vst.statsDifficulty')}</div>
               </div>
             </div>
           </Card>
@@ -207,12 +213,12 @@ export const VSTCard: React.FC<VSTCardProps> = ({
           <div className="flex gap-4">
             {!errorEntry.mastered && (
               <Button onClick={onMaster} variant="primary" fullWidth>
-                Mark as Mastered ✓
+                {t('vst.markMastered')}
               </Button>
             )}
             {errorEntry.mastered && (
               <div className="w-full text-center py-3 bg-green-900/20 border border-green-700 rounded-lg text-green-400 font-medium">
-                ✓ Mastered
+                {t('vst.mastered')}
               </div>
             )}
           </div>
@@ -220,7 +226,7 @@ export const VSTCard: React.FC<VSTCardProps> = ({
           {/* Error history */}
           {errorEntry.userInputs.length > 0 && (
             <Card>
-              <h3 className="text-lg font-medium text-slate-200 mb-4">Error History</h3>
+              <h3 className="text-lg font-medium text-slate-200 mb-4">{t('vst.historyTitle')}</h3>
               <div className="space-y-3 max-h-64 overflow-y-auto">
                 {errorEntry.userInputs.map((input, index) => (
                   <div
@@ -230,10 +236,10 @@ export const VSTCard: React.FC<VSTCardProps> = ({
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1">
                         <div className="text-red-400">
-                          Your answer: {input.input || '(empty)'}
+                          {t('vst.historyAnswer')}: {input.input || t('vst.historyEmpty')}
                         </div>
                         <div className="text-green-400 text-sm mt-1">
-                          Correct: {input.correction}
+                          {t('vst.historyCorrect')}: {input.correction}
                         </div>
                       </div>
                       <div className="text-xs text-slate-400">

@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import type { VocabularyItem } from '@/types';
 import { Card } from '@/components/common';
 import { SpeechSynthesizer } from '@/core/speech';
+import { useI18n } from '@/i18n';
 
 export interface WordCardProps {
   word: VocabularyItem;
@@ -18,6 +19,7 @@ export const WordCard: React.FC<WordCardProps> = ({
   onSpeak,
   autoPlay = false,
 }) => {
+  const { t } = useI18n();
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [synthesizer] = useState(() => new SpeechSynthesizer());
 
@@ -79,7 +81,7 @@ export const WordCard: React.FC<WordCardProps> = ({
                 clipRule="evenodd"
               />
             </svg>
-            <span className="text-sm font-medium">Speaking...</span>
+            <span className="text-sm font-medium">{t('test.wordCardSpeaking')}</span>
           </div>
         </div>
       )}
@@ -109,7 +111,11 @@ export const WordCard: React.FC<WordCardProps> = ({
             d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"
           />
         </svg>
-        <span>Click to {isSpeaking ? 'replay' : 'hear'} pronunciation</span>
+        <span>
+          {t('test.wordCardClickHint', {
+            action: isSpeaking ? t('test.wordCardReplay') : t('test.wordCardHear'),
+          })}
+        </span>
       </div>
     </Card>
   );

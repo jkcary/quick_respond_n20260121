@@ -5,6 +5,7 @@
 import React from 'react';
 import type { TestSession } from '@/types';
 import { ProgressBar } from '@/components/common';
+import { useI18n } from '@/i18n';
 
 export interface ScorePanelProps {
   session: TestSession;
@@ -19,6 +20,7 @@ export const ScorePanel: React.FC<ScorePanelProps> = ({
   batchSize,
   filledCount = 0,
 }) => {
+  const { t } = useI18n();
   const totalWords = session.words.length;
   const completedWords = session.results.length;
   const progress = totalWords > 0 ? (completedWords / totalWords) * 100 : 0;
@@ -34,7 +36,12 @@ export const ScorePanel: React.FC<ScorePanelProps> = ({
         <ProgressBar
           value={progress}
           max={100}
-          label={`Batch ${currentBatch}/${totalBatches} - ${completedWords}/${totalWords} completed`}
+          label={t('test.progressLabel', {
+            currentBatch,
+            totalBatches,
+            completed: completedWords,
+            total: totalWords,
+          })}
           color="cyan"
           animated
         />
@@ -43,17 +50,17 @@ export const ScorePanel: React.FC<ScorePanelProps> = ({
         <div className="grid grid-cols-3 gap-2 text-center">
           <div className="bg-slate-800 rounded-lg p-2">
             <div className="text-2xl font-bold text-cyan-400">{completedWords}</div>
-            <div className="text-xs text-slate-400">Completed</div>
+            <div className="text-xs text-slate-400">{t('test.progressCompleted')}</div>
           </div>
           <div className="bg-slate-800 rounded-lg p-2">
             <div className="text-2xl font-bold text-slate-200">{remainingWords}</div>
-            <div className="text-xs text-slate-400">Remaining</div>
+            <div className="text-xs text-slate-400">{t('test.progressRemaining')}</div>
           </div>
           <div className="bg-slate-800 rounded-lg p-2">
             <div className="text-2xl font-bold text-amber-400">
               {batchTotal > 0 ? Math.min(filledCount, batchTotal) : 0}/{batchTotal}
             </div>
-            <div className="text-xs text-slate-400">This Batch</div>
+            <div className="text-xs text-slate-400">{t('test.progressBatch')}</div>
           </div>
         </div>
       </div>

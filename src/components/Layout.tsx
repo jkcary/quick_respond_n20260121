@@ -1,14 +1,16 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useAppStore } from '@/store/useAppStore';
+import { useI18n } from '@/i18n';
 
 const Layout = () => {
   const location = useLocation();
   const errorCount = useAppStore((state) => state.errorLog.length);
+  const { t } = useI18n();
 
   const navItems = [
-    { path: '/', label: 'Diagnosis', icon: '🎯' },
-    { path: '/error-log', label: 'Review', icon: '📚', badge: errorCount },
-    { path: '/settings', label: 'Settings', icon: '⚙️' },
+    { path: '/', label: t('nav.diagnosis'), icon: 'D' },
+    { path: '/error-log', label: t('nav.review'), icon: 'R', badge: errorCount },
+    { path: '/settings', label: t('nav.settings'), icon: 'S' },
   ];
 
   return (
@@ -18,10 +20,10 @@ const Layout = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold text-gradient-cyber">
-              English AI Agent
+              {t('app.name')}
             </h1>
             <div className="text-sm text-cyber-secondary">
-              Powered by AI
+              {t('app.poweredBy')}
             </div>
           </div>
         </div>

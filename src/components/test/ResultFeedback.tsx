@@ -5,6 +5,7 @@
 import React, { useEffect } from 'react';
 import type { TestResult, VocabularyItem } from '@/types';
 import { Card, Button } from '@/components/common';
+import { useI18n } from '@/i18n';
 
 export interface ResultFeedbackProps {
   result: TestResult;
@@ -21,6 +22,7 @@ export const ResultFeedback: React.FC<ResultFeedbackProps> = ({
   autoAdvance = true,
   autoAdvanceDelay = 1500,
 }) => {
+  const { t } = useI18n();
   const isCorrect = result.correct;
 
   // Auto-advance for correct answers
@@ -75,7 +77,7 @@ export const ResultFeedback: React.FC<ResultFeedbackProps> = ({
           isCorrect ? 'text-green-400' : 'text-red-400'
         }`}
       >
-        {isCorrect ? 'Correct!' : 'Incorrect'}
+        {isCorrect ? t('test.feedbackCorrect') : t('test.feedbackIncorrect')}
       </h2>
 
       {/* English word */}
@@ -87,13 +89,13 @@ export const ResultFeedback: React.FC<ResultFeedbackProps> = ({
       <div className="space-y-2 mb-6">
         {!isCorrect && result.userInput && (
           <div className="text-red-400">
-            <span className="text-slate-400">Your answer:</span> {result.userInput}
+            <span className="text-slate-400">{t('test.feedbackYourAnswer')}:</span> {result.userInput}
           </div>
         )}
 
         <div className={isCorrect ? 'text-green-400' : 'text-cyan-400'}>
           <span className="text-slate-400">
-            {isCorrect ? 'Translation:' : 'Correct answer:'}
+            {isCorrect ? t('test.feedbackTranslation') : t('test.feedbackCorrectAnswer')}
           </span>{' '}
           {result.correction}
         </div>
@@ -102,7 +104,7 @@ export const ResultFeedback: React.FC<ResultFeedbackProps> = ({
       {/* Example sentence (only show for incorrect) */}
       {!isCorrect && word.exampleSentence && (
         <div className="border-t border-slate-700 pt-4 mb-6">
-          <p className="text-sm text-slate-400 mb-2">Example:</p>
+          <p className="text-sm text-slate-400 mb-2">{t('test.feedbackExample')}</p>
           <p className="text-slate-300">{word.exampleSentence}</p>
           <p className="text-slate-400 text-sm mt-1">{word.exampleChinese}</p>
         </div>
@@ -111,14 +113,14 @@ export const ResultFeedback: React.FC<ResultFeedbackProps> = ({
       {/* Next button (only show for incorrect, correct auto-advances) */}
       {!isCorrect && (
         <Button onClick={onNext} variant="primary" size="lg" fullWidth>
-          Next Word
+          {t('test.feedbackNextWord')}
         </Button>
       )}
 
       {/* Auto-advance indicator for correct */}
       {isCorrect && autoAdvance && (
         <p className="text-slate-400 text-sm animate-pulse">
-          Auto-advancing...
+          {t('test.feedbackAutoAdvance')}
         </p>
       )}
     </Card>

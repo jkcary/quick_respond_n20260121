@@ -8,9 +8,11 @@ import { useErrorStore } from '@/store/errorStore';
 import { Button, Card } from '@/components/common';
 import { VSTCard } from '@/components/review';
 import { formatRelativeTime } from '@/utils/formatters';
+import { useI18n } from '@/i18n';
 
 const MasteredPage: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useI18n();
   const {
     loadErrorLog,
     errorLog,
@@ -78,14 +80,12 @@ const MasteredPage: React.FC = () => {
         {/* Header */}
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-green-400 mb-2">Mastered Archive</h1>
-            <p className="text-slate-400">
-              Your mastered words, ready for quick review
-            </p>
+            <h1 className="text-3xl font-bold text-green-400 mb-2">{t('mastered.title')}</h1>
+            <p className="text-slate-400">{t('mastered.subtitle')}</p>
           </div>
           <div className="flex items-center gap-3">
             <Button variant="ghost" onClick={handleBack}>
-              返回错误日志
+              {t('mastered.backToLog')}
             </Button>
           </div>
         </div>
@@ -97,7 +97,7 @@ const MasteredPage: React.FC = () => {
               <div className="text-4xl font-bold text-green-400 mb-2">
                 {totalMastered}
               </div>
-              <div className="text-sm text-slate-400">Mastered Words</div>
+              <div className="text-sm text-slate-400">{t('mastered.statsMastered')}</div>
             </div>
           </Card>
           <Card>
@@ -105,15 +105,15 @@ const MasteredPage: React.FC = () => {
               <div className="text-4xl font-bold text-cyan-400 mb-2">
                 {averageErrors}
               </div>
-              <div className="text-sm text-slate-400">Avg Errors</div>
+              <div className="text-sm text-slate-400">{t('mastered.statsAvgErrors')}</div>
             </div>
           </Card>
           <Card>
             <div className="text-center">
               <div className="text-lg font-medium text-slate-300">
-                {latestErrorDate > 0 ? formatRelativeTime(latestErrorDate) : 'No data'}
+                {latestErrorDate > 0 ? formatRelativeTime(latestErrorDate) : '?'}
               </div>
-              <div className="text-sm text-slate-400">Latest Error</div>
+              <div className="text-sm text-slate-400">{t('mastered.statsLatestError')}</div>
             </div>
           </Card>
         </div>
@@ -122,14 +122,14 @@ const MasteredPage: React.FC = () => {
         <Card className="p-4">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <div>
-              <h2 className="text-lg font-semibold text-slate-200">Mastered Words</h2>
-              <p className="text-sm text-slate-500">Search by English or Chinese</p>
+              <h2 className="text-lg font-semibold text-slate-200">{t('mastered.searchTitle')}</h2>
+              <p className="text-sm text-slate-500">{t('mastered.searchSubtitle')}</p>
             </div>
             <div className="relative w-full md:w-72">
               <input
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
-                placeholder="Search words..."
+                placeholder={t('mastered.searchPlaceholder')}
                 className="w-full rounded-lg bg-slate-900 border border-slate-700 px-4 py-2 text-slate-200 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-green-500/60"
               />
             </div>
@@ -139,9 +139,9 @@ const MasteredPage: React.FC = () => {
         {/* Mastered list */}
         {filteredEntries.length === 0 ? (
           <Card className="text-center py-12">
-            <div className="text-slate-400 text-lg">No mastered words yet</div>
+            <div className="text-slate-400 text-lg">{t('mastered.emptyTitle')}</div>
             <p className="text-slate-500 mt-2">
-              Mark words as mastered to build your archive.
+              {t('mastered.emptySubtitle')}
             </p>
           </Card>
         ) : (
@@ -163,14 +163,14 @@ const MasteredPage: React.FC = () => {
                       </div>
                     </div>
                     <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-green-900/40 text-green-300 text-xs font-medium">
-                      Mastered
+                      {t('mastered.badgeMastered')}
                     </span>
                   </div>
 
                   <div className="flex flex-wrap items-center gap-3 text-sm text-slate-400">
                     <div className="inline-flex items-center gap-2">
                       <span className="w-2 h-2 rounded-full bg-red-400/70" />
-                      {entry.errorCount} errors
+                      {t('mastered.errorsCount', { count: entry.errorCount })}
                     </div>
                     <div className="inline-flex items-center gap-2">
                       <span className="w-2 h-2 rounded-full bg-cyan-400/70" />
@@ -184,14 +184,14 @@ const MasteredPage: React.FC = () => {
                       size="sm"
                       onClick={() => setSelectedWordId(entry.word.id)}
                     >
-                      查看卡片
+                      {t('mastered.viewCard')}
                     </Button>
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={() => handleRestore(entry.word.id)}
                     >
-                      重新练习
+                      {t('mastered.restore')}
                     </Button>
                   </div>
                 </div>

@@ -9,6 +9,7 @@ import { useAppStore } from '@/store/useAppStore';
 import { ScorePanel } from './ScorePanel';
 import { Button, Modal, LoadingSpinner } from '@/components/common';
 import { LLMGateway, segmentWithAgent } from '@/core/llm';
+import { useI18n } from '@/i18n';
 import { SpeechRecognizer } from '@/core/speech';
 import { requestMicrophonePermission, isSpeechRecognitionSupported } from '@/core/speech';
 import { formatDuration } from '@/utils/formatters';
@@ -20,6 +21,7 @@ const BATCH_SIZE = TEST_CONFIG.WORDS_PER_TEST;
 
 export const TestPage: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useI18n();
   const config = useAppStore((state) => state.config);
   const {
     currentSession,
@@ -522,38 +524,38 @@ export const TestPage: React.FC = () => {
     <Modal
       isOpen={showSummary}
       onClose={handleCloseSummary}
-      title="Test Complete"
+      title={t('test.summaryTitle')}
       closeOnBackdrop={false}
       size="lg"
     >
       <div className="space-y-6">
         <div className="text-center">
-          <div className="text-5xl font-bold text-cyan-400 mb-2">Done</div>
-          <div className="text-lg text-slate-300">All batches have been submitted.</div>
+          <div className="text-5xl font-bold text-cyan-400 mb-2">{t('test.summaryTitle')}</div>
+          <div className="text-lg text-slate-300">{t('test.summaryDone')}</div>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div className="bg-slate-700 rounded-lg p-4 text-center">
             <div className="text-3xl font-bold text-cyan-400">{summaryTotal}</div>
-            <div className="text-sm text-slate-400">Total Words</div>
+            <div className="text-sm text-slate-400">{t('test.summaryTotalWords')}</div>
           </div>
           <div className="bg-slate-700 rounded-lg p-4 text-center">
             <div className="text-2xl font-bold text-cyan-400">
               {formatDuration(summaryDuration)}
             </div>
-            <div className="text-sm text-slate-400">Time Taken</div>
+            <div className="text-sm text-slate-400">{t('test.summaryTimeTaken')}</div>
           </div>
         </div>
 
         <div className="flex gap-4">
           <Button variant="ghost" onClick={handleCloseSummary} fullWidth>
-            Close
+            {t('test.summaryClose')}
           </Button>
           <Button variant="secondary" onClick={handleReturnHome} fullWidth>
-            Return Home
+            {t('test.summaryReturnHome')}
           </Button>
           <Button variant="primary" onClick={handleRetry} fullWidth>
-            Start Again
+            {t('test.summaryRetry')}
           </Button>
         </div>
       </div>
@@ -565,7 +567,7 @@ export const TestPage: React.FC = () => {
       <div className="min-h-screen bg-slate-900">
         {!shouldShowSummary && (
           <div className="flex items-center justify-center min-h-screen">
-            <LoadingSpinner size="lg" message="Loading test..." />
+            <LoadingSpinner size="lg" message={t('test.loading')} />
           </div>
         )}
         {summaryModal}
@@ -585,10 +587,10 @@ export const TestPage: React.FC = () => {
       <div className="max-w-6xl mx-auto p-6 space-y-6">
         <div className="text-center space-y-2">
           <h2 className="text-xl text-slate-200 font-semibold">
-            完成本组 {batchWords.length} 个单词后自动提交
+            {t('test.headerTitle', { count: batchWords.length })}
           </h2>
           <p className="text-sm text-slate-400">
-            每组两排、每排五个单词，全部填写完成后自动进入下一组。
+            {t('test.headerSubtitle')}
           </p>
         </div>
 
@@ -598,12 +600,12 @@ export const TestPage: React.FC = () => {
             onClick={handleRecordToggle}
             disabled={!voiceEnabled || isSubmitting || isJudging || isSegmenting}
           >
-            {isRecording ? 'Stop Recording' : 'Start Recording'}
+            {isRecording ? t('test.recordStop') : t('test.recordStart')}
           </Button>
           <div className="text-xs text-slate-400">
-            {isRecording && 'Recording... Speak all 10 translations in one pass.'}
-            {!isRecording && isSegmenting && 'Segmenting and matching transcript...'}
-            {!isRecording && !isSegmenting && 'Click to record one pass for all 10 words.'}
+            {isRecording && t('test.recordHintRecording')}
+            {!isRecording && isSegmenting && t('test.recordHintSegmenting')}
+            {!isRecording && !isSegmenting && t('test.recordHintIdle')}
           </div>
           {(isSegmenting || segmentProgress > 0) && (
             <div className="w-full">
@@ -620,7 +622,7 @@ export const TestPage: React.FC = () => {
           )}
           <div className="w-full flex items-center gap-3">
             <div className="flex-1 text-sm text-slate-200 bg-slate-900/60 border border-slate-700 rounded-lg px-3 py-2">
-              {segmentedDisplay || '等待切分结果...'}
+              {segmentedDisplay || t('test.segmentPlaceholder')}
             </div>
             <Button
               variant="primary"
@@ -638,7 +640,7 @@ export const TestPage: React.FC = () => {
                 recordingTranscript.trim().length === 0
               }
             >
-              提交
+              {t('test.submit')}
             </Button>
           </div>
           {recordingError && (
@@ -665,14 +667,14 @@ export const TestPage: React.FC = () => {
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
             <LoadingSpinner
               size="lg"
-              message={isSegmenting ? 'Segmenting transcript...' : 'Submitting this batch...'}
+              message={isSegmenting ? t('test.overlaySegmenting') : t('test.overlaySubmitting')}
             />
           </div>
         )}
 
         <div className="flex justify-center pt-2">
           <Button variant="ghost" onClick={handleEndTest} disabled={isJudging || isSubmitting}>
-            End Test
+            {t('test.endTest')}
           </Button>
         </div>
       </div>

@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import type { LLMProvider } from '@/types';
 import { Button, Input } from '@/components/common';
 import { validateAPIKey, validateURL, validateModelName } from '@/utils/validators';
+import { useI18n } from '@/i18n';
 
 export interface LLMFormData {
   provider: LLMProvider;
@@ -63,6 +64,7 @@ export const LLMConfigForm: React.FC<LLMConfigFormProps> = ({
   onSave,
   onCancel,
 }) => {
+  const { t } = useI18n();
   const [provider, setProvider] = useState<LLMProvider>(
     initialData?.provider || 'deepseek'
   );
@@ -169,7 +171,7 @@ export const LLMConfigForm: React.FC<LLMConfigFormProps> = ({
       {/* Provider tabs */}
       <div>
         <label className="block text-sm font-medium text-slate-300 mb-3">
-          Select Provider
+          {t('settings.providerSelect')}
         </label>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
           {(Object.keys(PROVIDER_INFO) as LLMProvider[]).map((p) => (
@@ -195,7 +197,7 @@ export const LLMConfigForm: React.FC<LLMConfigFormProps> = ({
       {/* API Key (skip for Ollama) */}
       {provider !== 'ollama' && (
         <Input
-          label="API Key"
+          label={t('settings.apiKeyLabel')}
           type={showApiKey ? 'text' : 'password'}
           value={currentForm.apiKey}
           onChange={(e) =>
@@ -204,15 +206,15 @@ export const LLMConfigForm: React.FC<LLMConfigFormProps> = ({
               [provider]: { ...prev[provider], apiKey: e.target.value },
             }))
           }
-          placeholder={`Enter your ${PROVIDER_INFO[provider].name} API key`}
+          placeholder={t('settings.apiKeyPlaceholder', { provider: PROVIDER_INFO[provider].name })}
           error={errors.apiKey}
-          helperText="Your API key is stored locally and never sent to our servers"
+          helperText={t('settings.apiKeyHelper')}
           rightElement={
             <button
               type="button"
               onClick={() => setShowApiKey((prev) => !prev)}
               className="p-1 text-slate-300 transition-colors hover:text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded"
-              aria-label={showApiKey ? 'Hide API key' : 'Show API key'}
+              aria-label={showApiKey ? t('settings.apiKeyHide') : t('settings.apiKeyShow')}
               aria-pressed={showApiKey}
             >
               {showApiKey ? (
@@ -256,7 +258,7 @@ export const LLMConfigForm: React.FC<LLMConfigFormProps> = ({
 
       {/* Model Name */}
       <Input
-        label="Model Name"
+        label={t('settings.modelLabel')}
         type="text"
         value={currentForm.model}
         onChange={(e) =>
@@ -267,14 +269,14 @@ export const LLMConfigForm: React.FC<LLMConfigFormProps> = ({
         }
         placeholder={PROVIDER_INFO[provider].defaultModel}
         error={errors.model}
-        helperText={`Default: ${PROVIDER_INFO[provider].defaultModel}`}
+        helperText={t('settings.modelHelper', { model: PROVIDER_INFO[provider].defaultModel })}
         fullWidth
         required
       />
 
       {/* Base URL (optional) */}
       <Input
-        label="Base URL (Optional)"
+        label={t('settings.baseUrlLabel')}
         type="text"
         value={currentForm.baseUrl || ''}
         onChange={(e) =>
@@ -285,7 +287,7 @@ export const LLMConfigForm: React.FC<LLMConfigFormProps> = ({
         }
         placeholder={PROVIDER_INFO[provider].defaultUrl}
         error={errors.baseUrl}
-        helperText="Leave default unless using a proxy or custom endpoint"
+        helperText={t('settings.baseUrlHelper')}
         fullWidth
       />
 
@@ -293,11 +295,11 @@ export const LLMConfigForm: React.FC<LLMConfigFormProps> = ({
       <div className="flex gap-3">
         {onCancel && (
           <Button type="button" variant="ghost" onClick={onCancel} fullWidth>
-            Cancel
+            {t('settings.cancel')}
           </Button>
         )}
         <Button type="submit" variant="primary" fullWidth>
-          Save Configuration
+          {t('settings.save')}
         </Button>
       </div>
     </form>

@@ -6,6 +6,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Button, Input } from '@/components/common';
 import { SpeechRecognizer } from '@/core/speech';
 import { requestMicrophonePermission, isSpeechRecognitionSupported } from '@/core/speech';
+import { useI18n } from '@/i18n';
 
 export interface VoiceInputProps {
   onSubmit: (input: string) => void;
@@ -17,9 +18,10 @@ export interface VoiceInputProps {
 export const VoiceInput: React.FC<VoiceInputProps> = ({
   onSubmit,
   disabled = false,
-  placeholder = 'Enter Chinese translation...',
+  placeholder,
   wordId,
 }) => {
+  const { t } = useI18n();
   const [input, setInput] = useState('');
   const [isListening, setIsListening] = useState(false);
   const recognizerRef = useRef<SpeechRecognizer | null>(null);
@@ -126,6 +128,8 @@ export const VoiceInput: React.FC<VoiceInputProps> = ({
     }
   };
 
+  const resolvedPlaceholder = placeholder ?? t('test.voicePlaceholder');
+
   return (
     <div className="w-full space-y-4">
       {/* Voice input button */}
@@ -179,7 +183,7 @@ export const VoiceInput: React.FC<VoiceInputProps> = ({
       {isListening && (
         <div className="text-center">
           <p className="text-cyan-400 font-medium animate-pulse">
-            Listening...
+            {t('test.voiceListening')}
           </p>
           {transcript && (
             <p className="text-slate-300 mt-2 text-lg">{transcript}</p>
@@ -191,7 +195,7 @@ export const VoiceInput: React.FC<VoiceInputProps> = ({
       {voiceEnabled && (
         <div className="flex items-center gap-4">
           <div className="flex-1 border-t border-slate-700"></div>
-          <span className="text-slate-400 text-sm">or type</span>
+          <span className="text-slate-400 text-sm">{t('test.voiceOrType')}</span>
           <div className="flex-1 border-t border-slate-700"></div>
         </div>
       )}
@@ -203,7 +207,7 @@ export const VoiceInput: React.FC<VoiceInputProps> = ({
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyPress={handleKeyPress}
-          placeholder={placeholder}
+          placeholder={resolvedPlaceholder}
           disabled={disabled || isListening}
           fullWidth
           className="text-lg"
@@ -213,14 +217,14 @@ export const VoiceInput: React.FC<VoiceInputProps> = ({
           disabled={disabled || isListening || input.trim().length === 0}
           variant="primary"
         >
-          Submit
+          {t('test.voiceSubmit')}
         </Button>
       </div>
 
       {/* Helper text */}
       {voiceEnabled && (
         <p className="text-center text-slate-400 text-sm">
-          Click the microphone to speak or type your answer above
+          {t('test.voiceHelper')}
         </p>
       )}
     </div>

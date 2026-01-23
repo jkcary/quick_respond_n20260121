@@ -5,7 +5,8 @@
 import React, { useState } from 'react';
 import type { ErrorLogEntry } from '@/types';
 import { Card, Button } from '@/components/common';
-import { formatDate, formatRelativeTime } from '@/utils/formatters';
+import { formatRelativeTime } from '@/utils/formatters';
+import { useI18n } from '@/i18n';
 
 export interface ErrorListProps {
   errors: ErrorLogEntry[];
@@ -23,6 +24,7 @@ export const ErrorList: React.FC<ErrorListProps> = ({
   onFilterChange,
   currentFilter = 'all',
 }) => {
+  const { t } = useI18n();
   const [sortField, setSortField] = useState<SortField>('lastErrorDate');
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
 
@@ -69,13 +71,13 @@ export const ErrorList: React.FC<ErrorListProps> = ({
             d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
           />
         </svg>
-        <h3 className="text-xl font-medium text-slate-400 mb-2">No errors found</h3>
+        <h3 className="text-xl font-medium text-slate-400 mb-2">{t('errorList.emptyTitle')}</h3>
         <p className="text-slate-500">
           {currentFilter === 'unmastered'
-            ? 'All error words have been mastered!'
+            ? t('errorList.emptyDescUnmastered')
             : currentFilter === 'mastered'
-            ? 'No mastered words yet. Keep practicing!'
-            : 'Start a test to track words you need to practice.'}
+            ? t('errorList.emptyDescMastered')
+            : t('errorList.emptyDescAll')}
         </p>
       </Card>
     );
@@ -91,21 +93,21 @@ export const ErrorList: React.FC<ErrorListProps> = ({
             size="sm"
             onClick={() => onFilterChange('all')}
           >
-            All ({errors.length})
+            {t('errorList.filterAll')} ({errors.length})
           </Button>
           <Button
             variant={currentFilter === 'unmastered' ? 'primary' : 'ghost'}
             size="sm"
             onClick={() => onFilterChange('unmastered')}
           >
-            Unmastered
+            {t('errorList.filterUnmastered')}
           </Button>
           <Button
             variant={currentFilter === 'mastered' ? 'primary' : 'ghost'}
             size="sm"
             onClick={() => onFilterChange('mastered')}
           >
-            Mastered
+            {t('errorList.filterMastered')}
           </Button>
         </div>
       )}
@@ -119,33 +121,33 @@ export const ErrorList: React.FC<ErrorListProps> = ({
                 className="text-left p-3 text-slate-400 font-medium cursor-pointer hover:text-cyan-400 transition"
                 onClick={() => handleSort('word')}
               >
-                Word
+                {t('errorList.tableWord')}
                 {sortField === 'word' && (
-                  <span className="ml-1">{sortOrder === 'asc' ? '↑' : '↓'}</span>
+                  <span className="ml-1">{sortOrder === 'asc' ? '^' : 'v'}</span>
                 )}
               </th>
               <th className="text-left p-3 text-slate-400 font-medium hidden sm:table-cell">
-                Chinese
+                {t('errorList.tableChinese')}
               </th>
               <th
                 className="text-center p-3 text-slate-400 font-medium cursor-pointer hover:text-cyan-400 transition"
                 onClick={() => handleSort('errorCount')}
               >
-                Errors
+                {t('errorList.tableErrors')}
                 {sortField === 'errorCount' && (
-                  <span className="ml-1">{sortOrder === 'asc' ? '↑' : '↓'}</span>
+                  <span className="ml-1">{sortOrder === 'asc' ? '^' : 'v'}</span>
                 )}
               </th>
               <th
                 className="text-left p-3 text-slate-400 font-medium cursor-pointer hover:text-cyan-400 transition hidden md:table-cell"
                 onClick={() => handleSort('lastErrorDate')}
               >
-                Last Error
+                {t('errorList.tableLastError')}
                 {sortField === 'lastErrorDate' && (
-                  <span className="ml-1">{sortOrder === 'asc' ? '↑' : '↓'}</span>
+                  <span className="ml-1">{sortOrder === 'asc' ? '^' : 'v'}</span>
                 )}
               </th>
-              <th className="text-center p-3 text-slate-400 font-medium">Status</th>
+              <th className="text-center p-3 text-slate-400 font-medium">{t('errorList.tableStatus')}</th>
             </tr>
           </thead>
           <tbody>
@@ -186,11 +188,11 @@ export const ErrorList: React.FC<ErrorListProps> = ({
                           clipRule="evenodd"
                         />
                       </svg>
-                      Mastered
+                      {t('errorList.statusMastered')}
                     </span>
                   ) : (
                     <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-yellow-900/30 text-yellow-400 text-xs font-medium">
-                      Practice
+                      {t('errorList.statusPractice')}
                     </span>
                   )}
                 </td>

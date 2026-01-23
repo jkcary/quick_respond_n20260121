@@ -8,9 +8,11 @@ import { useAppStore } from '@/store/useAppStore';
 import { useErrorStore } from '@/store/errorStore';
 import { Button, Card } from '@/components/common';
 import { getGradeBookForGrade, getGradeBookLabel } from '@/types';
+import { useI18n } from '@/i18n';
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
+  const { t } = useI18n();
   const config = useAppStore((state) => state.config);
   const { loadErrorLog, getTotalErrorCount, getUnmasteredCount } = useErrorStore();
 
@@ -37,10 +39,10 @@ const HomePage: React.FC = () => {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-5xl font-bold text-cyan-400 mb-4">
-            English AI Agent
+            {t('app.name')}
           </h1>
           <p className="text-xl text-slate-300">
-            Your intelligent companion for vocabulary mastery
+            {t('app.tagline')}
           </p>
         </div>
 
@@ -63,16 +65,16 @@ const HomePage: React.FC = () => {
               </svg>
               <div className="flex-1">
                 <h3 className="text-lg font-medium text-yellow-400 mb-2">
-                  Setup Required
+                  {t('home.setupTitle')}
                 </h3>
                 <p className="text-slate-300 mb-4">
-                  Please configure your LLM API key in settings before starting a test.
+                  {t('home.setupDesc')}
                 </p>
                 <Button
                   variant="primary"
                   onClick={() => navigate('/settings')}
                 >
-                  Go to Settings
+                  {t('home.setupCta')}
                 </Button>
               </div>
             </div>
@@ -98,10 +100,10 @@ const HomePage: React.FC = () => {
               </svg>
             </div>
             <h2 className="text-3xl font-bold text-slate-200 mb-2">
-              Ready to Practice?
+              {t('home.readyTitle')}
             </h2>
             <p className="text-slate-400">
-              Test your vocabulary with all words up to {gradeLabel}
+              {t('home.readyDesc', { grade: gradeLabel })}
             </p>
           </div>
 
@@ -112,7 +114,7 @@ const HomePage: React.FC = () => {
             size="lg"
             className="px-12"
           >
-            Start Test
+            {t('home.readyCta')}
           </Button>
         </Card>
 
@@ -123,7 +125,7 @@ const HomePage: React.FC = () => {
               <div className="text-4xl font-bold text-red-400 mb-2">
                 {totalErrors}
               </div>
-              <div className="text-sm text-slate-400">Total Error Words</div>
+              <div className="text-sm text-slate-400">{t('home.statsTotalErrors')}</div>
             </div>
           </Card>
 
@@ -132,7 +134,7 @@ const HomePage: React.FC = () => {
               <div className="text-4xl font-bold text-yellow-400 mb-2">
                 {unmasteredErrors}
               </div>
-              <div className="text-sm text-slate-400">To Practice</div>
+              <div className="text-sm text-slate-400">{t('home.statsToPractice')}</div>
             </div>
           </Card>
 
@@ -141,7 +143,7 @@ const HomePage: React.FC = () => {
               <div className="text-4xl font-bold text-cyan-400 mb-2">
                 {gradeLabel}
               </div>
-              <div className="text-sm text-slate-400">Current Grade</div>
+              <div className="text-sm text-slate-400">{t('home.statsCurrentGrade')}</div>
             </div>
           </Card>
         </div>
@@ -161,9 +163,9 @@ const HomePage: React.FC = () => {
                 </svg>
               </div>
               <div>
-                <h3 className="font-medium text-slate-200 mb-1">Voice Input</h3>
+                <h3 className="font-medium text-slate-200 mb-1">{t('home.featureVoiceTitle')}</h3>
                 <p className="text-sm text-slate-400">
-                  Speak your answers in Chinese using speech recognition
+                  {t('home.featureVoiceDesc')}
                 </p>
               </div>
             </div>
@@ -182,9 +184,9 @@ const HomePage: React.FC = () => {
                 </svg>
               </div>
               <div>
-                <h3 className="font-medium text-slate-200 mb-1">AI Judgment</h3>
+                <h3 className="font-medium text-slate-200 mb-1">{t('home.featureJudgeTitle')}</h3>
                 <p className="text-sm text-slate-400">
-                  Get instant feedback from advanced language models
+                  {t('home.featureJudgeDesc')}
                 </p>
               </div>
             </div>
@@ -203,9 +205,9 @@ const HomePage: React.FC = () => {
                 </svg>
               </div>
               <div>
-                <h3 className="font-medium text-slate-200 mb-1">Smart Tracking</h3>
+                <h3 className="font-medium text-slate-200 mb-1">{t('home.featureTrackTitle')}</h3>
                 <p className="text-sm text-slate-400">
-                  Automatically tracks errors and prioritizes practice
+                  {t('home.featureTrackDesc')}
                 </p>
               </div>
             </div>
@@ -224,9 +226,9 @@ const HomePage: React.FC = () => {
                 </svg>
               </div>
               <div>
-                <h3 className="font-medium text-slate-200 mb-1">VST Review</h3>
+                <h3 className="font-medium text-slate-200 mb-1">{t('home.featureVstTitle')}</h3>
                 <p className="text-sm text-slate-400">
-                  Visual-Sound-Text learning cards for better retention
+                  {t('home.featureVstDesc')}
                 </p>
               </div>
             </div>

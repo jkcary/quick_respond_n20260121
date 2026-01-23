@@ -6,12 +6,14 @@ import React, { useState } from 'react';
 import type { LLMConfig } from '@/types';
 import { Button } from '@/components/common';
 import { LLMGateway } from '@/core/llm';
+import { useI18n } from '@/i18n';
 
 export interface APITesterProps {
   config: LLMConfig;
 }
 
 export const APITester: React.FC<APITesterProps> = ({ config }) => {
+  const { t } = useI18n();
   const [testing, setTesting] = useState(false);
   const [result, setResult] = useState<{
     success: boolean;
@@ -46,9 +48,9 @@ export const APITester: React.FC<APITesterProps> = ({ config }) => {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-medium text-slate-200">Connection Test</h3>
+          <h3 className="text-lg font-medium text-slate-200">{t('settings.connectionTitle')}</h3>
           <p className="text-sm text-slate-400 mt-1">
-            Verify your API configuration is working correctly
+            {t('settings.connectionSubtitle')}
           </p>
         </div>
         <Button
@@ -57,7 +59,7 @@ export const APITester: React.FC<APITesterProps> = ({ config }) => {
           loading={testing}
           variant="secondary"
         >
-          Test Connection
+          {t('settings.connectionTest')}
         </Button>
       </div>
 
@@ -111,32 +113,30 @@ export const APITester: React.FC<APITesterProps> = ({ config }) => {
                   result.success ? 'text-green-400' : 'text-red-400'
                 }`}
               >
-                {result.success ? 'Connection Successful' : 'Connection Failed'}
+                {result.success ? t('settings.connectionSuccess') : t('settings.connectionFail')}
               </div>
 
               {result.success && result.latency !== undefined && (
                 <div className="text-sm text-slate-300 mt-1">
-                  Response time: {result.latency}ms
+                  {t('settings.connectionLatency', { ms: result.latency })}
                 </div>
               )}
 
               {result.error && (
                 <div className="text-sm text-red-300 mt-1">
-                  Error: {result.error}
+                  {t('settings.connectionError', { error: result.error })}
                 </div>
               )}
 
               {result.success && (
                 <div className="text-sm text-slate-400 mt-2">
-                  Your API configuration is working correctly. You can now start using
-                  the test mode.
+                  {t('settings.connectionSuccessHint')}
                 </div>
               )}
 
               {!result.success && (
                 <div className="text-sm text-slate-400 mt-2">
-                  Please check your API key and network connection. Make sure the API
-                  endpoint is accessible.
+                  {t('settings.connectionFailHint')}
                 </div>
               )}
             </div>
@@ -162,9 +162,9 @@ export const APITester: React.FC<APITesterProps> = ({ config }) => {
               />
             </svg>
             <div>
-              <div className="font-medium text-yellow-400">API Key Required</div>
+              <div className="font-medium text-yellow-400">{t('settings.apiKeyRequired')}</div>
               <div className="text-sm text-slate-400 mt-1">
-                Please configure your API key before testing the connection.
+                {t('settings.apiKeyRequiredHint')}
               </div>
             </div>
           </div>
