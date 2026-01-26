@@ -13,11 +13,34 @@ import { useI18n } from '@/i18n';
 import { SpeechRecognizer } from '@/core/speech';
 import { requestMicrophonePermission, isSpeechRecognitionSupported } from '@/core/speech';
 import { formatDuration } from '@/utils/formatters';
+import { logPerfEvent } from '@/utils/perfLogger';
 import { getGradeBookForGrade } from '@/types';
 import { TEST_CONFIG } from '@/config/app.config';
 import type { TestSession, VocabularyItem } from '@/types';
 
 const BATCH_SIZE = TEST_CONFIG.WORDS_PER_TEST;
+const SEGMENT_CACHE_LIMIT = 50;
+
+function withTimeout<T>(
+  promise: Promise<T>,
+  timeoutMs: number,
+  message: string,
+): Promise<T> {
+  let timeoutId: number | undefined;
+  const timeoutPromise = new Promise<T>((_, reject) => {
+    timeoutId = window.setTimeout(() => {
+      const error = new Error(message);
+      error.name = 'timeout';
+      reject(error);
+    }, timeoutMs);
+  });
+
+  return Promise.race([promise, timeoutPromise]).finally(() => {
+    if (timeoutId !== undefined) {
+      window.clearTimeout(timeoutId);
+    }
+  });
+}
 
 export const TestPage: React.FC = () => {
   const navigate = useNavigate();
@@ -49,6 +72,14 @@ export const TestPage: React.FC = () => {
   const recordingTokenRef = useRef(0);
   const recordingTranscriptRef = useRef('');
   const autoSubmitTimerRef = useRef<number | null>(null);
+  const segmentTokenRef = useRef(0);
+  const segmentAbortRef = useRef<AbortController | null>(null);
+  const segmentCacheRef = useRef(
+    new Map<
+      string,
+      { segments: string[]; correctedTranscript?: string; source: 'llm' | 'api' }
+    >(),
+  );
 
   const [gateway] = useState(() => {
     if (config.apiKey) {
@@ -131,6 +162,9 @@ export const TestPage: React.FC = () => {
     recordingTranscriptRef.current = '';
     recordingTokenRef.current += 1;
     recognizerRef.current?.abort();
+    segmentTokenRef.current += 1;
+    segmentAbortRef.current?.abort();
+    segmentAbortRef.current = null;
     if (autoSubmitTimerRef.current !== null) {
       window.clearTimeout(autoSubmitTimerRef.current);
       autoSubmitTimerRef.current = null;
@@ -197,6 +231,10 @@ export const TestPage: React.FC = () => {
       return;
     }
 
+    const submitStart = performance.now();
+    let submitSuccess = true;
+    let submitErrorType: string | undefined;
+
     setIsSubmitting(true);
     setJudging(true);
 
@@ -230,12 +268,32 @@ export const TestPage: React.FC = () => {
 
       await submitBatch(entries);
     } catch (error) {
+      submitSuccess = false;
+      submitErrorType = error instanceof Error ? error.name : 'unknown';
       console.error('Batch judgment failed:', error);
     } finally {
+      logPerfEvent({
+        name: 'submit',
+        durationMs: performance.now() - submitStart,
+        success: submitSuccess,
+        errorType: submitErrorType,
+        source: gateway ? 'llm' : 'offline',
+        provider: gateway?.getProvider?.() ?? config.apiProvider,
+        batchSize: batchWords.length,
+      });
       setJudging(false);
       setIsSubmitting(false);
     }
-  }, [currentSession, batchWords, isSubmitting, isJudging, gateway, submitBatch, setJudging]);
+  }, [
+    currentSession,
+    batchWords,
+    isSubmitting,
+    isJudging,
+    gateway,
+    submitBatch,
+    setJudging,
+    config.apiProvider,
+  ]);
 
   const normalizeSegments = useCallback(
     (segments: string[], targetCount: number) => {
@@ -261,94 +319,238 @@ export const TestPage: React.FC = () => {
         return null;
       }
 
+      const trimmedTranscript = transcript.trim();
+      if (!trimmedTranscript) {
+        return null;
+      }
+
+      const segmentStart = performance.now();
+      let segmentLogged = false;
+      let skipLogging = false;
+      const logSegment = (
+        source: string,
+        success: boolean,
+        errorType?: string,
+        meta?: Record<string, unknown>,
+      ) => {
+        if (segmentLogged || skipLogging) {
+          return;
+        }
+        segmentLogged = true;
+        logPerfEvent({
+          name: 'segment',
+          durationMs: performance.now() - segmentStart,
+          success,
+          errorType,
+          source,
+          provider: gateway?.getProvider?.() ?? config.apiProvider,
+          batchSize: batchWords.length,
+          meta,
+        });
+      };
+
+      const cacheKey = `${currentSession.id}::${batchWords
+        .map((word) => word.id)
+        .join('|')}::${trimmedTranscript}`;
+      const cached = segmentCacheRef.current.get(cacheKey);
+      if (cached?.segments?.length) {
+        const normalized = normalizeSegments(cached.segments, batchWords.length);
+        const nextAnswers: Record<string, string> = {};
+        normalized.forEach((segment, index) => {
+          const word = batchWords[index];
+          if (word) {
+            nextAnswers[word.id] = segment.trim();
+          }
+        });
+        setSegmentedTokens(normalized);
+        if (options.applyAnswers ?? true) {
+          setAnswers(nextAnswers);
+        }
+        if (cached.correctedTranscript) {
+          recordingTranscriptRef.current = cached.correctedTranscript;
+          setRecordingTranscript(cached.correctedTranscript);
+        }
+        if (options.autoSubmit) {
+          if (autoSubmitTimerRef.current !== null) {
+            window.clearTimeout(autoSubmitTimerRef.current);
+          }
+          autoSubmitTimerRef.current = window.setTimeout(() => {
+            autoSubmitTimerRef.current = null;
+            void submitBatchWithInputs(nextAnswers);
+          }, 800);
+        }
+        logSegment('cache', true);
+        return nextAnswers;
+      }
+
+      const segmentToken = segmentTokenRef.current + 1;
+      segmentTokenRef.current = segmentToken;
+      segmentAbortRef.current?.abort();
+      segmentAbortRef.current = null;
+
       setIsSegmenting(true);
       setRecordingError(null);
       const { applyAnswers = true, autoSubmit = false } = options;
 
-      try {
-        const applySegments = (segments: string[]) => {
-          const normalized = normalizeSegments(
-            segments.map((item) => item.trim()),
-            batchWords.length,
-          );
-          const nextAnswers: Record<string, string> = {};
-          normalized.forEach((segment, index) => {
-            const word = batchWords[index];
-            if (word) {
-              nextAnswers[word.id] = segment.trim();
-            }
+      const applySegments = (
+        segments: string[],
+        source: 'llm' | 'api' | 'fallback',
+        correctedTranscript?: string,
+      ) => {
+        const normalized = normalizeSegments(
+          segments.map((item) => item.trim()),
+          batchWords.length,
+        );
+        const nextAnswers: Record<string, string> = {};
+        normalized.forEach((segment, index) => {
+          const word = batchWords[index];
+          if (word) {
+            nextAnswers[word.id] = segment.trim();
+          }
+        });
+
+        setSegmentedTokens(normalized);
+        if (correctedTranscript) {
+          recordingTranscriptRef.current = correctedTranscript;
+          setRecordingTranscript(correctedTranscript);
+        }
+        if (applyAnswers) {
+          setAnswers(nextAnswers);
+        }
+        if (autoSubmit && source !== 'fallback') {
+          if (autoSubmitTimerRef.current !== null) {
+            window.clearTimeout(autoSubmitTimerRef.current);
+          }
+          autoSubmitTimerRef.current = window.setTimeout(() => {
+            autoSubmitTimerRef.current = null;
+            void submitBatchWithInputs(nextAnswers);
+          }, 800);
+        }
+
+        if (source !== 'fallback') {
+          segmentCacheRef.current.set(cacheKey, {
+            segments: normalized,
+            correctedTranscript,
+            source: source === 'llm' ? 'llm' : 'api',
           });
-
-          setSegmentedTokens(normalized);
-          if (applyAnswers) {
-            setAnswers(nextAnswers);
-          }
-          if (autoSubmit) {
-            if (autoSubmitTimerRef.current !== null) {
-              window.clearTimeout(autoSubmitTimerRef.current);
+          if (segmentCacheRef.current.size > SEGMENT_CACHE_LIMIT) {
+            const firstKey = segmentCacheRef.current.keys().next().value as string | undefined;
+            if (firstKey) {
+              segmentCacheRef.current.delete(firstKey);
             }
-            autoSubmitTimerRef.current = window.setTimeout(() => {
-              autoSubmitTimerRef.current = null;
-              void submitBatchWithInputs(nextAnswers);
-            }, 800);
           }
+        }
 
-          return nextAnswers;
-        };
+        return nextAnswers;
+      };
+
+      const createFallbackSegments = () => {
+        const cleaned = trimmedTranscript.replace(/\s+/g, ' ').trim();
+        let segments = cleaned
+          .split(/[，。！？、,.;?!\n]+/)
+          .map((item) => item.trim())
+          .filter(Boolean);
+
+        if (segments.length < batchWords.length) {
+          const bySpace = cleaned
+            .split(/\s+/)
+            .map((item) => item.trim())
+            .filter(Boolean);
+          if (bySpace.length > segments.length) {
+            segments = bySpace;
+          }
+        }
+
+        if (segments.length < batchWords.length && cleaned.length > 0) {
+          const avg = Math.max(1, Math.ceil(cleaned.length / batchWords.length));
+          const chunked: string[] = [];
+          for (let i = 0; i < cleaned.length; i += avg) {
+            chunked.push(cleaned.slice(i, i + avg));
+          }
+          segments = chunked;
+        }
+
+        return normalizeSegments(segments, batchWords.length);
+      };
+
+      try {
 
         if (gateway) {
           try {
-            const result = await segmentWithAgent(
-              gateway,
-              transcript,
-              batchWords.map((word) => ({
-                id: word.id,
-                word: word.word,
-                zh: word.zh,
-                chinese: Array.isArray(word.chinese) ? word.chinese : [],
-              })),
+            const result = await withTimeout(
+              segmentWithAgent(
+                gateway,
+                trimmedTranscript,
+                batchWords.map((word) => ({
+                  id: word.id,
+                  word: word.word,
+                  zh: word.zh,
+                  chinese: Array.isArray(word.chinese) ? word.chinese : [],
+                })),
+              ),
+              TEST_CONFIG.VOICE_SEGMENT_TIMEOUT_MS,
+              'Segment agent timeout',
             );
 
-            if (result?.correctedTranscript) {
-              recordingTranscriptRef.current = result.correctedTranscript;
-              setRecordingTranscript(result.correctedTranscript);
+            if (segmentTokenRef.current !== segmentToken) {
+              skipLogging = true;
+              return null;
             }
 
             if (result?.segments?.length) {
-              return applySegments(result.segments);
+              const next = applySegments(result.segments, 'llm', result.correctedTranscript);
+              logSegment('llm', true);
+              return next;
             }
           } catch (error) {
             console.warn('Segment agent failed, falling back to API.', error);
           }
         }
 
-        const response = await fetch(
-          (import.meta.env.VITE_VOICE_SEGMENT_URL as string | undefined) ??
-            '/api/voice/segment-match',
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
+        const abortController = new AbortController();
+        segmentAbortRef.current = abortController;
+        const timeoutId = window.setTimeout(() => {
+          abortController.abort();
+        }, TEST_CONFIG.VOICE_SEGMENT_TIMEOUT_MS);
+
+        let response: Response;
+        try {
+          response = await fetch(
+            (import.meta.env.VITE_VOICE_SEGMENT_URL as string | undefined) ??
+              '/api/voice/segment-match',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                transcript: trimmedTranscript,
+                matchMode: 'ordered',
+                words: batchWords.map((word, index) => ({
+                  index: index + 1,
+                  id: word.id,
+                  word: word.word,
+                  zh: word.zh,
+                  chinese: Array.isArray(word.chinese)
+                    ? word.chinese.filter((item) => item && item.trim())
+                    : [],
+                })),
+              }),
+              signal: abortController.signal,
             },
-            body: JSON.stringify({
-              transcript,
-              matchMode: 'ordered',
-              words: batchWords.map((word, index) => ({
-                index: index + 1,
-                id: word.id,
-                word: word.word,
-                zh: word.zh,
-                chinese: Array.isArray(word.chinese)
-                  ? word.chinese.filter((item) => item && item.trim())
-                  : [],
-              })),
-            }),
-          },
-        );
+          );
+        } finally {
+          window.clearTimeout(timeoutId);
+        }
 
         if (!response.ok) {
           const message = await response.text();
           throw new Error(message || `Segment API failed (${response.status})`);
+        }
+
+        if (segmentTokenRef.current !== segmentToken) {
+          skipLogging = true;
+          return null;
         }
 
         const data = (await response.json()) as {
@@ -378,26 +580,60 @@ export const TestPage: React.FC = () => {
               void submitBatchWithInputs(nextAnswers);
             }, 800);
           }
+          segmentCacheRef.current.set(cacheKey, {
+            segments: normalizeSegments(orderedSegments, batchWords.length),
+            correctedTranscript: undefined,
+            source: 'api',
+          });
+          if (segmentCacheRef.current.size > SEGMENT_CACHE_LIMIT) {
+            const firstKey = segmentCacheRef.current.keys().next().value as string | undefined;
+            if (firstKey) {
+              segmentCacheRef.current.delete(firstKey);
+            }
+          }
+          logSegment('api', true);
           return nextAnswers;
         }
 
         if (Array.isArray(data.segments)) {
-          return applySegments(data.segments);
+          const next = applySegments(data.segments, 'api');
+          logSegment('api', true);
+          return next;
         }
 
         throw new Error('Invalid segment response format');
       } catch (error) {
-        setRecordingError(
-          error instanceof Error ? error.message : 'Segment request failed',
+        if (segmentTokenRef.current !== segmentToken) {
+          skipLogging = true;
+          return null;
+        }
+        const message =
+          error instanceof Error ? error.message : 'Segment request failed';
+        setRecordingError(message);
+        logSegment('fallback', false, error instanceof Error ? error.name : 'unknown', {
+          message,
+        });
+        return applySegments(
+          createFallbackSegments(),
+          'fallback',
         );
-        return null;
       } finally {
         setIsSegmenting(false);
         setSegmentProgress(100);
         window.setTimeout(() => setSegmentProgress(0), 600);
+        if (!segmentLogged && !skipLogging) {
+          logSegment('unknown', false, 'unknown');
+        }
       }
     },
-    [batchWords, currentSession, gateway, normalizeSegments, submitBatchWithInputs],
+    [
+      batchWords,
+      currentSession,
+      gateway,
+      normalizeSegments,
+      submitBatchWithInputs,
+      config.apiProvider,
+    ],
   );
 
   const stopBatchRecording = useCallback(() => {
@@ -663,11 +899,11 @@ export const TestPage: React.FC = () => {
           ))}
         </div>
 
-        {(isJudging || isSubmitting || isSegmenting) && (
+        {(isJudging || isSubmitting) && (
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
             <LoadingSpinner
               size="lg"
-              message={isSegmenting ? t('test.overlaySegmenting') : t('test.overlaySubmitting')}
+              message={t('test.overlaySubmitting')}
             />
           </div>
         )}
