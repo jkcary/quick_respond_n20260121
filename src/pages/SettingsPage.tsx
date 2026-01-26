@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '@/store/useAppStore';
 import { Card, Button } from '@/components/common';
-import { GradeSelector, LLMConfigForm, APITester, type LLMFormData } from '@/components/config';
+import { GradeSelector, LLMConfigForm, APITester, PerfDiagnostics, type LLMFormData } from '@/components/config';
 import { toast } from '@/components/common';
 import { LLMProvider, type GradeBook, type LLMConfig } from '@/types';
 import { getGradeBookForGrade, getGradeBookLabel, parseGradeBook } from '@/types';
@@ -184,6 +184,14 @@ const SettingsPage: React.FC = () => {
         {/* API Connection Test */}
         <Card>
           <APITester config={currentLLMConfig} />
+        </Card>
+
+        {/* Performance Diagnostics */}
+        <Card>
+          <h2 className="text-xl font-semibold text-slate-200 mb-4">
+            {t('settings.sectionPerformance')}
+          </h2>
+          <PerfDiagnostics />
         </Card>
 
         {/* Audio Settings */}

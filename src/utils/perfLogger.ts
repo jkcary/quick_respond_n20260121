@@ -151,3 +151,13 @@ export const logPerfEvent = (event: PerfEvent): void => {
 export const getPerfStats = (): PerfStatsMap => {
   return { ...loadStats() };
 };
+
+export const clearPerfStats = (): void => {
+  cachedStats = {};
+  try {
+    const storage = safeGetLocalStorage();
+    storage?.removeItem(PERF_STATS_KEY);
+  } catch {
+    // Ignore storage errors.
+  }
+};

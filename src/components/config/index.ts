@@ -10,3 +10,5 @@ export type { LLMConfigFormProps, LLMFormData } from './LLMConfigForm';
 
 export { APITester } from './APITester';
 export type { APITesterProps } from './APITester';
+
+export { PerfDiagnostics } from './PerfDiagnostics';
