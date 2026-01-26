@@ -3,7 +3,7 @@
  */
 
 import React, { useState } from 'react';
-import type { LLMProvider } from '@/types';
+import { LLMProvider } from '@/types';
 import { Button, Input } from '@/components/common';
 import { validateAPIKey, validateURL, validateModelName } from '@/utils/validators';
 import { useI18n } from '@/i18n';
@@ -66,7 +66,7 @@ export const LLMConfigForm: React.FC<LLMConfigFormProps> = ({
 }) => {
   const { t } = useI18n();
   const [provider, setProvider] = useState<LLMProvider>(
-    initialData?.provider || 'deepseek'
+    initialData?.provider || LLMProvider.DeepSeek
   );
   const [showApiKey, setShowApiKey] = useState(false);
   const [formByProvider, setFormByProvider] = useState(() => {

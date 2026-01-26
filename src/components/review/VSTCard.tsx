@@ -77,7 +77,7 @@ export const VSTCard: React.FC<VSTCardProps> = ({
   const stageIndex = ['word', 'phonetic', 'chinese', 'example'].indexOf(stage);
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900 overflow-y-auto">
+    <div className="fixed inset-0 z-50 bg-bg-primary overflow-y-auto">
       <div className="min-h-screen p-4 md:p-8">
         <div className="max-w-4xl mx-auto space-y-6">
           {/* Header */}
@@ -103,9 +103,9 @@ export const VSTCard: React.FC<VSTCardProps> = ({
           <Card className="text-center py-12">
             {/* Visual (placeholder for future image) */}
             <div className="mb-8">
-              <div className="w-32 h-32 mx-auto bg-slate-700 rounded-full flex items-center justify-center">
+              <div className="w-32 h-32 mx-auto bg-bg-tertiary rounded-full flex items-center justify-center">
                 <svg
-                  className="w-16 h-16 text-slate-500"
+                  className="w-16 h-16 text-text-muted"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -121,7 +121,7 @@ export const VSTCard: React.FC<VSTCardProps> = ({
             </div>
 
             {/* Word (always visible) */}
-            <h1 className="text-6xl font-bold text-cyan-400 mb-6">
+            <h1 className="text-6xl font-bold text-word-english mb-6">
               {word.word}
             </h1>
 
@@ -155,22 +155,22 @@ export const VSTCard: React.FC<VSTCardProps> = ({
               {/* Phonetic */}
               {stageIndex >= 1 && (
                 <div className="animate-fade-in">
-                  <p className="text-3xl text-slate-300 font-mono">{word.phonetic}</p>
+                  <p className="text-3xl text-word-phonetic font-mono">{word.phonetic}</p>
                 </div>
               )}
 
               {/* Chinese */}
               {stageIndex >= 2 && (
                 <div className="animate-fade-in">
-                  <p className="text-4xl text-green-400 font-medium">{word.chinese}</p>
+                  <p className="text-4xl text-word-chinese font-medium">{word.chinese}</p>
                 </div>
               )}
 
               {/* Example */}
               {stageIndex >= 3 && (
-                <div className="animate-fade-in border-t border-slate-700 pt-6 mt-6">
-                  <p className="text-xl text-slate-200 mb-2">{word.exampleSentence}</p>
-                  <p className="text-lg text-slate-400">{word.exampleChinese}</p>
+                <div className="animate-fade-in border-t border-border-primary pt-6 mt-6">
+                  <p className="text-xl text-text-primary mb-2">{word.exampleSentence}</p>
+                  <p className="text-lg text-text-muted">{word.exampleChinese}</p>
                 </div>
               )}
 
@@ -191,20 +191,20 @@ export const VSTCard: React.FC<VSTCardProps> = ({
           <Card>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="text-center">
-                <div className="text-3xl font-bold text-red-400">{errorEntry.errorCount}</div>
-                <div className="text-sm text-slate-400">{t('vst.statsTotalErrors')}</div>
+                <div className="text-3xl font-bold text-error">{errorEntry.errorCount}</div>
+                <div className="text-sm text-text-muted">{t('vst.statsTotalErrors')}</div>
               </div>
               <div className="text-center">
-                <div className="text-lg font-medium text-slate-300">
+                <div className="text-lg font-medium text-text-secondary">
                   {formatRelativeTime(errorEntry.lastErrorDate)}
                 </div>
-                <div className="text-sm text-slate-400">{t('vst.statsLastError')}</div>
+                <div className="text-sm text-text-muted">{t('vst.statsLastError')}</div>
               </div>
               <div className="text-center">
-                <div className="text-lg font-medium text-slate-300">
+                <div className="text-lg font-medium text-text-secondary">
                   {t('vst.statsGrade', { grade: word.gradeLevel })}
                 </div>
-                <div className="text-sm text-slate-400">{t('vst.statsDifficulty')}</div>
+                <div className="text-sm text-text-muted">{t('vst.statsDifficulty')}</div>
               </div>
             </div>
           </Card>
@@ -217,7 +217,7 @@ export const VSTCard: React.FC<VSTCardProps> = ({
               </Button>
             )}
             {errorEntry.mastered && (
-              <div className="w-full text-center py-3 bg-green-900/20 border border-green-700 rounded-lg text-green-400 font-medium">
+              <div className="w-full text-center py-3 bg-success-muted border border-success rounded-lg text-success font-medium">
                 {t('vst.mastered')}
               </div>
             )}
@@ -226,23 +226,23 @@ export const VSTCard: React.FC<VSTCardProps> = ({
           {/* Error history */}
           {errorEntry.userInputs.length > 0 && (
             <Card>
-              <h3 className="text-lg font-medium text-slate-200 mb-4">{t('vst.historyTitle')}</h3>
+              <h3 className="text-lg font-medium text-text-primary mb-4">{t('vst.historyTitle')}</h3>
               <div className="space-y-3 max-h-64 overflow-y-auto">
                 {errorEntry.userInputs.map((input, index) => (
                   <div
                     key={index}
-                    className="p-3 bg-slate-700 rounded-lg border border-slate-600"
+                    className="p-3 bg-bg-tertiary rounded-lg border border-border-primary"
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1">
-                        <div className="text-red-400">
+                        <div className="text-error">
                           {t('vst.historyAnswer')}: {input.input || t('vst.historyEmpty')}
                         </div>
-                        <div className="text-green-400 text-sm mt-1">
+                        <div className="text-success text-sm mt-1">
                           {t('vst.historyCorrect')}: {input.correction}
                         </div>
                       </div>
-                      <div className="text-xs text-slate-400">
+                      <div className="text-xs text-text-muted">
                         {formatRelativeTime(input.timestamp)}
                       </div>
                     </div>

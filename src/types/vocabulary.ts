@@ -86,28 +86,47 @@ export interface VocabularyItem {
 }
 
 /**
- * Single error entry for a vocabulary item
+ * User input record for error tracking
  */
-export interface ErrorLogEntry {
-  /** Total number of times this word was answered incorrectly */
-  err_count: number;
-
-  /** Timestamp of the last error (Unix milliseconds) */
-  last_err_at: number;
-
-  /** Array of incorrect user inputs */
-  history_inputs: string[];
-
-  /** Whether the user has mastered this word (for filtering) */
-  mastered?: boolean;
+export interface UserInputRecord {
+  /** User's input text */
+  input: string;
+  /** AI correction if available */
+  correction?: string;
+  /** Timestamp of input */
+  timestamp: number;
 }
 
 /**
- * Complete error log structure
- * Key: vocabulary item ID (e.g., "g5v2_001")
- * Value: ErrorLogEntry
+ * Single error entry for a vocabulary item
  */
-export type ErrorLog = Record<string, ErrorLogEntry>;
+export interface ErrorLogEntry {
+  /** The vocabulary item */
+  word: VocabularyItem;
+
+  /** Total number of times this word was answered incorrectly */
+  errorCount: number;
+
+  /** Timestamp of first error (Unix milliseconds) */
+  firstErrorDate: number;
+
+  /** Timestamp of the last error (Unix milliseconds) */
+  lastErrorDate: number;
+
+  /** Array of user input records */
+  userInputs: UserInputRecord[];
+
+  /** Whether the user has mastered this word (for filtering) */
+  mastered: boolean;
+}
+
+/**
+ * Complete error log structure with entries map
+ */
+export interface ErrorLog {
+  /** Map of word ID to error entry */
+  entries: Record<string, ErrorLogEntry>;
+}
 
 /**
  * Grade level enumeration (deprecated - use GradeBook instead)

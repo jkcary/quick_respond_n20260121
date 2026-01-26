@@ -30,7 +30,7 @@ export const ScorePanel: React.FC<ScorePanelProps> = ({
   const batchTotal = Math.min(batchSize, Math.max(totalWords - currentWordIndex, 0));
 
   return (
-    <div className="sticky top-0 z-10 bg-slate-900/95 backdrop-blur-sm border-b border-slate-700 p-4 shadow-lg">
+    <div className="sticky top-0 z-10 bg-bg-secondary/95 backdrop-blur-sm border-b border-border-primary p-4 shadow-lg">
       <div className="max-w-4xl mx-auto space-y-3">
         {/* Progress bar */}
         <ProgressBar
@@ -48,19 +48,19 @@ export const ScorePanel: React.FC<ScorePanelProps> = ({
 
         {/* Mini stats */}
         <div className="grid grid-cols-3 gap-2 text-center">
-          <div className="bg-slate-800 rounded-lg p-2">
-            <div className="text-2xl font-bold text-cyan-400">{completedWords}</div>
-            <div className="text-xs text-slate-400">{t('test.progressCompleted')}</div>
+          <div className="bg-bg-tertiary rounded-lg p-2">
+            <div className="text-2xl font-bold text-accent">{completedWords}</div>
+            <div className="text-xs text-text-muted">{t('test.progressCompleted')}</div>
           </div>
-          <div className="bg-slate-800 rounded-lg p-2">
-            <div className="text-2xl font-bold text-slate-200">{remainingWords}</div>
-            <div className="text-xs text-slate-400">{t('test.progressRemaining')}</div>
+          <div className="bg-bg-tertiary rounded-lg p-2">
+            <div className="text-2xl font-bold text-text-primary">{remainingWords}</div>
+            <div className="text-xs text-text-muted">{t('test.progressRemaining')}</div>
           </div>
-          <div className="bg-slate-800 rounded-lg p-2">
-            <div className="text-2xl font-bold text-amber-400">
+          <div className="bg-bg-tertiary rounded-lg p-2">
+            <div className="text-2xl font-bold text-warning">
               {batchTotal > 0 ? Math.min(filledCount, batchTotal) : 0}/{batchTotal}
             </div>
-            <div className="text-xs text-slate-400">{t('test.progressBatch')}</div>
+            <div className="text-xs text-text-muted">{t('test.progressBatch')}</div>
           </div>
         </div>
       </div>

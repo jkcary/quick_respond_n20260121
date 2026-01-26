@@ -2,7 +2,8 @@
  * Platform detection and capability checking
  */
 
-import type { Platform, PlatformCapabilities } from '@/types';
+import type { PlatformCapabilities } from '@/types';
+import { Platform } from '@/types';
 import {
   isSpeechRecognitionSupported,
   isSpeechSynthesisSupported,
@@ -14,7 +15,7 @@ import {
 export function getPlatform(): Platform {
   // Check for Electron
   if (typeof window !== 'undefined' && (window as any).electronAPI) {
-    return 'electron';
+    return Platform.Electron;
   }
 
   // Check for Capacitor
@@ -22,23 +23,23 @@ export function getPlatform(): Platform {
     const capacitor = (window as any).Capacitor;
 
     if (capacitor.getPlatform() === 'android') {
-      return 'android';
+      return Platform.Android;
     }
 
     if (capacitor.getPlatform() === 'ios') {
-      return 'ios';
+      return Platform.iOS;
     }
   }
 
   // Default to web
-  return 'web';
+  return Platform.Web;
 }
 
 /**
  * Check if running in Electron
  */
 export function isElectron(): boolean {
-  return getPlatform() === 'electron';
+  return getPlatform() === Platform.Electron;
 }
 
 /**
@@ -46,28 +47,28 @@ export function isElectron(): boolean {
  */
 export function isCapacitor(): boolean {
   const platform = getPlatform();
-  return platform === 'android' || platform === 'ios';
+  return platform === Platform.Android || platform === Platform.iOS;
 }
 
 /**
  * Check if running on Android
  */
 export function isAndroid(): boolean {
-  return getPlatform() === 'android';
+  return getPlatform() === Platform.Android;
 }
 
 /**
  * Check if running on iOS
  */
 export function isIOS(): boolean {
-  return getPlatform() === 'ios';
+  return getPlatform() === Platform.iOS;
 }
 
 /**
  * Check if running in a browser (Web)
  */
 export function isWeb(): boolean {
-  return getPlatform() === 'web';
+  return getPlatform() === Platform.Web;
 }
 
 /**
@@ -90,9 +91,9 @@ export function getPlatformCapabilities(): PlatformCapabilities {
 
   return {
     platform,
-    hasFileSystem: platform === 'electron',
-    hasNativeMenus: platform === 'electron',
-    requiresMicPermission: platform === 'android' || platform === 'ios' || platform === 'web',
+    hasFileSystem: platform === Platform.Electron,
+    hasNativeMenus: platform === Platform.Electron,
+    requiresMicPermission: platform === Platform.Android || platform === Platform.iOS || platform === Platform.Web,
     hasSpeechRecognition: isSpeechRecognitionSupported(),
     hasTextToSpeech: isSpeechSynthesisSupported(),
   };
@@ -103,7 +104,7 @@ export function getPlatformCapabilities(): PlatformCapabilities {
  */
 export function isMobile(): boolean {
   const platform = getPlatform();
-  return platform === 'android' || platform === 'ios';
+  return platform === Platform.Android || platform === Platform.iOS;
 }
 
 /**
@@ -111,7 +112,7 @@ export function isMobile(): boolean {
  */
 export function isDesktop(): boolean {
   const platform = getPlatform();
-  return platform === 'electron' || platform === 'web';
+  return platform === Platform.Electron || platform === Platform.Web;
 }
 
 /**

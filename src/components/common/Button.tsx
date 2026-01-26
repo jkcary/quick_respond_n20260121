@@ -1,6 +1,6 @@
 /**
  * Button component with multiple variants
- * Follows cyberpunk Tailwind design system
+ * Theme-aware styling using CSS variables
  */
 
 import React from 'react';
@@ -23,13 +23,18 @@ export const Button: React.FC<ButtonProps> = ({
   children,
   ...props
 }) => {
-  const baseStyles = 'rounded-lg font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 disabled:opacity-50 disabled:cursor-not-allowed';
+  const baseStyles = `
+    rounded-lg font-medium transition-all duration-200
+    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-bg-primary
+    disabled:opacity-50 disabled:cursor-not-allowed
+    active:scale-[0.98]
+  `.trim();
 
   const variantStyles = {
-    primary: 'bg-cyan-500 hover:bg-cyan-600 text-white focus:ring-cyan-500',
-    secondary: 'bg-slate-700 hover:bg-slate-600 text-slate-200 focus:ring-slate-500',
-    ghost: 'bg-transparent hover:bg-slate-800 text-cyan-400 border border-slate-700 focus:ring-cyan-500',
-    danger: 'bg-red-500 hover:bg-red-600 text-white focus:ring-red-500',
+    primary: 'bg-accent hover:bg-accent-hover text-bg-primary focus:ring-accent',
+    secondary: 'bg-bg-tertiary hover:bg-border-secondary text-text-primary focus:ring-accent',
+    ghost: 'bg-transparent hover:bg-accent-muted text-accent border border-border-primary focus:ring-accent',
+    danger: 'bg-error hover:opacity-90 text-white focus:ring-error',
   };
 
   const sizeStyles = {

@@ -1,5 +1,5 @@
 /**
- * Modal component - Full-screen overlay with backdrop
+ * Modal component - Theme-aware full-screen overlay with backdrop
  */
 
 import React, { useEffect } from 'react';
@@ -65,22 +65,22 @@ export const Modal: React.FC<ModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm animate-fade-in"
       onClick={handleBackdropClick}
     >
       <div
-        className={`relative bg-slate-800 border border-slate-700 rounded-2xl shadow-2xl w-full mx-4 ${sizeStyles[size]} max-h-[90vh] overflow-y-auto`}
+        className={`relative bg-bg-secondary border border-border-primary rounded-2xl shadow-2xl w-full mx-4 ${sizeStyles[size]} max-h-[90vh] overflow-y-auto animate-scale-in`}
       >
         {/* Header */}
         {(title || showClose) && (
-          <div className="flex items-center justify-between p-6 border-b border-slate-700">
+          <div className="flex items-center justify-between p-6 border-b border-border-primary">
             {title && (
-              <h2 className="text-2xl font-bold text-cyan-400">{title}</h2>
+              <h2 className="text-2xl font-bold text-accent">{title}</h2>
             )}
             {showClose && (
               <button
                 onClick={onClose}
-                className="text-slate-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-slate-700"
+                className="text-text-muted hover:text-text-primary transition-colors p-2 rounded-lg hover:bg-bg-tertiary"
                 aria-label="Close modal"
               >
                 <svg

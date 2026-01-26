@@ -3,9 +3,8 @@
  */
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '@/store/useAppStore';
-import { Card, Button } from '@/components/common';
+import { Card } from '@/components/common';
 import { GradeSelector, LLMConfigForm, APITester, PerfDiagnostics, type LLMFormData } from '@/components/config';
 import { toast } from '@/components/common';
 import { LLMProvider, type GradeBook, type LLMConfig } from '@/types';
@@ -49,7 +48,6 @@ const normalizeProvider = (value?: string): LLMProvider => {
 };
 
 const SettingsPage: React.FC = () => {
-  const navigate = useNavigate();
   const { t } = useI18n();
   const config = useAppStore((state) => state.config);
   const updateConfig = useAppStore((state) => state.updateConfig);
@@ -139,23 +137,19 @@ const SettingsPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 p-6">
+    <div className="p-6">
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between animate-fade-in">
           <div>
-            <h1 className="text-3xl font-bold text-cyan-400 mb-2">{t('settings.title')}</h1>
-            <p className="text-slate-400">{t('settings.subtitle')}</p>
+            <h1 className="text-3xl font-bold text-accent mb-2">{t('settings.title')}</h1>
+            <p className="text-text-muted">{t('settings.subtitle')}</p>
           </div>
-          <Button variant="ghost" onClick={() => navigate('/')}
-          >
-            {t('settings.backHome')}
-          </Button>
         </div>
 
         {/* Grade Level */}
-        <Card>
-          <h2 className="text-xl font-semibold text-slate-200 mb-4">
+        <Card className="animate-slide-up">
+          <h2 className="text-xl font-semibold text-text-primary mb-4">
             {t('settings.sectionVocabulary')}
           </h2>
           <GradeSelector
@@ -165,8 +159,8 @@ const SettingsPage: React.FC = () => {
         </Card>
 
         {/* LLM Configuration */}
-        <Card>
-          <h2 className="text-xl font-semibold text-slate-200 mb-4">
+        <Card className="animate-slide-up">
+          <h2 className="text-xl font-semibold text-text-primary mb-4">
             {t('settings.sectionLlm')}
           </h2>
           <LLMConfigForm
@@ -182,30 +176,30 @@ const SettingsPage: React.FC = () => {
         </Card>
 
         {/* API Connection Test */}
-        <Card>
+        <Card className="animate-slide-up">
           <APITester config={currentLLMConfig} />
         </Card>
 
         {/* Performance Diagnostics */}
-        <Card>
-          <h2 className="text-xl font-semibold text-slate-200 mb-4">
+        <Card className="animate-slide-up">
+          <h2 className="text-xl font-semibold text-text-primary mb-4">
             {t('settings.sectionPerformance')}
           </h2>
           <PerfDiagnostics />
         </Card>
 
         {/* Audio Settings */}
-        <Card>
-          <h2 className="text-xl font-semibold text-slate-200 mb-4">
+        <Card className="animate-slide-up">
+          <h2 className="text-xl font-semibold text-text-primary mb-4">
             {t('settings.sectionAudio')}
           </h2>
           <div className="space-y-4">
             <label className="flex items-center justify-between cursor-pointer group">
               <div className="flex-1">
-                <div className="text-slate-200 font-medium group-hover:text-cyan-400 transition">
+                <div className="text-text-primary font-medium group-hover:text-accent transition">
                   {t('settings.autoPlayTitle')}
                 </div>
-                <div className="text-sm text-slate-400 mt-1">
+                <div className="text-sm text-text-muted mt-1">
                   {t('settings.autoPlayDesc')}
                 </div>
               </div>
@@ -213,7 +207,7 @@ const SettingsPage: React.FC = () => {
                 type="button"
                 onClick={handleAutoPlayToggle}
                 className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                  autoPlayAudio ? 'bg-cyan-500' : 'bg-slate-700'
+                  autoPlayAudio ? 'bg-accent' : 'bg-bg-tertiary'
                 }`}
               >
                 <span
@@ -227,19 +221,19 @@ const SettingsPage: React.FC = () => {
         </Card>
 
         {/* About */}
-        <Card>
-          <h2 className="text-xl font-semibold text-slate-200 mb-4">
+        <Card className="animate-slide-up">
+          <h2 className="text-xl font-semibold text-text-primary mb-4">
             {t('settings.sectionAbout')}
           </h2>
-          <div className="space-y-2 text-sm text-slate-400">
+          <div className="space-y-2 text-sm text-text-muted">
             <p>
-              <strong className="text-slate-300">{t('settings.aboutVersion')}</strong>
+              <strong className="text-text-secondary">{t('settings.aboutVersion')}</strong>
             </p>
             <p>
               {t('settings.aboutDesc')}
             </p>
-            <div className="pt-4 border-t border-slate-700 mt-4">
-              <p className="text-slate-500 text-xs">
+            <div className="pt-4 border-t border-border-primary mt-4">
+              <p className="text-text-muted text-xs">
                 {t('settings.aboutPrivacy')}
               </p>
             </div>

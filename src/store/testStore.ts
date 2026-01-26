@@ -163,7 +163,7 @@ export const useTestStore = create<TestState>((set, get) => ({
   },
 
   nextWord: () => {
-    const { currentSession } = get();
+    const { currentSession, currentWordIndex } = get();
 
     if (!currentSession) {
       return;
@@ -415,7 +415,7 @@ export const useTestStore = create<TestState>((set, get) => ({
   },
 
   getProgress: () => {
-    const { currentSession, currentWordIndex } = get();
+    const { currentSession } = get();
 
     if (!currentSession) {
       return { current: 0, total: 0, percentage: 0 };

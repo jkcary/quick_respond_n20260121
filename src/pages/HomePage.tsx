@@ -31,27 +31,27 @@ const HomePage: React.FC = () => {
     navigate('/test');
   };
 
-  const isConfigured = config.apiKey && config.apiKey.trim().length > 0;
+  const isConfigured = !!(config.apiKey && config.apiKey.trim().length > 0);
 
   return (
-    <div className="min-h-screen bg-slate-900 p-6">
+    <div className="p-6">
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-5xl font-bold text-cyan-400 mb-4">
+        <div className="text-center mb-8 animate-fade-in">
+          <h1 className="text-4xl md:text-5xl font-bold text-accent mb-4">
             {t('app.name')}
           </h1>
-          <p className="text-xl text-slate-300">
+          <p className="text-lg md:text-xl text-text-secondary">
             {t('app.tagline')}
           </p>
         </div>
 
         {/* Configuration warning */}
         {!isConfigured && (
-          <Card className="bg-yellow-900/20 border-yellow-700">
+          <Card className="bg-warning/10 border-warning/30 animate-slide-up">
             <div className="flex items-start gap-4">
               <svg
-                className="w-6 h-6 text-yellow-400 flex-shrink-0 mt-1"
+                className="w-6 h-6 text-warning flex-shrink-0 mt-1"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -64,10 +64,10 @@ const HomePage: React.FC = () => {
                 />
               </svg>
               <div className="flex-1">
-                <h3 className="text-lg font-medium text-yellow-400 mb-2">
+                <h3 className="text-lg font-medium text-warning mb-2">
                   {t('home.setupTitle')}
                 </h3>
-                <p className="text-slate-300 mb-4">
+                <p className="text-text-secondary mb-4">
                   {t('home.setupDesc')}
                 </p>
                 <Button
@@ -82,9 +82,9 @@ const HomePage: React.FC = () => {
         )}
 
         {/* Start test card */}
-        <Card className="text-center py-12">
+        <Card className="text-center py-12 animate-slide-up" glow={isConfigured}>
           <div className="mb-6">
-            <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-cyan-500/20 text-cyan-400 mb-4">
+            <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-accent-muted text-accent mb-4">
               <svg
                 className="w-12 h-12"
                 fill="none"
@@ -99,10 +99,10 @@ const HomePage: React.FC = () => {
                 />
               </svg>
             </div>
-            <h2 className="text-3xl font-bold text-slate-200 mb-2">
+            <h2 className="text-2xl md:text-3xl font-bold text-text-primary mb-2">
               {t('home.readyTitle')}
             </h2>
-            <p className="text-slate-400">
+            <p className="text-text-muted">
               {t('home.readyDesc', { grade: gradeLabel })}
             </p>
           </div>
@@ -120,39 +120,39 @@ const HomePage: React.FC = () => {
 
         {/* Stats grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card hoverable onClick={() => navigate('/error-log')}>
+          <Card hoverable onClick={() => navigate('/error-log')} className="animate-slide-up">
             <div className="text-center">
-              <div className="text-4xl font-bold text-red-400 mb-2">
+              <div className="text-4xl font-bold text-error mb-2">
                 {totalErrors}
               </div>
-              <div className="text-sm text-slate-400">{t('home.statsTotalErrors')}</div>
+              <div className="text-sm text-text-muted">{t('home.statsTotalErrors')}</div>
             </div>
           </Card>
 
-          <Card hoverable onClick={() => navigate('/error-log')}>
+          <Card hoverable onClick={() => navigate('/error-log')} className="animate-slide-up">
             <div className="text-center">
-              <div className="text-4xl font-bold text-yellow-400 mb-2">
+              <div className="text-4xl font-bold text-warning mb-2">
                 {unmasteredErrors}
               </div>
-              <div className="text-sm text-slate-400">{t('home.statsToPractice')}</div>
+              <div className="text-sm text-text-muted">{t('home.statsToPractice')}</div>
             </div>
           </Card>
 
-          <Card hoverable onClick={() => navigate('/settings')}>
+          <Card hoverable onClick={() => navigate('/settings')} className="animate-slide-up">
             <div className="text-center">
-              <div className="text-4xl font-bold text-cyan-400 mb-2">
+              <div className="text-4xl font-bold text-accent mb-2">
                 {gradeLabel}
               </div>
-              <div className="text-sm text-slate-400">{t('home.statsCurrentGrade')}</div>
+              <div className="text-sm text-text-muted">{t('home.statsCurrentGrade')}</div>
             </div>
           </Card>
         </div>
 
         {/* Features */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Card>
+          <Card className="animate-slide-up">
             <div className="flex items-start gap-4">
-              <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-cyan-500/20 flex items-center justify-center text-cyan-400">
+              <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-accent-muted flex items-center justify-center text-accent">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
@@ -163,17 +163,17 @@ const HomePage: React.FC = () => {
                 </svg>
               </div>
               <div>
-                <h3 className="font-medium text-slate-200 mb-1">{t('home.featureVoiceTitle')}</h3>
-                <p className="text-sm text-slate-400">
+                <h3 className="font-medium text-text-primary mb-1">{t('home.featureVoiceTitle')}</h3>
+                <p className="text-sm text-text-muted">
                   {t('home.featureVoiceDesc')}
                 </p>
               </div>
             </div>
           </Card>
 
-          <Card>
+          <Card className="animate-slide-up">
             <div className="flex items-start gap-4">
-              <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center text-green-400">
+              <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-success/20 flex items-center justify-center text-success">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
@@ -184,15 +184,15 @@ const HomePage: React.FC = () => {
                 </svg>
               </div>
               <div>
-                <h3 className="font-medium text-slate-200 mb-1">{t('home.featureJudgeTitle')}</h3>
-                <p className="text-sm text-slate-400">
+                <h3 className="font-medium text-text-primary mb-1">{t('home.featureJudgeTitle')}</h3>
+                <p className="text-sm text-text-muted">
                   {t('home.featureJudgeDesc')}
                 </p>
               </div>
             </div>
           </Card>
 
-          <Card>
+          <Card className="animate-slide-up">
             <div className="flex items-start gap-4">
               <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center text-purple-400">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -205,17 +205,17 @@ const HomePage: React.FC = () => {
                 </svg>
               </div>
               <div>
-                <h3 className="font-medium text-slate-200 mb-1">{t('home.featureTrackTitle')}</h3>
-                <p className="text-sm text-slate-400">
+                <h3 className="font-medium text-text-primary mb-1">{t('home.featureTrackTitle')}</h3>
+                <p className="text-sm text-text-muted">
                   {t('home.featureTrackDesc')}
                 </p>
               </div>
             </div>
           </Card>
 
-          <Card>
+          <Card className="animate-slide-up">
             <div className="flex items-start gap-4">
-              <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-yellow-500/20 flex items-center justify-center text-yellow-400">
+              <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-warning/20 flex items-center justify-center text-warning">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
@@ -226,8 +226,8 @@ const HomePage: React.FC = () => {
                 </svg>
               </div>
               <div>
-                <h3 className="font-medium text-slate-200 mb-1">{t('home.featureVstTitle')}</h3>
-                <p className="text-sm text-slate-400">
+                <h3 className="font-medium text-text-primary mb-1">{t('home.featureVstTitle')}</h3>
+                <p className="text-sm text-text-muted">
                   {t('home.featureVstDesc')}
                 </p>
               </div>

@@ -79,15 +79,6 @@ const ErrorLogPage: React.FC = () => {
     }
   }, [filter, setFilter]);
 
-  const handleBack = () => {
-    if (window.history.length > 1) {
-      navigate(-1);
-      return;
-    }
-
-    navigate('/');
-  };
-
   const handleClearAll = async () => {
     if (totalErrors === 0) {
       return;
@@ -110,13 +101,13 @@ const ErrorLogPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 p-6">
+    <div className="p-6">
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between animate-fade-in">
           <div>
-            <h1 className="text-3xl font-bold text-cyan-400 mb-2">{t('errorLog.title')}</h1>
-            <p className="text-slate-400">{t('errorLog.subtitle')}</p>
+            <h1 className="text-3xl font-bold text-accent mb-2">{t('errorLog.title')}</h1>
+            <p className="text-text-muted">{t('errorLog.subtitle')}</p>
           </div>
           <div className="flex items-center gap-2">
             <Button
@@ -126,34 +117,31 @@ const ErrorLogPage: React.FC = () => {
             >
               {t('errorLog.clear')}
             </Button>
-            <Button variant="ghost" onClick={handleBack}>
-              {t('errorLog.backHome')}
-            </Button>
           </div>
         </div>
 
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card>
+          <Card className="animate-slide-up">
             <div className="text-center">
-              <div className="text-4xl font-bold text-red-400 mb-2">{totalErrors}</div>
-              <div className="text-sm text-slate-400">{t('errorLog.statsTotal')}</div>
+              <div className="text-4xl font-bold text-error mb-2">{totalErrors}</div>
+              <div className="text-sm text-text-muted">{t('errorLog.statsTotal')}</div>
             </div>
           </Card>
-          <Card>
+          <Card className="animate-slide-up">
             <div className="text-center">
-              <div className="text-4xl font-bold text-yellow-400 mb-2">
+              <div className="text-4xl font-bold text-warning mb-2">
                 {unmasteredCount}
               </div>
-              <div className="text-sm text-slate-400">{t('errorLog.statsToPractice')}</div>
+              <div className="text-sm text-text-muted">{t('errorLog.statsToPractice')}</div>
             </div>
           </Card>
-          <Card>
+          <Card className="animate-slide-up">
             <div className="text-center">
-              <div className="text-4xl font-bold text-green-400 mb-2">
+              <div className="text-4xl font-bold text-success mb-2">
                 {masteredCount}
               </div>
-              <div className="text-sm text-slate-400">{t('errorLog.statsMastered')}</div>
+              <div className="text-sm text-text-muted">{t('errorLog.statsMastered')}</div>
             </div>
           </Card>
         </div>
@@ -162,12 +150,9 @@ const ErrorLogPage: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Error list */}
           <div className="lg:col-span-2">
-            <Card>
+            <Card className="animate-slide-up">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold text-slate-200">{t('errorLog.title')}</h2>
-                <Button variant="ghost" size="sm" onClick={handleBack}>
-                  {t('errorLog.back')}
-                </Button>
+                <h2 className="text-xl font-semibold text-text-primary">{t('errorLog.title')}</h2>
               </div>
               <ErrorList
                 errors={errors}
@@ -180,7 +165,7 @@ const ErrorLogPage: React.FC = () => {
 
           {/* Export panel */}
           <div>
-            <Card>
+            <Card className="animate-slide-up">
               <ExportPanel errorLog={errorLog} />
             </Card>
           </div>

@@ -4,77 +4,279 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================
+   Theme CSS Variables
+   ============================================ */
+
+:root {
+  /* Default to dark theme */
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-tertiary: #334155;
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --border-primary: #334155;
+  --border-secondary: #475569;
+  --accent: #22d3ee;
+  --accent-hover: #06b6d4;
+  --accent-muted: rgba(34, 211, 238, 0.2);
+  --success: #4ade80;
+  --success-muted: rgba(74, 222, 128, 0.2);
+  --warning: #fbbf24;
+  --warning-muted: rgba(251, 191, 36, 0.2);
+  --error: #f87171;
+  --error-muted: rgba(248, 113, 113, 0.2);
+  /* Word display colors for dark theme */
+  --word-english: #f1f5f9;
+  --word-phonetic: #94a3b8;
+  --word-chinese: #22d3ee;
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+  --shadow-card-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.2);
+}
+
+/* Dark Theme */
+.dark {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-tertiary: #334155;
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --border-primary: #334155;
+  --border-secondary: #475569;
+  --accent: #22d3ee;
+  --accent-hover: #06b6d4;
+  --accent-muted: rgba(34, 211, 238, 0.2);
+  --success: #4ade80;
+  --success-muted: rgba(74, 222, 128, 0.2);
+  --warning: #fbbf24;
+  --warning-muted: rgba(251, 191, 36, 0.2);
+  --error: #f87171;
+  --error-muted: rgba(248, 113, 113, 0.2);
+  /* Word display colors for dark theme */
+  --word-english: #f1f5f9;
+  --word-phonetic: #94a3b8;
+  --word-chinese: #22d3ee;
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+  --shadow-card-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.2);
+}
+
+/* Light Theme */
+.light {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f1f5f9;
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --border-primary: #e2e8f0;
+  --border-secondary: #cbd5e1;
+  --accent: #0891b2;
+  --accent-hover: #0e7490;
+  --accent-muted: rgba(8, 145, 178, 0.12);
+  --success: #16a34a;
+  --success-muted: rgba(22, 163, 74, 0.12);
+  --warning: #d97706;
+  --warning-muted: rgba(217, 119, 6, 0.12);
+  --error: #dc2626;
+  --error-muted: rgba(220, 38, 38, 0.12);
+  /* Enhanced word display colors for light theme */
+  --word-english: #1e40af;
+  --word-phonetic: #6366f1;
+  --word-chinese: #047857;
+  --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --shadow-card-hover: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+
+/* ============================================
+   Base Styles
+   ============================================ */
+
 @layer base {
+  html {
+    @apply transition-colors duration-theme;
+  }
+
   body {
-    @apply bg-cyber-bg text-cyber-secondary font-sans antialiased;
+    @apply bg-bg-primary text-text-secondary font-sans antialiased transition-colors duration-theme;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply text-cyber-primary font-semibold;
+    @apply text-accent font-semibold;
   }
 
   button {
     @apply transition-all duration-200;
   }
+
+  /* Smooth theme transition for all elements */
+  *, *::before, *::after {
+    @apply transition-colors duration-theme;
+  }
 }
 
+/* ============================================
+   Component Classes
+   ============================================ */
+
 @layer components {
-  /* Cyberpunk Button */
-  .btn-cyber {
-    @apply px-6 py-3 bg-cyber-primary text-cyber-bg font-medium rounded-lg
-           hover:bg-cyan-300 active:scale-95 disabled:opacity-50
-           disabled:cursor-not-allowed disabled:hover:bg-cyber-primary;
+  /* Theme-aware Button */
+  .btn-primary {
+    @apply px-6 py-3 bg-accent text-bg-primary font-medium rounded-lg
+           hover:bg-accent-hover active:scale-95 disabled:opacity-50
+           disabled:cursor-not-allowed disabled:hover:bg-accent
+           focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-bg-primary;
   }
 
-  .btn-cyber-outline {
-    @apply px-6 py-3 border-2 border-cyber-primary text-cyber-primary
-           font-medium rounded-lg hover:bg-cyber-primary hover:text-cyber-bg
-           active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
+  .btn-secondary {
+    @apply px-6 py-3 bg-bg-tertiary text-text-primary font-medium rounded-lg
+           hover:bg-border-secondary active:scale-95 disabled:opacity-50
+           disabled:cursor-not-allowed
+           focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-bg-primary;
   }
 
-  .btn-cyber-danger {
-    @apply px-6 py-3 bg-cyber-alert text-white font-medium rounded-lg
-           hover:bg-rose-400 active:scale-95 disabled:opacity-50;
+  .btn-ghost {
+    @apply px-6 py-3 bg-transparent text-accent font-medium rounded-lg
+           border border-border-primary hover:bg-accent-muted active:scale-95
+           disabled:opacity-50 disabled:cursor-not-allowed
+           focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 focus:ring-offset-bg-primary;
   }
 
-  /* Card */
-  .card-cyber {
-    @apply bg-cyber-surface rounded-xl p-6 shadow-lg
-           border border-slate-700;
+  .btn-danger {
+    @apply px-6 py-3 bg-error text-white font-medium rounded-lg
+           hover:opacity-90 active:scale-95 disabled:opacity-50
+           focus:outline-none focus:ring-2 focus:ring-error focus:ring-offset-2 focus:ring-offset-bg-primary;
   }
 
-  /* Input */
-  .input-cyber {
-    @apply w-full px-4 py-3 bg-cyber-bg border border-cyber-primary
-           rounded-lg text-cyber-primary placeholder-cyber-secondary
-           focus:outline-none focus:ring-2 focus:ring-cyber-primary
-           focus:border-transparent;
+  /* Theme-aware Card */
+  .card {
+    @apply bg-bg-secondary rounded-2xl p-6 shadow-card
+           border border-border-primary transition-all duration-200;
   }
 
-  /* Badge */
-  .badge-cyber {
+  .card-hoverable {
+    @apply card cursor-pointer hover:shadow-card-hover hover:border-border-secondary;
+  }
+
+  .card-glow {
+    @apply card ring-2 ring-accent/50 shadow-glow;
+  }
+
+  /* Theme-aware Input */
+  .input {
+    @apply w-full px-4 py-3 bg-bg-tertiary border border-border-primary
+           rounded-lg text-text-primary placeholder-text-muted
+           focus:outline-none focus:ring-2 focus:ring-accent
+           focus:border-transparent transition-all duration-200;
+  }
+
+  /* Theme-aware Badge */
+  .badge {
     @apply inline-block px-3 py-1 text-sm font-medium
-           bg-cyber-primary/20 text-cyber-primary rounded-full;
+           bg-accent-muted text-accent rounded-full;
   }
 
-  .badge-alert {
+  .badge-success {
     @apply inline-block px-3 py-1 text-sm font-medium
-           bg-cyber-alert/20 text-cyber-alert rounded-full;
+           text-success rounded-full;
+    background-color: color-mix(in srgb, var(--success) 20%, transparent);
+  }
+
+  .badge-warning {
+    @apply inline-block px-3 py-1 text-sm font-medium
+           text-warning rounded-full;
+    background-color: color-mix(in srgb, var(--warning) 20%, transparent);
+  }
+
+  .badge-error {
+    @apply inline-block px-3 py-1 text-sm font-medium
+           text-error rounded-full;
+    background-color: color-mix(in srgb, var(--error) 20%, transparent);
   }
 
   /* Loading Spinner */
   .spinner {
-    @apply inline-block w-6 h-6 border-4 border-cyber-primary
+    @apply inline-block w-6 h-6 border-4 border-accent
            border-t-transparent rounded-full animate-spin;
   }
 
   /* Glassmorphism Effect */
+  .glass {
+    @apply backdrop-blur-md border;
+    background-color: color-mix(in srgb, var(--bg-secondary) 80%, transparent);
+    border-color: color-mix(in srgb, var(--border-primary) 50%, transparent);
+  }
+
+  /* Bottom Navigation */
+  .bottom-nav {
+    @apply fixed bottom-0 left-0 right-0 backdrop-blur-md
+           border-t border-border-primary z-50 pb-safe;
+    background-color: color-mix(in srgb, var(--bg-secondary) 95%, transparent);
+  }
+
+  .nav-item {
+    @apply flex flex-col items-center justify-center gap-1 px-4 py-2 rounded-xl
+           text-text-muted transition-all duration-200 min-w-[64px];
+  }
+
+  .nav-item-active {
+    @apply nav-item text-accent bg-accent-muted;
+  }
+
+  .nav-item:hover:not(.nav-item-active) {
+    @apply text-text-secondary;
+    background-color: color-mix(in srgb, var(--bg-tertiary) 50%, transparent);
+  }
+
+  /* Legacy cyberpunk classes (deprecated, use theme-aware classes) */
+  .btn-cyber {
+    @apply btn-primary;
+  }
+
+  .btn-cyber-outline {
+    @apply btn-ghost;
+  }
+
+  .btn-cyber-danger {
+    @apply btn-danger;
+  }
+
+  .card-cyber {
+    @apply card;
+  }
+
+  .input-cyber {
+    @apply input;
+  }
+
+  .badge-cyber {
+    @apply badge;
+  }
+
+  .badge-alert {
+    @apply badge-error;
+  }
+
   .glass-cyber {
-    @apply bg-cyber-surface/60 backdrop-blur-md border border-slate-700/50;
+    @apply glass;
   }
 }
 
+/* ============================================
+   Utility Classes
+   ============================================ */
+
 @layer utilities {
+  /* Safe area padding for mobile devices */
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .pt-safe {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+
   /* Custom Animations */
   @keyframes slideUp {
     from {
@@ -93,10 +295,10 @@
 
   @keyframes pulse-glow {
     0%, 100% {
-      box-shadow: 0 0 5px rgba(34, 211, 238, 0.5);
+      box-shadow: 0 0 5px var(--accent-muted);
     }
     50% {
-      box-shadow: 0 0 20px rgba(34, 211, 238, 0.8);
+      box-shadow: 0 0 20px var(--accent);
     }
   }
 
@@ -107,7 +309,7 @@
   @keyframes scaleIn {
     from {
       opacity: 0;
-      transform: scale(0.8);
+      transform: scale(0.95);
     }
     to {
       opacity: 1;
@@ -116,7 +318,7 @@
   }
 
   .animate-scale-in {
-    animation: scaleIn 0.3s ease-out;
+    animation: scaleIn 0.2s ease-out;
   }
 
   @keyframes shake {
@@ -154,12 +356,37 @@
   }
 
   .animate-fade-in {
-    animation: fadeIn 0.5s ease-out;
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  @keyframes slideInUp {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-slide-in-up {
+    animation: slideInUp 0.3s ease-out;
+  }
+
+  /* Page transition */
+  .page-enter {
+    @apply animate-fade-in;
   }
 
   /* Text Gradient */
-  .text-gradient-cyber {
-    @apply bg-gradient-to-r from-cyan-400 to-blue-500
+  .text-gradient {
+    @apply bg-gradient-to-r from-accent to-cyan-500
            bg-clip-text text-transparent;
+  }
+
+  /* Legacy gradient class */
+  .text-gradient-cyber {
+    @apply text-gradient;
   }
 }

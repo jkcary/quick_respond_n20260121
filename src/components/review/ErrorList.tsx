@@ -59,7 +59,7 @@ export const ErrorList: React.FC<ErrorListProps> = ({
     return (
       <Card className="text-center py-12">
         <svg
-          className="w-16 h-16 text-slate-600 mx-auto mb-4"
+          className="w-16 h-16 text-text-muted mx-auto mb-4"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -71,8 +71,8 @@ export const ErrorList: React.FC<ErrorListProps> = ({
             d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
           />
         </svg>
-        <h3 className="text-xl font-medium text-slate-400 mb-2">{t('errorList.emptyTitle')}</h3>
-        <p className="text-slate-500">
+        <h3 className="text-xl font-medium text-text-secondary mb-2">{t('errorList.emptyTitle')}</h3>
+        <p className="text-text-muted">
           {currentFilter === 'unmastered'
             ? t('errorList.emptyDescUnmastered')
             : currentFilter === 'mastered'
@@ -116,9 +116,9 @@ export const ErrorList: React.FC<ErrorListProps> = ({
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-slate-700">
+            <tr className="border-b border-border-primary">
               <th
-                className="text-left p-3 text-slate-400 font-medium cursor-pointer hover:text-cyan-400 transition"
+                className="text-left p-3 text-text-muted font-medium cursor-pointer hover:text-accent transition"
                 onClick={() => handleSort('word')}
               >
                 {t('errorList.tableWord')}
@@ -126,11 +126,11 @@ export const ErrorList: React.FC<ErrorListProps> = ({
                   <span className="ml-1">{sortOrder === 'asc' ? '^' : 'v'}</span>
                 )}
               </th>
-              <th className="text-left p-3 text-slate-400 font-medium hidden sm:table-cell">
+              <th className="text-left p-3 text-text-muted font-medium hidden sm:table-cell">
                 {t('errorList.tableChinese')}
               </th>
               <th
-                className="text-center p-3 text-slate-400 font-medium cursor-pointer hover:text-cyan-400 transition"
+                className="text-center p-3 text-text-muted font-medium cursor-pointer hover:text-accent transition"
                 onClick={() => handleSort('errorCount')}
               >
                 {t('errorList.tableErrors')}
@@ -139,7 +139,7 @@ export const ErrorList: React.FC<ErrorListProps> = ({
                 )}
               </th>
               <th
-                className="text-left p-3 text-slate-400 font-medium cursor-pointer hover:text-cyan-400 transition hidden md:table-cell"
+                className="text-left p-3 text-text-muted font-medium cursor-pointer hover:text-accent transition hidden md:table-cell"
                 onClick={() => handleSort('lastErrorDate')}
               >
                 {t('errorList.tableLastError')}
@@ -147,7 +147,7 @@ export const ErrorList: React.FC<ErrorListProps> = ({
                   <span className="ml-1">{sortOrder === 'asc' ? '^' : 'v'}</span>
                 )}
               </th>
-              <th className="text-center p-3 text-slate-400 font-medium">{t('errorList.tableStatus')}</th>
+              <th className="text-center p-3 text-text-muted font-medium">{t('errorList.tableStatus')}</th>
             </tr>
           </thead>
           <tbody>
@@ -155,28 +155,28 @@ export const ErrorList: React.FC<ErrorListProps> = ({
               <tr
                 key={error.word.id}
                 onClick={() => onSelectWord(error.word.id)}
-                className="border-b border-slate-800 hover:bg-slate-800/50 cursor-pointer transition"
+                className="border-b border-border-primary hover:bg-bg-tertiary cursor-pointer transition"
               >
                 <td className="p-3">
-                  <div className="font-medium text-slate-200">{error.word.word}</div>
-                  <div className="text-sm text-slate-400 sm:hidden">
+                  <div className="font-semibold text-word-english">{error.word.word}</div>
+                  <div className="text-sm text-word-chinese sm:hidden">
                     {error.word.chinese}
                   </div>
                 </td>
-                <td className="p-3 text-slate-300 hidden sm:table-cell">
+                <td className="p-3 text-word-chinese hidden sm:table-cell">
                   {error.word.chinese}
                 </td>
                 <td className="p-3 text-center">
-                  <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-red-900/30 text-red-400 font-medium text-sm">
+                  <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-error-muted text-error font-medium text-sm">
                     {error.errorCount}
                   </span>
                 </td>
-                <td className="p-3 text-slate-400 text-sm hidden md:table-cell">
+                <td className="p-3 text-text-muted text-sm hidden md:table-cell">
                   {formatRelativeTime(error.lastErrorDate)}
                 </td>
                 <td className="p-3 text-center">
                   {error.mastered ? (
-                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-green-900/30 text-green-400 text-xs font-medium">
+                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-success-muted text-success text-xs font-medium">
                       <svg
                         className="w-3 h-3"
                         fill="currentColor"
@@ -191,7 +191,7 @@ export const ErrorList: React.FC<ErrorListProps> = ({
                       {t('errorList.statusMastered')}
                     </span>
                   ) : (
-                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-yellow-900/30 text-yellow-400 text-xs font-medium">
+                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-warning-muted text-warning text-xs font-medium">
                       {t('errorList.statusPractice')}
                     </span>
                   )}

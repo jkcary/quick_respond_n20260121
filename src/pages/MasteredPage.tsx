@@ -41,8 +41,11 @@ const MasteredPage: React.FC = () => {
     if (!keyword) return sortedEntries;
     return sortedEntries.filter((entry) => {
       const word = entry.word.word.toLowerCase();
-      const chinese = entry.word.chinese.toLowerCase();
-      return word.includes(keyword) || chinese.includes(keyword);
+      // Handle chinese as either string array or string
+      const chineseText = Array.isArray(entry.word.chinese)
+        ? entry.word.chinese.join(' ')
+        : (entry.word.chinese || entry.word.zh || '');
+      return word.includes(keyword) || chineseText.toLowerCase().includes(keyword);
     });
   }, [query, sortedEntries]);
 
@@ -75,13 +78,13 @@ const MasteredPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 p-6">
+    <div className="min-h-screen bg-bg-primary p-6">
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-green-400 mb-2">{t('mastered.title')}</h1>
-            <p className="text-slate-400">{t('mastered.subtitle')}</p>
+            <h1 className="text-3xl font-bold text-success mb-2">{t('mastered.title')}</h1>
+            <p className="text-text-muted">{t('mastered.subtitle')}</p>
           </div>
           <div className="flex items-center gap-3">
             <Button variant="ghost" onClick={handleBack}>
@@ -94,26 +97,26 @@ const MasteredPage: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card>
             <div className="text-center">
-              <div className="text-4xl font-bold text-green-400 mb-2">
+              <div className="text-4xl font-bold text-success mb-2">
                 {totalMastered}
               </div>
-              <div className="text-sm text-slate-400">{t('mastered.statsMastered')}</div>
+              <div className="text-sm text-text-muted">{t('mastered.statsMastered')}</div>
             </div>
           </Card>
           <Card>
             <div className="text-center">
-              <div className="text-4xl font-bold text-cyan-400 mb-2">
+              <div className="text-4xl font-bold text-accent mb-2">
                 {averageErrors}
               </div>
-              <div className="text-sm text-slate-400">{t('mastered.statsAvgErrors')}</div>
+              <div className="text-sm text-text-muted">{t('mastered.statsAvgErrors')}</div>
             </div>
           </Card>
           <Card>
             <div className="text-center">
-              <div className="text-lg font-medium text-slate-300">
+              <div className="text-lg font-medium text-text-secondary">
                 {latestErrorDate > 0 ? formatRelativeTime(latestErrorDate) : '?'}
               </div>
-              <div className="text-sm text-slate-400">{t('mastered.statsLatestError')}</div>
+              <div className="text-sm text-text-muted">{t('mastered.statsLatestError')}</div>
             </div>
           </Card>
         </div>
@@ -122,15 +125,15 @@ const MasteredPage: React.FC = () => {
         <Card className="p-4">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
             <div>
-              <h2 className="text-lg font-semibold text-slate-200">{t('mastered.searchTitle')}</h2>
-              <p className="text-sm text-slate-500">{t('mastered.searchSubtitle')}</p>
+              <h2 className="text-lg font-semibold text-text-primary">{t('mastered.searchTitle')}</h2>
+              <p className="text-sm text-text-muted">{t('mastered.searchSubtitle')}</p>
             </div>
             <div className="relative w-full md:w-72">
               <input
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder={t('mastered.searchPlaceholder')}
-                className="w-full rounded-lg bg-slate-900 border border-slate-700 px-4 py-2 text-slate-200 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-green-500/60"
+                className="w-full rounded-lg bg-bg-tertiary border border-border-primary px-4 py-2 text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-success/60"
               />
             </div>
           </div>
@@ -139,8 +142,8 @@ const MasteredPage: React.FC = () => {
         {/* Mastered list */}
         {filteredEntries.length === 0 ? (
           <Card className="text-center py-12">
-            <div className="text-slate-400 text-lg">{t('mastered.emptyTitle')}</div>
-            <p className="text-slate-500 mt-2">
+            <div className="text-text-secondary text-lg">{t('mastered.emptyTitle')}</div>
+            <p className="text-text-muted mt-2">
               {t('mastered.emptySubtitle')}
             </p>
           </Card>
@@ -148,32 +151,32 @@ const MasteredPage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
             {filteredEntries.map((entry) => (
               <Card key={entry.word.id} className="relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 via-transparent to-cyan-500/5" />
+                <div className="absolute inset-0 bg-gradient-to-br from-success/5 via-transparent to-accent/5" />
                 <div className="relative space-y-4">
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <div className="text-2xl font-bold text-slate-100">
+                      <div className="text-2xl font-bold text-word-english">
                         {entry.word.word}
                       </div>
-                      <div className="text-sm text-slate-400 font-mono">
+                      <div className="text-sm text-word-phonetic font-mono">
                         {entry.word.phonetic}
                       </div>
-                      <div className="text-green-400 mt-1">
+                      <div className="text-word-chinese mt-1">
                         {entry.word.chinese}
                       </div>
                     </div>
-                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-green-900/40 text-green-300 text-xs font-medium">
+                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-success-muted text-success text-xs font-medium">
                       {t('mastered.badgeMastered')}
                     </span>
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-3 text-sm text-slate-400">
+                  <div className="flex flex-wrap items-center gap-3 text-sm text-text-muted">
                     <div className="inline-flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-red-400/70" />
+                      <span className="w-2 h-2 rounded-full bg-error/70" />
                       {t('mastered.errorsCount', { count: entry.errorCount })}
                     </div>
                     <div className="inline-flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-cyan-400/70" />
+                      <span className="w-2 h-2 rounded-full bg-accent/70" />
                       {formatRelativeTime(entry.lastErrorDate)}
                     </div>
                   </div>

@@ -1,5 +1,5 @@
 /**
- * Loading spinner - Cyberpunk-style animated spinner
+ * Loading spinner - Theme-aware animated spinner
  */
 
 import React from 'react';
@@ -25,19 +25,19 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
     <div className="flex flex-col items-center justify-center gap-4">
       <div className={`relative ${sizeStyles[size]}`}>
         {/* Outer ring */}
-        <div className="absolute inset-0 border-4 border-slate-700 rounded-full"></div>
+        <div className="absolute inset-0 border-4 border-border-primary rounded-full"></div>
 
-        {/* Spinning cyan arc */}
-        <div className="absolute inset-0 border-4 border-transparent border-t-cyan-500 rounded-full animate-spin"></div>
+        {/* Spinning accent arc */}
+        <div className="absolute inset-0 border-4 border-transparent border-t-accent rounded-full animate-spin"></div>
 
         {/* Inner pulsing dot */}
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
+          <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
         </div>
       </div>
 
       {message && (
-        <p className="text-slate-300 text-sm font-medium animate-pulse">
+        <p className="text-text-secondary text-sm font-medium animate-pulse">
           {message}
         </p>
       )}
@@ -46,7 +46,7 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
 
   if (fullScreen) {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/80 backdrop-blur-sm">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-bg-primary/80 backdrop-blur-sm">
         {spinner}
       </div>
     );

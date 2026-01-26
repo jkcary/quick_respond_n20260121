@@ -1,5 +1,5 @@
 /**
- * Input component - Text input with validation states
+ * Input component - Theme-aware text input with validation states
  */
 
 import React from 'react';
@@ -21,11 +21,17 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(({
   className = '',
   ...props
 }, ref) => {
-  const baseInputStyles = 'bg-slate-700 text-white border rounded-lg px-4 py-2 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 disabled:opacity-50 disabled:cursor-not-allowed';
+  const baseInputStyles = `
+    bg-bg-tertiary text-text-primary border rounded-lg px-4 py-2
+    transition-all duration-200
+    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-bg-primary
+    disabled:opacity-50 disabled:cursor-not-allowed
+    placeholder-text-muted
+  `.trim();
 
   const borderStyles = error
-    ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
-    : 'border-slate-600 focus:border-cyan-500 focus:ring-cyan-500';
+    ? 'border-error focus:border-error focus:ring-error'
+    : 'border-border-primary focus:border-accent focus:ring-accent';
 
   const widthStyles = fullWidth ? 'w-full' : '';
 
@@ -35,7 +41,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(({
   return (
     <div className={fullWidth ? 'w-full' : ''}>
       {label && (
-        <label className="block text-sm font-medium text-slate-300 mb-2">
+        <label className="block text-sm font-medium text-text-secondary mb-2">
           {label}
         </label>
       )}
@@ -50,11 +56,11 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(({
       </div>
 
       {error && (
-        <p className="mt-1 text-sm text-red-400">{error}</p>
+        <p className="mt-1 text-sm text-error">{error}</p>
       )}
 
       {helperText && !error && (
-        <p className="mt-1 text-sm text-slate-400">{helperText}</p>
+        <p className="mt-1 text-sm text-text-muted">{helperText}</p>
       )}
     </div>
   );

@@ -2,7 +2,8 @@
  * Input validation functions
  */
 
-import type { VocabularyItem, LLMProvider, GradeLevel } from '@/types';
+import type { VocabularyItem } from '@/types';
+import { LLMProvider } from '@/types';
 
 export interface ValidationResult {
   valid: boolean;
@@ -26,7 +27,7 @@ export function validateAPIKey(key: string, provider?: LLMProvider): ValidationR
   // Provider-specific validation
   if (provider) {
     switch (provider) {
-      case 'deepseek':
+      case LLMProvider.DeepSeek:
         if (!trimmed.startsWith('sk-')) {
           return { valid: false, error: 'DeepSeek API key should start with "sk-"' };
         }
@@ -35,7 +36,7 @@ export function validateAPIKey(key: string, provider?: LLMProvider): ValidationR
         }
         break;
 
-      case 'openai':
+      case LLMProvider.OpenAI:
         if (!trimmed.startsWith('sk-')) {
           return { valid: false, error: 'OpenAI API key should start with "sk-"' };
         }
@@ -44,13 +45,13 @@ export function validateAPIKey(key: string, provider?: LLMProvider): ValidationR
         }
         break;
 
-      case 'anthropic':
+      case LLMProvider.Anthropic:
         if (!trimmed.startsWith('sk-ant-')) {
           return { valid: false, error: 'Anthropic API key should start with "sk-ant-"' };
         }
         break;
 
-      case 'ollama':
+      case LLMProvider.Ollama:
         // Ollama typically doesn't require API key
         return { valid: true };
 
@@ -140,31 +141,31 @@ export function validateModelName(model: string, provider: LLMProvider): Validat
 
   // Provider-specific model validation
   switch (provider) {
-    case 'deepseek':
+    case LLMProvider.DeepSeek:
       if (!trimmed.includes('deepseek')) {
         return { valid: false, error: 'Invalid DeepSeek model name' };
       }
       break;
 
-    case 'openai':
+    case LLMProvider.OpenAI:
       if (!['gpt-3.5', 'gpt-4'].some((prefix) => trimmed.toLowerCase().includes(prefix))) {
         return { valid: false, error: 'Model should be gpt-3.5-turbo or gpt-4 variant' };
       }
       break;
 
-    case 'anthropic':
+    case LLMProvider.Anthropic:
       if (!trimmed.toLowerCase().includes('claude')) {
         return { valid: false, error: 'Model should be a Claude variant' };
       }
       break;
 
-    case 'moonshot':
+    case LLMProvider.Moonshot:
       if (!trimmed.includes('moonshot')) {
         return { valid: false, error: 'Invalid Moonshot model name' };
       }
       break;
 
-    case 'ollama':
+    case LLMProvider.Ollama:
       // Any model name is valid for Ollama
       break;
   }

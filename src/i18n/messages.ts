@@ -8,9 +8,16 @@ export const messages: Record<Locale, Record<string, string | Record<string, str
       poweredBy: 'AI 驱动',
     },
     nav: {
-      diagnosis: '测试',
+      home: '首页',
+      test: '测试',
       review: '错词本',
       settings: '设置',
+      diagnosis: '测试',
+    },
+    theme: {
+      auto: '自动主题（跟随时间）',
+      dark: '深色模式',
+      light: '浅色模式',
     },
     language: {
       toggle: '切换语言',
@@ -229,9 +236,16 @@ export const messages: Record<Locale, Record<string, string | Record<string, str
       poweredBy: 'Powered by AI',
     },
     nav: {
-      diagnosis: 'Diagnosis',
+      home: 'Home',
+      test: 'Test',
       review: 'Review',
       settings: 'Settings',
+      diagnosis: 'Diagnosis',
+    },
+    theme: {
+      auto: 'Auto theme (time-based)',
+      dark: 'Dark mode',
+      light: 'Light mode',
     },
     language: {
       toggle: 'Switch language',

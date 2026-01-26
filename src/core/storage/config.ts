@@ -3,29 +3,32 @@
  * Manages user preferences and LLM settings persistence
  */
 
-import type { AppConfig } from '@/types';
+import type { AppConfig, UserPreferences, LLMConfig } from '@/types';
+import { LLMProvider } from '@/types';
 import { StorageAdapter } from './base';
 import { LocalStorageAdapter } from './localStorage';
 
 const CONFIG_KEY = 'app_config';
 
 /**
+ * Default user preferences
+ */
+const DEFAULT_PREFERENCES: UserPreferences = {
+  autoPlayTTS: true,
+  speechRecognitionLang: 'zh-CN',
+  ttsLang: 'en-US',
+  soundEffectVolume: 1.0,
+  enableAnimations: true,
+  theme: 'dark',
+};
+
+/**
  * Default application configuration
  */
 export const DEFAULT_CONFIG: AppConfig = {
-  llm: {
-    provider: 'deepseek',
-    apiKey: '',
-    model: 'deepseek-chat',
-    baseUrl: 'https://api.deepseek.com',
-  },
-  gradeLevel: 3,
-  preferences: {
-    voiceEnabled: true,
-    autoPlayAudio: true,
-    speechRate: 1.0,
-    theme: 'dark',
-  },
+  gradeLevel: 5,
+  activeLLMProvider: LLMProvider.DeepSeek,
+  preferences: DEFAULT_PREFERENCES,
 };
 
 export class ConfigStorage {
@@ -46,8 +49,7 @@ export class ConfigStorage {
       return {
         ...DEFAULT_CONFIG,
         ...config,
-        llm: { ...DEFAULT_CONFIG.llm, ...config.llm },
-        preferences: { ...DEFAULT_CONFIG.preferences, ...config.preferences },
+        preferences: { ...DEFAULT_PREFERENCES, ...config.preferences },
       };
     }
 
@@ -69,9 +71,6 @@ export class ConfigStorage {
     const updatedConfig: AppConfig = {
       ...currentConfig,
       ...partialConfig,
-      llm: partialConfig.llm
-        ? { ...currentConfig.llm, ...partialConfig.llm }
-        : currentConfig.llm,
       preferences: partialConfig.preferences
         ? { ...currentConfig.preferences, ...partialConfig.preferences }
         : currentConfig.preferences,
@@ -80,18 +79,28 @@ export class ConfigStorage {
   }
 
   /**
-   * Update LLM configuration
+   * Update LLM configuration for a provider
    */
-  async updateLLMConfig(llmConfig: Partial<AppConfig['llm']>): Promise<void> {
+  async updateLLMConfig(provider: LLMProvider, llmConfig: Partial<LLMConfig>): Promise<void> {
     const currentConfig = await this.load();
-    const updatedConfig: AppConfig = {
-      ...currentConfig,
-      llm: {
-        ...currentConfig.llm,
+    const existingConfigs = currentConfig.llmConfigs ?? ({} as Record<LLMProvider, LLMConfig>);
+    const existingProviderConfig = existingConfigs[provider];
+
+    const updatedConfigs: Record<LLMProvider, LLMConfig> = {
+      ...existingConfigs,
+      [provider]: {
+        // Base defaults
+        provider,
+        apiKey: existingProviderConfig?.apiKey ?? '',
+        modelName: existingProviderConfig?.modelName ?? '',
+        enabled: existingProviderConfig?.enabled ?? true,
+        baseUrl: existingProviderConfig?.baseUrl,
+        // Override with new config
         ...llmConfig,
       },
     };
-    await this.save(updatedConfig);
+
+    await this.update({ llmConfigs: updatedConfigs });
   }
 
   /**
@@ -104,11 +113,12 @@ export class ConfigStorage {
   /**
    * Update preferences
    */
-  async updatePreferences(preferences: Partial<AppConfig['preferences']>): Promise<void> {
+  async updatePreferences(preferences: Partial<UserPreferences>): Promise<void> {
     const currentConfig = await this.load();
     const updatedConfig: AppConfig = {
       ...currentConfig,
       preferences: {
+        ...DEFAULT_PREFERENCES,
         ...currentConfig.preferences,
         ...preferences,
       },
@@ -128,6 +138,12 @@ export class ConfigStorage {
    */
   async isConfigured(): Promise<boolean> {
     const config = await this.load();
-    return config.llm.apiKey.trim().length > 0;
+    // Check legacy apiKey or new llmConfigs
+    if (config.apiKey && config.apiKey.trim().length > 0) {
+      return true;
+    }
+    const activeProvider = config.activeLLMProvider ?? LLMProvider.DeepSeek;
+    const providerConfig = config.llmConfigs?.[activeProvider];
+    return (providerConfig?.apiKey?.trim().length ?? 0) > 0;
   }
 }

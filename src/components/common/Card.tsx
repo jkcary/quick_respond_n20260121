@@ -1,5 +1,5 @@
 /**
- * Card component - Slate-800 background with optional glow effect
+ * Card component - Theme-aware with optional glow effect
  */
 
 import React from 'react';
@@ -19,11 +19,13 @@ export const Card: React.FC<CardProps> = ({
   onClick,
   hoverable = false,
 }) => {
-  const baseStyles = 'bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-lg';
+  const baseStyles = 'bg-bg-secondary border border-border-primary rounded-2xl p-6 shadow-card transition-all duration-200';
 
-  const glowStyles = glow ? 'ring-2 ring-cyan-500/50' : '';
+  const glowStyles = glow ? 'ring-2 ring-accent/50 shadow-glow' : '';
 
-  const hoverStyles = hoverable || onClick ? 'hover:bg-slate-750 hover:border-slate-600 cursor-pointer transition-all duration-200' : '';
+  const hoverStyles = hoverable || onClick
+    ? 'hover:bg-bg-tertiary/50 hover:border-border-secondary hover:shadow-card-hover cursor-pointer'
+    : '';
 
   const combinedClassName = `${baseStyles} ${glowStyles} ${hoverStyles} ${className}`;
 

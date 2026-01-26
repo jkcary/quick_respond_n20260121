@@ -5,8 +5,8 @@
 
 import axios, { type AxiosInstance } from 'axios';
 import type { LLMClient, LLMRequest, LLMResponse, JudgmentResult, LLMConfig } from '@/types';
-import { parseJudgment, parseConnectionTest } from '../parser';
-import { JUDGMENT_SYSTEM_PROMPT, createJudgmentUserMessage, CONNECTION_TEST_PROMPT, CONNECTION_TEST_MESSAGE } from '../prompts';
+import { parseJudgment } from '../parser';
+import { JUDGMENT_SYSTEM_PROMPT, createJudgmentUserMessage, CONNECTION_TEST_PROMPT } from '../prompts';
 import { logAIUsage } from '@/utils/aiLogger';
 
 const DEFAULT_BASE_URL = 'http://localhost:11434';

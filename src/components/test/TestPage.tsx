@@ -17,6 +17,7 @@ import { logPerfEvent } from '@/utils/perfLogger';
 import { getGradeBookForGrade } from '@/types';
 import { TEST_CONFIG } from '@/config/app.config';
 import type { TestSession, VocabularyItem } from '@/types';
+import { LLMProvider } from '@/types';
 
 const BATCH_SIZE = TEST_CONFIG.WORDS_PER_TEST;
 const SEGMENT_CACHE_LIMIT = 50;
@@ -84,7 +85,7 @@ export const TestPage: React.FC = () => {
   const [gateway] = useState(() => {
     if (config.apiKey) {
       return new LLMGateway({
-        provider: config.apiProvider === 'deepseek' ? 'deepseek' : 'openai',
+        provider: config.apiProvider === 'deepseek' ? LLMProvider.DeepSeek : LLMProvider.OpenAI,
         apiKey: config.apiKey,
         modelName: config.apiProvider === 'deepseek' ? 'deepseek-chat' : 'gpt-3.5-turbo',
         enabled: true,
@@ -766,20 +767,20 @@ export const TestPage: React.FC = () => {
     >
       <div className="space-y-6">
         <div className="text-center">
-          <div className="text-5xl font-bold text-cyan-400 mb-2">{t('test.summaryTitle')}</div>
-          <div className="text-lg text-slate-300">{t('test.summaryDone')}</div>
+          <div className="text-5xl font-bold text-accent mb-2">{t('test.summaryTitle')}</div>
+          <div className="text-lg text-text-secondary">{t('test.summaryDone')}</div>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <div className="bg-slate-700 rounded-lg p-4 text-center">
-            <div className="text-3xl font-bold text-cyan-400">{summaryTotal}</div>
-            <div className="text-sm text-slate-400">{t('test.summaryTotalWords')}</div>
+          <div className="bg-bg-tertiary rounded-lg p-4 text-center">
+            <div className="text-3xl font-bold text-accent">{summaryTotal}</div>
+            <div className="text-sm text-text-muted">{t('test.summaryTotalWords')}</div>
           </div>
-          <div className="bg-slate-700 rounded-lg p-4 text-center">
-            <div className="text-2xl font-bold text-cyan-400">
+          <div className="bg-bg-tertiary rounded-lg p-4 text-center">
+            <div className="text-2xl font-bold text-accent">
               {formatDuration(summaryDuration)}
             </div>
-            <div className="text-sm text-slate-400">{t('test.summaryTimeTaken')}</div>
+            <div className="text-sm text-text-muted">{t('test.summaryTimeTaken')}</div>
           </div>
         </div>
 
@@ -800,7 +801,7 @@ export const TestPage: React.FC = () => {
 
   if (!currentSession || batchWords.length === 0) {
     return (
-      <div className="min-h-screen bg-slate-900">
+      <div className="min-h-screen">
         {!shouldShowSummary && (
           <div className="flex items-center justify-center min-h-screen">
             <LoadingSpinner size="lg" message={t('test.loading')} />
@@ -812,7 +813,7 @@ export const TestPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-900">
+    <div className="min-h-screen">
       <ScorePanel
         session={currentSession}
         currentWordIndex={currentWordIndex}
@@ -821,16 +822,16 @@ export const TestPage: React.FC = () => {
       />
 
       <div className="max-w-6xl mx-auto p-6 space-y-6">
-        <div className="text-center space-y-2">
-          <h2 className="text-xl text-slate-200 font-semibold">
+        <div className="text-center space-y-2 animate-fade-in">
+          <h2 className="text-xl text-text-primary font-semibold">
             {t('test.headerTitle', { count: batchWords.length })}
           </h2>
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-text-muted">
             {t('test.headerSubtitle')}
           </p>
         </div>
 
-        <div className="flex flex-col items-center gap-3 bg-slate-800 border border-slate-700 rounded-xl p-4">
+        <div className="flex flex-col items-center gap-3 bg-bg-secondary border border-border-primary rounded-xl p-4 animate-slide-up">
           <Button
             variant={isRecording ? 'secondary' : 'primary'}
             onClick={handleRecordToggle}
@@ -838,26 +839,26 @@ export const TestPage: React.FC = () => {
           >
             {isRecording ? t('test.recordStop') : t('test.recordStart')}
           </Button>
-          <div className="text-xs text-slate-400">
+          <div className="text-xs text-text-muted">
             {isRecording && t('test.recordHintRecording')}
             {!isRecording && isSegmenting && t('test.recordHintSegmenting')}
             {!isRecording && !isSegmenting && t('test.recordHintIdle')}
           </div>
           {(isSegmenting || segmentProgress > 0) && (
             <div className="w-full">
-              <div className="h-2 bg-slate-700 rounded-full overflow-hidden">
+              <div className="h-2 bg-bg-tertiary rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-cyan-500 transition-all duration-300"
+                  className="h-full bg-accent transition-all duration-300"
                   style={{ width: `${segmentProgress}%` }}
                 />
               </div>
-              <div className="mt-1 text-right text-xs text-slate-400">
+              <div className="mt-1 text-right text-xs text-text-muted">
                 {Math.round(segmentProgress)}%
               </div>
             </div>
           )}
           <div className="w-full flex items-center gap-3">
-            <div className="flex-1 text-sm text-slate-200 bg-slate-900/60 border border-slate-700 rounded-lg px-3 py-2">
+            <div className="flex-1 text-sm text-text-primary bg-bg-primary/60 border border-border-primary rounded-lg px-3 py-2">
               {segmentedDisplay || t('test.segmentPlaceholder')}
             </div>
             <Button
@@ -880,7 +881,7 @@ export const TestPage: React.FC = () => {
             </Button>
           </div>
           {recordingError && (
-            <div className="text-xs text-red-400">{recordingError}</div>
+            <div className="text-xs text-error">{recordingError}</div>
           )}
         </div>
 
@@ -888,11 +889,11 @@ export const TestPage: React.FC = () => {
           {batchWords.map((word) => (
             <div
               key={word.id}
-              className="bg-slate-800 border border-slate-700 rounded-xl p-4 space-y-3"
+              className="bg-bg-secondary border border-border-primary rounded-xl p-4 space-y-3 animate-slide-up"
             >
               <div className="space-y-1">
-                <div className="text-lg font-semibold text-cyan-300">{word.word}</div>
-                <div className="text-xs text-slate-400 font-mono">{word.phonetic}</div>
+                <div className="text-lg font-semibold text-accent">{word.word}</div>
+                <div className="text-xs text-text-muted font-mono">{word.phonetic}</div>
               </div>
 
             </div>

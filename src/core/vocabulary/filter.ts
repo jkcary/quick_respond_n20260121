@@ -28,12 +28,19 @@ export function filterVocabulary(
   // Filter by search text (case-insensitive)
   if (options.searchText && options.searchText.trim().length > 0) {
     const searchLower = options.searchText.toLowerCase().trim();
-    filtered = filtered.filter(
-      (word) =>
-        word.word.toLowerCase().includes(searchLower) ||
-        word.chinese.toLowerCase().includes(searchLower) ||
-        word.exampleSentence.toLowerCase().includes(searchLower)
-    );
+    filtered = filtered.filter((word) => {
+      // Check English word
+      if (word.word.toLowerCase().includes(searchLower)) return true;
+      if (word.en?.toLowerCase().includes(searchLower)) return true;
+      // Check Chinese (handle both string array and string)
+      const chineseText = Array.isArray(word.chinese)
+        ? word.chinese.join(' ')
+        : (word.chinese || word.zh || '');
+      if (chineseText.toLowerCase().includes(searchLower)) return true;
+      // Check example sentence
+      if (word.exampleSentence?.toLowerCase().includes(searchLower)) return true;
+      return false;
+    });
   }
 
   // Exclude mastered words
