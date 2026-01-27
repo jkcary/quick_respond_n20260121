@@ -87,7 +87,7 @@ export const ErrorList: React.FC<ErrorListProps> = ({
     <div className="space-y-4">
       {/* Filter buttons */}
       {onFilterChange && (
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <Button
             variant={currentFilter === 'all' ? 'primary' : 'ghost'}
             size="sm"

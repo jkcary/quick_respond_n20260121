@@ -35,7 +35,7 @@ const HomePage: React.FC = () => {
   const isConfigured = isBackendAuthConfigured();
 
   return (
-    <div className="p-6">
+    <div className="px-4 py-6 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Header */}
         <div className="text-center mb-8 animate-fade-in">

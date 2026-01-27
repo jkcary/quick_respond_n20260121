@@ -47,7 +47,7 @@ export const ScorePanel: React.FC<ScorePanelProps> = ({
         />
 
         {/* Mini stats */}
-        <div className="grid grid-cols-3 gap-2 text-center">
+        <div className="grid grid-cols-1 gap-2 text-center sm:grid-cols-3">
           <div className="bg-bg-tertiary rounded-lg p-2">
             <div className="text-2xl font-bold text-accent">{completedWords}</div>
             <div className="text-xs text-text-muted">{t('test.progressCompleted')}</div>

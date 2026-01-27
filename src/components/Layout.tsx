@@ -131,7 +131,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, hideNav = false }) => 
       {/* Bottom Navigation */}
       {!hideNav && (
         <nav className="bottom-nav">
-          <div className="max-w-lg mx-auto px-2">
+          <div className="max-w-lg sm:max-w-2xl lg:max-w-4xl mx-auto px-2">
             <div className="flex items-center justify-around py-2">
               {navItems.map((item) => {
                 const active = isActive(item.path);

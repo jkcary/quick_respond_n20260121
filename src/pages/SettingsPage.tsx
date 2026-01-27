@@ -340,10 +340,10 @@ const SettingsPage: React.FC = () => {
   };
 
   return (
-    <div className="p-6">
+    <div className="px-4 py-6 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between animate-fade-in">
+        <div className="flex flex-col gap-4 animate-fade-in sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="text-3xl font-bold text-accent mb-2">{t('settings.title')}</h1>
             <p className="text-text-muted">{t('settings.subtitle')}</p>
