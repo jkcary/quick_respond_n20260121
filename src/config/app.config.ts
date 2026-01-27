@@ -28,7 +28,7 @@ export const TEST_CONFIG = {
   VOICE_INPUT_DEBOUNCE: 500,
 
   /** Timeout for no speech detected before auto-advancing (ms) */
-  VOICE_SPEECH_TIMEOUT_MS: 2000,
+  VOICE_SPEECH_TIMEOUT_MS: 5000,
 
   /** Timeout for voice segmentation (ms) */
   VOICE_SEGMENT_TIMEOUT_MS: 8000,

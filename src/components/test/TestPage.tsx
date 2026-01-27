@@ -910,6 +910,22 @@ export const TestPage: React.FC = () => {
     ],
   );
 
+  const resolveRecordingError = useCallback((error: unknown): string => {
+    if (error instanceof Error) {
+      const message = error.message;
+      if (
+        error.name === 'speech-timeout' ||
+        message === 'aborted' ||
+        message === 'No speech detected' ||
+        message === 'No speech detected within timeout'
+      ) {
+        return t('test.recordNoSpeech');
+      }
+      return message;
+    }
+    return 'Speech recognition error';
+  }, [t]);
+
   const stopBatchRecording = useCallback(() => {
     setIsRecording(false);
     recognizerRef.current?.stop();
@@ -955,9 +971,7 @@ export const TestPage: React.FC = () => {
               return;
             }
             setIsRecording(false);
-            setRecordingError(
-              error instanceof Error ? error.message : 'Speech recognition error',
-            );
+            setRecordingError(resolveRecordingError(error));
           },
           onEnd: () => {
             if (recordingTokenRef.current !== sessionToken) {
@@ -972,11 +986,9 @@ export const TestPage: React.FC = () => {
       );
     } catch (error) {
       setIsRecording(false);
-      setRecordingError(
-        error instanceof Error ? error.message : 'Speech recognition error',
-      );
+      setRecordingError(resolveRecordingError(error));
     }
-  }, [isRecording, isSubmitting, isJudging, segmentAndMatchTranscript]);
+  }, [isRecording, isSubmitting, isJudging, segmentAndMatchTranscript, resolveRecordingError]);
 
   const handleRecordToggle = useCallback(() => {
     if (isRecording) {
