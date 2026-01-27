@@ -1,18 +1,20 @@
 /**
- * APITester component - Test LLM API connection
+ * APITester component - Test backend LLM connection
  */
 
 import React, { useState } from 'react';
-import type { LLMConfig } from '@/types';
+import type { LLMProvider } from '@/types';
 import { Button } from '@/components/common';
-import { LLMGateway } from '@/core/llm';
+import { BackendLLMGateway } from '@/core/backend/llmGateway';
+import { isBackendAuthConfigured } from '@/core/backend/client';
 import { useI18n } from '@/i18n';
 
 export interface APITesterProps {
-  config: LLMConfig;
+  provider: LLMProvider;
+  model?: string;
 }
 
-export const APITester: React.FC<APITesterProps> = ({ config }) => {
+export const APITester: React.FC<APITesterProps> = ({ provider, model }) => {
   const { t } = useI18n();
   const [testing, setTesting] = useState(false);
   const [result, setResult] = useState<{
@@ -21,12 +23,14 @@ export const APITester: React.FC<APITesterProps> = ({ config }) => {
     error?: string;
   } | null>(null);
 
+  const backendReady = isBackendAuthConfigured();
+
   const handleTest = async () => {
     setTesting(true);
     setResult(null);
 
     try {
-      const gateway = new LLMGateway(config);
+      const gateway = new BackendLLMGateway(provider, model);
       const testResult = await gateway.testConnection();
 
       setResult({
@@ -50,12 +54,12 @@ export const APITester: React.FC<APITesterProps> = ({ config }) => {
         <div>
           <h3 className="text-lg font-medium text-slate-200">{t('settings.connectionTitle')}</h3>
           <p className="text-sm text-slate-400 mt-1">
-            {t('settings.connectionSubtitle')}
+            {t('settings.connectionSubtitleBackend')}
           </p>
         </div>
         <Button
           onClick={handleTest}
-          disabled={testing || !config.apiKey}
+          disabled={testing || !backendReady}
           loading={testing}
           variant="secondary"
         >
@@ -130,13 +134,13 @@ export const APITester: React.FC<APITesterProps> = ({ config }) => {
 
               {result.success && (
                 <div className="text-sm text-slate-400 mt-2">
-                  {t('settings.connectionSuccessHint')}
+                  {t('settings.connectionSuccessHintBackend')}
                 </div>
               )}
 
               {!result.success && (
                 <div className="text-sm text-slate-400 mt-2">
-                  {t('settings.connectionFailHint')}
+                  {t('settings.connectionFailHintBackend')}
                 </div>
               )}
             </div>
@@ -144,8 +148,7 @@ export const APITester: React.FC<APITesterProps> = ({ config }) => {
         </div>
       )}
 
-      {/* Warning for no API key */}
-      {!config.apiKey && (
+      {!backendReady && (
         <div className="p-4 rounded-lg bg-yellow-900/20 border border-yellow-700">
           <div className="flex items-start gap-3">
             <svg
@@ -162,9 +165,11 @@ export const APITester: React.FC<APITesterProps> = ({ config }) => {
               />
             </svg>
             <div>
-              <div className="font-medium text-yellow-400">{t('settings.apiKeyRequired')}</div>
+              <div className="font-medium text-yellow-400">
+                {t('settings.backendAuthRequired')}
+              </div>
               <div className="text-sm text-slate-400 mt-1">
-                {t('settings.apiKeyRequiredHint')}
+                {t('settings.backendAuthRequiredHint')}
               </div>
             </div>
           </div>

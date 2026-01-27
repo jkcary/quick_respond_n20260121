@@ -1,3 +1,5 @@
+import { backendRequest } from '@/core/backend/client';
+
 export type AIUsageLogEntry = {
   provider: string;
   model: string;
@@ -12,9 +14,8 @@ export type AIUsageLogEntry = {
 
 export async function logAIUsage(entry: AIUsageLogEntry): Promise<void> {
   try {
-    await fetch('/api/ai-log', {
+    await backendRequest('/logs/ai-usage', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         ...entry,
         timestamp: entry.timestamp ?? new Date().toISOString(),

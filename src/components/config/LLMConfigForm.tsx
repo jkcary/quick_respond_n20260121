@@ -5,14 +5,12 @@
 import React, { useState } from 'react';
 import { LLMProvider } from '@/types';
 import { Button, Input } from '@/components/common';
-import { validateAPIKey, validateURL, validateModelName } from '@/utils/validators';
+import { validateModelName } from '@/utils/validators';
 import { useI18n } from '@/i18n';
 
 export interface LLMFormData {
   provider: LLMProvider;
-  apiKey: string;
   model: string;
-  baseUrl?: string;
 }
 
 export interface LLMConfigFormProps {
@@ -22,38 +20,30 @@ export interface LLMConfigFormProps {
   onCancel?: () => void;
 }
 
-const PROVIDER_INFO: Record<
-  LLMProvider,
-  { name: string; defaultModel: string; defaultUrl: string; description: string }
-> = {
+const PROVIDER_INFO: Record<LLMProvider, { name: string; defaultModel: string; description: string }> = {
   deepseek: {
     name: 'DeepSeek',
     defaultModel: 'deepseek-chat',
-    defaultUrl: 'https://api.deepseek.com',
     description: 'Fast and affordable Chinese LLM',
   },
   openai: {
     name: 'OpenAI',
     defaultModel: 'gpt-3.5-turbo',
-    defaultUrl: 'https://api.openai.com',
     description: 'Industry-leading ChatGPT models',
   },
   anthropic: {
     name: 'Anthropic',
     defaultModel: 'claude-3-haiku-20240307',
-    defaultUrl: 'https://api.anthropic.com',
     description: 'Claude models with strong reasoning',
   },
   moonshot: {
     name: 'Moonshot AI',
     defaultModel: 'moonshot-v1-8k',
-    defaultUrl: 'https://api.moonshot.cn',
     description: 'Chinese AI with long context',
   },
   ollama: {
     name: 'Ollama',
     defaultModel: 'llama2',
-    defaultUrl: 'http://localhost:11434',
     description: 'Self-hosted local models',
   },
 };
@@ -66,20 +56,14 @@ export const LLMConfigForm: React.FC<LLMConfigFormProps> = ({
 }) => {
   const { t } = useI18n();
   const [provider, setProvider] = useState<LLMProvider>(
-    initialData?.provider || LLMProvider.DeepSeek
+    initialData?.provider || LLMProvider.DeepSeek,
   );
-  const [showApiKey, setShowApiKey] = useState(false);
   const [formByProvider, setFormByProvider] = useState(() => {
-    const defaults = {} as Record<
-      LLMProvider,
-      { apiKey: string; model: string; baseUrl?: string }
-    >;
+    const defaults = {} as Record<LLMProvider, { model: string }>;
 
     (Object.keys(PROVIDER_INFO) as LLMProvider[]).forEach((p) => {
       defaults[p] = {
-        apiKey: '',
         model: PROVIDER_INFO[p].defaultModel,
-        baseUrl: PROVIDER_INFO[p].defaultUrl,
       };
     });
 
@@ -93,9 +77,7 @@ export const LLMConfigForm: React.FC<LLMConfigFormProps> = ({
         }
         defaults[p] = {
           ...defaults[p],
-          apiKey: config.apiKey ?? defaults[p].apiKey,
           model: config.model ?? defaults[p].model,
-          baseUrl: config.baseUrl ?? defaults[p].baseUrl,
         };
       });
     }
@@ -104,9 +86,7 @@ export const LLMConfigForm: React.FC<LLMConfigFormProps> = ({
       const p = initialData.provider;
       defaults[p] = {
         ...defaults[p],
-        apiKey: initialData.apiKey ?? defaults[p].apiKey,
         model: initialData.model ?? defaults[p].model,
-        baseUrl: initialData.baseUrl ?? defaults[p].baseUrl,
       };
     }
 
@@ -119,32 +99,14 @@ export const LLMConfigForm: React.FC<LLMConfigFormProps> = ({
   const handleProviderChange = (newProvider: LLMProvider) => {
     setProvider(newProvider);
     setErrors({});
-    setShowApiKey(false);
   };
 
   const validate = (): boolean => {
     const newErrors: Record<string, string> = {};
 
-    // Validate API key (skip for Ollama)
-    if (provider !== 'ollama') {
-      const apiKeyValidation = validateAPIKey(currentForm.apiKey, provider);
-      if (!apiKeyValidation.valid) {
-        newErrors.apiKey = apiKeyValidation.error || 'Invalid API key';
-      }
-    }
-
-    // Validate model name
     const modelValidation = validateModelName(currentForm.model, provider);
     if (!modelValidation.valid) {
       newErrors.model = modelValidation.error || 'Invalid model name';
-    }
-
-    // Validate base URL if provided
-    if (currentForm.baseUrl) {
-      const urlValidation = validateURL(currentForm.baseUrl);
-      if (!urlValidation.valid) {
-        newErrors.baseUrl = urlValidation.error || 'Invalid URL';
-      }
     }
 
     setErrors(newErrors);
@@ -160,9 +122,7 @@ export const LLMConfigForm: React.FC<LLMConfigFormProps> = ({
 
     onSave({
       provider,
-      apiKey: currentForm.apiKey,
       model: currentForm.model,
-      baseUrl: currentForm.baseUrl,
     });
   };
 
@@ -194,67 +154,9 @@ export const LLMConfigForm: React.FC<LLMConfigFormProps> = ({
         </div>
       </div>
 
-      {/* API Key (skip for Ollama) */}
-      {provider !== 'ollama' && (
-        <Input
-          label={t('settings.apiKeyLabel')}
-          type={showApiKey ? 'text' : 'password'}
-          value={currentForm.apiKey}
-          onChange={(e) =>
-            setFormByProvider((prev) => ({
-              ...prev,
-              [provider]: { ...prev[provider], apiKey: e.target.value },
-            }))
-          }
-          placeholder={t('settings.apiKeyPlaceholder', { provider: PROVIDER_INFO[provider].name })}
-          error={errors.apiKey}
-          helperText={t('settings.apiKeyHelper')}
-          rightElement={
-            <button
-              type="button"
-              onClick={() => setShowApiKey((prev) => !prev)}
-              className="p-1 text-slate-300 transition-colors hover:text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded"
-              aria-label={showApiKey ? t('settings.apiKeyHide') : t('settings.apiKeyShow')}
-              aria-pressed={showApiKey}
-            >
-              {showApiKey ? (
-                <svg
-                  className="w-5 h-5"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20C7.25 20 3.15 16.98 1 12c.7-1.61 1.75-3.11 3.12-4.37" />
-                  <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
-                  <path d="M6.1 6.1 3 3" />
-                  <path d="M21 21 18.9 18.9" />
-                  <path d="M14.12 9.88a3 3 0 0 0-4.24 0" />
-                  <path d="M9.88 14.12a3 3 0 0 0 4.24 0" />
-                  <path d="M3.12 7.63A10.94 10.94 0 0 1 12 4c4.75 0 8.85 3.02 11 8a10.6 10.6 0 0 1-2.6 4.4" />
-                </svg>
-              ) : (
-                <svg
-                  className="w-5 h-5"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M2.46 12C4.2 7.94 7.85 5 12 5c4.15 0 7.8 2.94 9.54 7-1.74 4.06-5.39 7-9.54 7-4.15 0-7.8-2.94-9.54-7Z" />
-                  <circle cx="12" cy="12" r="3" />
-                </svg>
-              )}
-            </button>
-          }
-          fullWidth
-          required
-        />
-      )}
+      <div className="rounded-lg border border-slate-700 bg-slate-900/40 p-3">
+        <p className="text-xs text-slate-400">{t('settings.backendManagedHint')}</p>
+      </div>
 
       {/* Model Name */}
       <Input
@@ -272,23 +174,6 @@ export const LLMConfigForm: React.FC<LLMConfigFormProps> = ({
         helperText={t('settings.modelHelper', { model: PROVIDER_INFO[provider].defaultModel })}
         fullWidth
         required
-      />
-
-      {/* Base URL (optional) */}
-      <Input
-        label={t('settings.baseUrlLabel')}
-        type="text"
-        value={currentForm.baseUrl || ''}
-        onChange={(e) =>
-          setFormByProvider((prev) => ({
-            ...prev,
-            [provider]: { ...prev[provider], baseUrl: e.target.value },
-          }))
-        }
-        placeholder={PROVIDER_INFO[provider].defaultUrl}
-        error={errors.baseUrl}
-        helperText={t('settings.baseUrlHelper')}
-        fullWidth
       />
 
       {/* Actions */}

@@ -4,33 +4,35 @@
 
 import React, { useState } from 'react';
 import { useAppStore } from '@/store/useAppStore';
-import { Card } from '@/components/common';
+import { Card, Button, Input } from '@/components/common';
 import { GradeSelector, LLMConfigForm, APITester, PerfDiagnostics, type LLMFormData } from '@/components/config';
 import { toast } from '@/components/common';
 import { LLMProvider, type GradeBook, type LLMConfig } from '@/types';
 import { getGradeBookForGrade, getGradeBookLabel, parseGradeBook } from '@/types';
 import { useI18n } from '@/i18n';
+import {
+  getBackendBaseUrl,
+  resetBackendToken,
+  setBackendBaseUrl,
+  backendRequest,
+} from '@/core/backend/client';
+import { validateAPIKey, validateURL } from '@/utils/validators';
 
-const DEFAULT_PROVIDER_SETTINGS: Record<LLMProvider, { model: string; baseUrl: string }> = {
+const DEFAULT_PROVIDER_SETTINGS: Record<LLMProvider, { model: string }> = {
   [LLMProvider.DeepSeek]: {
     model: 'deepseek-chat',
-    baseUrl: 'https://api.deepseek.com',
   },
   [LLMProvider.OpenAI]: {
     model: 'gpt-3.5-turbo',
-    baseUrl: 'https://api.openai.com',
   },
   [LLMProvider.Anthropic]: {
     model: 'claude-3-haiku-20240307',
-    baseUrl: 'https://api.anthropic.com',
   },
   [LLMProvider.Moonshot]: {
     model: 'moonshot-v1-8k',
-    baseUrl: 'https://api.moonshot.cn',
   },
   [LLMProvider.Ollama]: {
     model: 'llama2',
-    baseUrl: 'http://localhost:11434',
   },
 };
 
@@ -55,6 +57,38 @@ const SettingsPage: React.FC = () => {
   const defaultGradeBook = config.gradeBook ?? getGradeBookForGrade(config.gradeLevel || 5);
   const [selectedGradeBook, setSelectedGradeBook] = useState<GradeBook>(defaultGradeBook);
   const [autoPlayAudio, setAutoPlayAudio] = useState(config.autoPlayPronunciation ?? true);
+  const [backendUrlInput, setBackendUrlInput] = useState(getBackendBaseUrl());
+  const [backendUrlError, setBackendUrlError] = useState<string | undefined>();
+  const [llmKeyByProvider, setLlmKeyByProvider] = useState<Record<LLMProvider, string>>(() => ({
+    [LLMProvider.DeepSeek]: '',
+    [LLMProvider.OpenAI]: '',
+    [LLMProvider.Anthropic]: '',
+    [LLMProvider.Moonshot]: '',
+    [LLMProvider.Ollama]: '',
+  }));
+  const [llmKeyError, setLlmKeyError] = useState<string | undefined>();
+  const [showLlmKey, setShowLlmKey] = useState(false);
+  const [llmBaseUrlByProvider, setLlmBaseUrlByProvider] = useState<Record<LLMProvider, string>>(() => {
+    if (typeof window === 'undefined') {
+      return {
+        [LLMProvider.DeepSeek]: '',
+        [LLMProvider.OpenAI]: '',
+        [LLMProvider.Anthropic]: '',
+        [LLMProvider.Moonshot]: '',
+        [LLMProvider.Ollama]: '',
+      };
+    }
+    const read = (provider: LLMProvider) =>
+      window.localStorage.getItem(`eaa_llm_base_url_${provider}`) ?? '';
+    return {
+      [LLMProvider.DeepSeek]: read(LLMProvider.DeepSeek),
+      [LLMProvider.OpenAI]: read(LLMProvider.OpenAI),
+      [LLMProvider.Anthropic]: read(LLMProvider.Anthropic),
+      [LLMProvider.Moonshot]: read(LLMProvider.Moonshot),
+      [LLMProvider.Ollama]: read(LLMProvider.Ollama),
+    };
+  });
+  const [llmBaseUrlError, setLlmBaseUrlError] = useState<string | undefined>();
 
   const handleGradeChange = (gradeBook: GradeBook) => {
     const { grade } = parseGradeBook(gradeBook);
@@ -69,9 +103,9 @@ const SettingsPage: React.FC = () => {
       ...existingConfigs,
       [data.provider]: {
         provider: data.provider,
-        apiKey: data.apiKey,
+        apiKey: '',
         modelName: data.model,
-        baseUrl: data.baseUrl,
+        baseUrl: existingConfigs[data.provider]?.baseUrl,
         enabled: true,
       },
     };
@@ -79,10 +113,37 @@ const SettingsPage: React.FC = () => {
       activeLLMProvider: data.provider,
       llmConfigs: updatedConfigs,
       apiProvider: data.provider as any,
-      apiKey: data.apiKey,
-      apiBaseUrl: data.baseUrl,
+      apiKey: '',
     });
     toast.success(t('settings.toastLlmSaved'));
+  };
+
+  const handleReconnect = () => {
+    resetBackendToken();
+    toast.success(t('settings.backendReconnectToast'));
+  };
+
+  const handleBackendUrlSave = () => {
+    const trimmed = backendUrlInput.trim();
+    if (trimmed.length === 0) {
+      setBackendBaseUrl('');
+      resetBackendToken();
+      setBackendUrlError(undefined);
+      setBackendUrlInput(getBackendBaseUrl());
+      toast.success(t('settings.backendUrlReset'));
+      return;
+    }
+
+    const validation = validateURL(trimmed);
+    if (!validation.valid) {
+      setBackendUrlError(validation.error || t('settings.backendUrlInvalid'));
+      return;
+    }
+    setBackendBaseUrl(trimmed);
+    resetBackendToken();
+    setBackendUrlError(undefined);
+    setBackendUrlInput(getBackendBaseUrl());
+    toast.success(t('settings.backendUrlSaved'));
   };
 
   const handleAutoPlayToggle = () => {
@@ -104,12 +165,12 @@ const SettingsPage: React.FC = () => {
     LLMConfig
   >;
 
-  if (!initialConfigs[legacyProvider] && (config.apiKey || config.apiBaseUrl)) {
+  if (!initialConfigs[legacyProvider] && config.apiKey) {
     initialConfigs[legacyProvider] = {
       provider: legacyProvider,
-      apiKey: config.apiKey || '',
+      apiKey: '',
       modelName: DEFAULT_PROVIDER_SETTINGS[legacyProvider].model,
-      baseUrl: config.apiBaseUrl || DEFAULT_PROVIDER_SETTINGS[legacyProvider].baseUrl,
+      baseUrl: undefined,
       enabled: true,
     };
   }
@@ -119,9 +180,7 @@ const SettingsPage: React.FC = () => {
       (acc, [provider, cfg]) => {
         acc[provider] = {
           provider,
-          apiKey: cfg.apiKey,
           model: cfg.modelName,
-          baseUrl: cfg.baseUrl,
         };
         return acc;
       },
@@ -130,10 +189,82 @@ const SettingsPage: React.FC = () => {
 
   const currentLLMConfig: LLMConfig = {
     provider: activeProvider,
-    apiKey: activeStoredConfig?.apiKey ?? config.apiKey ?? '',
+    apiKey: '',
     modelName: activeStoredConfig?.modelName ?? activeDefaults.model,
     enabled: activeStoredConfig?.enabled ?? true,
-    baseUrl: activeStoredConfig?.baseUrl ?? config.apiBaseUrl ?? activeDefaults.baseUrl,
+    baseUrl: activeStoredConfig?.baseUrl,
+  };
+
+  const currentKeyValue = llmKeyByProvider[activeProvider] ?? '';
+  const currentBaseUrlValue = llmBaseUrlByProvider[activeProvider] ?? '';
+
+  const handleLlmKeySave = async () => {
+    const trimmed = currentKeyValue.trim();
+
+    if (trimmed.length > 0 && activeProvider !== LLMProvider.Ollama) {
+      const validation = validateAPIKey(trimmed, activeProvider);
+      if (!validation.valid) {
+        setLlmKeyError(validation.error || t('settings.llmKeyInvalid'));
+        return;
+      }
+    }
+
+    try {
+      await backendRequest('/llm/key', {
+        method: 'POST',
+        body: JSON.stringify({
+          provider: activeProvider,
+          apiKey: trimmed,
+        }),
+      });
+      setLlmKeyError(undefined);
+      setLlmKeyByProvider((prev) => ({ ...prev, [activeProvider]: '' }));
+      toast.success(trimmed ? t('settings.llmKeySaved') : t('settings.llmKeyCleared'));
+    } catch (error) {
+      toast.error(
+        t('settings.llmKeySaveFail', {
+          error: error instanceof Error ? error.message : 'Unknown error',
+        }),
+      );
+    }
+  };
+
+  const handleLlmBaseUrlSave = async () => {
+    const trimmed = currentBaseUrlValue.trim();
+
+    if (trimmed.length > 0) {
+      const validation = validateURL(trimmed);
+      if (!validation.valid) {
+        setLlmBaseUrlError(validation.error || t('settings.llmBaseUrlInvalid'));
+        return;
+      }
+    }
+
+    try {
+      await backendRequest('/llm/base-url', {
+        method: 'POST',
+        body: JSON.stringify({
+          provider: activeProvider,
+          baseUrl: trimmed,
+        }),
+      });
+      setLlmBaseUrlError(undefined);
+      if (typeof window !== 'undefined') {
+        const key = `eaa_llm_base_url_${activeProvider}`;
+        if (!trimmed) {
+          window.localStorage.removeItem(key);
+        } else {
+          window.localStorage.setItem(key, trimmed);
+        }
+      }
+      toast.success(trimmed ? t('settings.llmBaseUrlSaved') : t('settings.llmBaseUrlCleared'));
+    } catch (error) {
+      toast.error(
+        t('settings.llmBaseUrlSaveFail', {
+          error: error instanceof Error ? error.message : 'Unknown error',
+        }),
+      );
+    }
   };
 
   return (
@@ -163,12 +294,109 @@ const SettingsPage: React.FC = () => {
           <h2 className="text-xl font-semibold text-text-primary mb-4">
             {t('settings.sectionLlm')}
           </h2>
+          <div className="mb-4 rounded-lg border border-border-primary bg-bg-secondary/40 p-3">
+            <div className="space-y-4">
+              <Input
+                label={t('settings.backendUrlLabel')}
+                value={backendUrlInput}
+                onChange={(e) => {
+                  setBackendUrlInput(e.target.value);
+                  setBackendUrlError(undefined);
+                }}
+                error={backendUrlError}
+                helperText={t('settings.backendUrlHelper')}
+                placeholder={t('settings.backendUrlPlaceholder')}
+                fullWidth
+              />
+              <Input
+                label={t('settings.llmBaseUrlLabel')}
+                value={currentBaseUrlValue}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setLlmBaseUrlByProvider((prev) => ({ ...prev, [activeProvider]: value }));
+                  setLlmBaseUrlError(undefined);
+                }}
+                error={llmBaseUrlError}
+                helperText={t('settings.llmBaseUrlHelper', { provider: activeProvider })}
+                placeholder={t('settings.llmBaseUrlPlaceholder', { provider: activeProvider })}
+                fullWidth
+              />
+              <Input
+                label={t('settings.llmKeyLabel')}
+                type={showLlmKey ? 'text' : 'password'}
+                value={currentKeyValue}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setLlmKeyByProvider((prev) => ({ ...prev, [activeProvider]: value }));
+                  setLlmKeyError(undefined);
+                }}
+                error={llmKeyError}
+                helperText={t('settings.llmKeyHelper', { provider: activeProvider })}
+                placeholder={t('settings.llmKeyPlaceholder', { provider: activeProvider })}
+                rightElement={
+                  <button
+                    type="button"
+                    onClick={() => setShowLlmKey((prev) => !prev)}
+                    className="p-1 text-slate-300 transition-colors hover:text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 focus:ring-offset-slate-900 rounded"
+                    aria-label={showLlmKey ? t('settings.llmKeyHide') : t('settings.llmKeyShow')}
+                    aria-pressed={showLlmKey}
+                  >
+                    {showLlmKey ? (
+                      <svg
+                        className="w-5 h-5"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20C7.25 20 3.15 16.98 1 12c.7-1.61 1.75-3.11 3.12-4.37" />
+                        <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
+                        <path d="M6.1 6.1 3 3" />
+                        <path d="M21 21 18.9 18.9" />
+                        <path d="M14.12 9.88a3 3 0 0 0-4.24 0" />
+                        <path d="M9.88 14.12a3 3 0 0 0 4.24 0" />
+                        <path d="M3.12 7.63A10.94 10.94 0 0 1 12 4c4.75 0 8.85 3.02 11 8a10.6 10.6 0 0 1-2.6 4.4" />
+                      </svg>
+                    ) : (
+                      <svg
+                        className="w-5 h-5"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M2.46 12C4.2 7.94 7.85 5 12 5c4.15 0 7.8 2.94 9.54 7-1.74 4.06-5.39 7-9.54 7-4.15 0-7.8-2.94-9.54-7Z" />
+                        <circle cx="12" cy="12" r="3" />
+                      </svg>
+                    )}
+                  </button>
+                }
+                fullWidth
+              />
+              <div className="flex flex-wrap gap-3">
+                <Button variant="secondary" onClick={handleBackendUrlSave}>
+                  {t('settings.backendUrlSave')}
+                </Button>
+                <Button variant="secondary" onClick={handleLlmBaseUrlSave}>
+                  {t('settings.llmBaseUrlSave')}
+                </Button>
+                <Button variant="secondary" onClick={handleLlmKeySave}>
+                  {t('settings.llmKeySave')}
+                </Button>
+                <Button variant="ghost" onClick={handleReconnect}>
+                  {t('settings.backendReconnect')}
+                </Button>
+              </div>
+            </div>
+          </div>
           <LLMConfigForm
             initialData={{
               provider: currentLLMConfig.provider,
-              apiKey: currentLLMConfig.apiKey,
               model: currentLLMConfig.modelName,
-              baseUrl: currentLLMConfig.baseUrl,
             }}
             initialConfigs={initialFormConfigs}
             onSave={handleLLMConfigSave}
@@ -177,7 +405,7 @@ const SettingsPage: React.FC = () => {
 
         {/* API Connection Test */}
         <Card className="animate-slide-up">
-          <APITester config={currentLLMConfig} />
+          <APITester provider={currentLLMConfig.provider} model={currentLLMConfig.modelName} />
         </Card>
 
         {/* Performance Diagnostics */}

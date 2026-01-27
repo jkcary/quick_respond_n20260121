@@ -8,16 +8,34 @@ import { useTestStore } from '@/store/testStore';
 import { useAppStore } from '@/store/useAppStore';
 import { ScorePanel } from './ScorePanel';
 import { Button, Modal, LoadingSpinner } from '@/components/common';
-import { LLMGateway, segmentWithAgent } from '@/core/llm';
+import { segmentWithAgent } from '@/core/llm';
+import { BackendLLMGateway } from '@/core/backend/llmGateway';
+import { isBackendAuthConfigured } from '@/core/backend/client';
 import { useI18n } from '@/i18n';
 import { SpeechRecognizer } from '@/core/speech';
 import { requestMicrophonePermission, isSpeechRecognitionSupported } from '@/core/speech';
 import { formatDuration } from '@/utils/formatters';
 import { logPerfEvent } from '@/utils/perfLogger';
 import { getGradeBookForGrade } from '@/types';
+import { DEFAULT_LLM_CONFIGS } from '@/config/llm.config';
 import { TEST_CONFIG } from '@/config/app.config';
 import type { TestSession, VocabularyItem } from '@/types';
 import { LLMProvider } from '@/types';
+
+const backendEnabled = isBackendAuthConfigured();
+
+const normalizeProvider = (value?: string): LLMProvider => {
+  switch (value) {
+    case LLMProvider.DeepSeek:
+    case LLMProvider.OpenAI:
+    case LLMProvider.Anthropic:
+    case LLMProvider.Moonshot:
+    case LLMProvider.Ollama:
+      return value;
+    default:
+      return LLMProvider.DeepSeek;
+  }
+};
 
 const BATCH_SIZE = TEST_CONFIG.WORDS_PER_TEST;
 const SEGMENT_CACHE_LIMIT = 50;
@@ -82,17 +100,22 @@ export const TestPage: React.FC = () => {
     >(),
   );
 
-  const [gateway] = useState(() => {
-    if (config.apiKey) {
-      return new LLMGateway({
-        provider: config.apiProvider === 'deepseek' ? LLMProvider.DeepSeek : LLMProvider.OpenAI,
-        apiKey: config.apiKey,
-        modelName: config.apiProvider === 'deepseek' ? 'deepseek-chat' : 'gpt-3.5-turbo',
-        enabled: true,
-      });
-    }
-    return null;
-  });
+  const activeProvider = useMemo(
+    () => normalizeProvider(config.activeLLMProvider ?? config.apiProvider),
+    [config.activeLLMProvider, config.apiProvider],
+  );
+
+  const activeModel = useMemo(
+    () =>
+      config.llmConfigs?.[activeProvider]?.modelName ??
+      DEFAULT_LLM_CONFIGS[activeProvider].modelName,
+    [config.llmConfigs, activeProvider],
+  );
+
+  const gateway = useMemo(
+    () => (backendEnabled ? new BackendLLMGateway(activeProvider, activeModel) : null),
+    [activeProvider, activeModel],
+  );
 
   const batchWords = useMemo(() => {
     if (!currentSession) {
@@ -279,7 +302,7 @@ export const TestPage: React.FC = () => {
         success: submitSuccess,
         errorType: submitErrorType,
         source: gateway ? 'llm' : 'offline',
-        provider: gateway?.getProvider?.() ?? config.apiProvider,
+        provider: gateway?.getProvider?.() ?? activeProvider,
         batchSize: batchWords.length,
       });
       setJudging(false);
@@ -293,7 +316,7 @@ export const TestPage: React.FC = () => {
     gateway,
     submitBatch,
     setJudging,
-    config.apiProvider,
+    activeProvider,
   ]);
 
   const normalizeSegments = useCallback(
@@ -344,7 +367,7 @@ export const TestPage: React.FC = () => {
           success,
           errorType,
           source,
-          provider: gateway?.getProvider?.() ?? config.apiProvider,
+          provider: gateway?.getProvider?.() ?? activeProvider,
           batchSize: batchWords.length,
           meta,
         });
@@ -633,7 +656,7 @@ export const TestPage: React.FC = () => {
       gateway,
       normalizeSegments,
       submitBatchWithInputs,
-      config.apiProvider,
+      activeProvider,
     ],
   );
 
@@ -920,4 +943,3 @@ export const TestPage: React.FC = () => {
     </div>
   );
 };
-

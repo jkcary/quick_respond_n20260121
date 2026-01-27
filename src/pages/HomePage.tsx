@@ -9,6 +9,7 @@ import { useErrorStore } from '@/store/errorStore';
 import { Button, Card } from '@/components/common';
 import { getGradeBookForGrade, getGradeBookLabel } from '@/types';
 import { useI18n } from '@/i18n';
+import { isBackendAuthConfigured } from '@/core/backend/client';
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ const HomePage: React.FC = () => {
     navigate('/test');
   };
 
-  const isConfigured = !!(config.apiKey && config.apiKey.trim().length > 0);
+  const isConfigured = isBackendAuthConfigured();
 
   return (
     <div className="p-6">
@@ -68,7 +69,7 @@ const HomePage: React.FC = () => {
                   {t('home.setupTitle')}
                 </h3>
                 <p className="text-text-secondary mb-4">
-                  {t('home.setupDesc')}
+                  {t('home.setupDescBackend')}
                 </p>
                 <Button
                   variant="primary"

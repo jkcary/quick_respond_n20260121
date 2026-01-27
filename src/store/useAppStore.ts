@@ -11,8 +11,33 @@ import type {
   DiagnosisSession,
   Word,
   DiagnosisResult,
+  LLMConfig,
 } from '@/types';
-import { StorageKeys, createGradeBook, parseGradeBook, getGradeBookForGrade } from '@/types';
+import {
+  StorageKeys,
+  createGradeBook,
+  parseGradeBook,
+  getGradeBookForGrade,
+  LLMProvider,
+} from '@/types';
+
+const stripApiKeys = (config: AppConfig): AppConfig => {
+  const cleanedConfigs = config.llmConfigs
+    ? (Object.entries(config.llmConfigs).reduce((acc, [provider, cfg]) => {
+        acc[provider as LLMProvider] = {
+          ...cfg,
+          apiKey: '',
+        } as LLMConfig;
+        return acc;
+      }, {} as Record<LLMProvider, LLMConfig>))
+    : config.llmConfigs;
+
+  return {
+    ...config,
+    apiKey: '',
+    llmConfigs: cleanedConfigs,
+  };
+};
 
 interface AppState {
   // ==================== Configuration ====================
@@ -52,7 +77,7 @@ export const useAppStore = create<AppState>()(
 
       updateConfig: (newConfig) => {
         set((state) => ({
-          config: { ...state.config, ...newConfig },
+          config: stripApiKeys({ ...state.config, ...newConfig }),
         }));
       },
 
@@ -158,13 +183,19 @@ export const useAppStore = create<AppState>()(
       loading: false,
       setLoading: (loading) => set({ loading }),
     }),
-    {
-      name: StorageKeys.CONFIG,
-      // Only persist config and errorLog, not session state
-      partialize: (state) => ({
-        config: state.config,
-        errorLog: state.errorLog,
-      }),
-    }
+      {
+        name: StorageKeys.CONFIG,
+        // Only persist config and errorLog, not session state
+        partialize: (state) => ({
+          config: stripApiKeys(state.config),
+          errorLog: state.errorLog,
+        }),
+        onRehydrateStorage: () => (state) => {
+          if (!state) {
+            return;
+          }
+          state.config = stripApiKeys(state.config);
+        },
+      }
   )
 );
