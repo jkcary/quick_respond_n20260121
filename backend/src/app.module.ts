@@ -4,6 +4,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
+import { DiagnosticsModule } from './diagnostics/diagnostics.module';
 import { LlmModule } from './llm/llm.module';
 import { LogsModule } from './logs/logs.module';
 import { RequestIdMiddleware } from './common/middleware/request-id.middleware';
@@ -21,6 +22,7 @@ import { HttpLoggerMiddleware } from './common/middleware/http-logger.middleware
       ],
     }),
     AuthModule,
+    DiagnosticsModule,
     LlmModule,
     LogsModule,
   ],

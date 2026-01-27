@@ -95,6 +95,7 @@ interface TestState {
 const DEFAULT_WORD_COUNT = TEST_CONFIG.WORDS_PER_TEST;
 const isGradeBook = (value: GradeLevel | GradeBook): value is GradeBook =>
   typeof value === 'string';
+let prefetchPromise: Promise<void> | null = null;
 
 export const useTestStore = create<TestState>((set, get) => ({
   // ==================== Initial State ====================
@@ -199,7 +200,7 @@ export const useTestStore = create<TestState>((set, get) => ({
   },
 
   submitBatch: async (entries) => {
-    const { currentSession, currentWordIndex } = get();
+    const { currentSession, currentWordIndex, totalWordCount, gradeSelection } = get();
 
     if (!currentSession || entries.length === 0) {
       return;
@@ -208,8 +209,7 @@ export const useTestStore = create<TestState>((set, get) => ({
     const errorLogStorage = new ErrorLogStorage();
     const now = Date.now();
     const results: TestResult[] = [];
-    let errorLog: Awaited<ReturnType<ErrorLogStorage['load']>> | null = null;
-    let errorLogDirty = false;
+    const errorEntries: Array<{ word: VocabularyItem; input: string; correction: string }> = [];
 
     for (const entry of entries) {
       const result: TestResult = {
@@ -223,53 +223,11 @@ export const useTestStore = create<TestState>((set, get) => ({
       results.push(result);
 
       if (!entry.judgment.correct) {
-        try {
-          if (!errorLog) {
-            errorLog = await errorLogStorage.load();
-          }
-          if (!('entries' in errorLog)) {
-            (errorLog as { entries: Record<string, unknown> }).entries = {};
-          }
-
-          const logEntries = (errorLog as { entries: Record<string, any> }).entries;
-          const existingEntry = logEntries[entry.word.id];
-          if (existingEntry) {
-            existingEntry.errorCount += 1;
-            existingEntry.lastErrorDate = now;
-            existingEntry.userInputs.push({
-              input: entry.input,
-              correction: entry.judgment.correction,
-              timestamp: now,
-            });
-          } else {
-            logEntries[entry.word.id] = {
-              word: entry.word,
-              errorCount: 1,
-              firstErrorDate: now,
-              lastErrorDate: now,
-              mastered: false,
-              userInputs: [
-                {
-                  input: entry.input,
-                  correction: entry.judgment.correction,
-                  timestamp: now,
-                },
-              ],
-            };
-          }
-
-          errorLogDirty = true;
-        } catch (error) {
-          console.error('Failed to stage error log update:', error);
-        }
-      }
-    }
-
-    if (errorLogDirty && errorLog) {
-      try {
-        await errorLogStorage.save(errorLog);
-      } catch (error) {
-        console.error('Failed to save error log:', error);
+        errorEntries.push({
+          word: entry.word,
+          input: entry.input,
+          correction: entry.judgment.correction,
+        });
       }
     }
 
@@ -278,80 +236,166 @@ export const useTestStore = create<TestState>((set, get) => ({
       results: [...currentSession.results, ...results],
     };
 
+    const nextIndex = currentWordIndex + entries.length;
+
     set({
       currentSession: updatedSession,
       lastResult: null,
       userInput: '',
+      currentWordIndex: nextIndex,
     });
 
-    const nextIndex = currentWordIndex + entries.length;
-    if (nextIndex < currentSession.words.length) {
-      set({
-        currentWordIndex: nextIndex,
-      });
-      return;
-    }
-
-    const { totalWordCount, gradeSelection } = get();
-    const targetCount = totalWordCount || currentSession.words.length;
+    const targetCount = totalWordCount || updatedSession.words.length;
     if (nextIndex >= targetCount || !gradeSelection) {
       get().endTest();
       return;
     }
 
-    const remainingCount = targetCount - currentSession.words.length;
-    const batchCount = Math.min(DEFAULT_WORD_COUNT * 2, remainingCount);
+    const remaining = updatedSession.words.length - nextIndex;
+    const shouldPrefetch = remaining <= DEFAULT_WORD_COUNT;
 
-    try {
-      const latestErrorLog = await errorLogStorage.load();
-      const sampleCount = Math.min(
-        targetCount,
-        currentSession.words.length + batchCount * 3,
-      );
+    const runSideEffects = async () => {
+      let updatedErrorLog: Awaited<ReturnType<ErrorLogStorage['load']>> | null = null;
 
-      const sampleSelection = await selectWords({
-        count: sampleCount,
-        ...(isGradeBook(gradeSelection)
-          ? { gradeBook: gradeSelection }
-          : { gradeLevel: gradeSelection }),
-        errorLog: latestErrorLog,
-        prioritizeErrors: true,
-        excludeMastered: true,
-      });
+      if (errorEntries.length > 0) {
+        try {
+          const errorLog = await errorLogStorage.load();
+          if (!('entries' in errorLog)) {
+            (errorLog as { entries: Record<string, unknown> }).entries = {};
+          }
 
-      const existingIds = new Set(currentSession.words.map((word) => word.id));
-      let newWords = sampleSelection.filter((word) => !existingIds.has(word.id));
+          const logEntries = (errorLog as { entries: Record<string, any> }).entries;
+          for (const entry of errorEntries) {
+            const existingEntry = logEntries[entry.word.id];
+            if (existingEntry) {
+              existingEntry.errorCount += 1;
+              existingEntry.lastErrorDate = now;
+              existingEntry.userInputs.push({
+                input: entry.input,
+                correction: entry.correction,
+                timestamp: now,
+              });
+            } else {
+              logEntries[entry.word.id] = {
+                word: entry.word,
+                errorCount: 1,
+                firstErrorDate: now,
+                lastErrorDate: now,
+                mastered: false,
+                userInputs: [
+                  {
+                    input: entry.input,
+                    correction: entry.correction,
+                    timestamp: now,
+                  },
+                ],
+              };
+            }
+          }
 
-      if (newWords.length < batchCount && sampleCount < targetCount) {
-        const fullSelection = await selectWords({
-          count: targetCount,
-          ...(isGradeBook(gradeSelection)
-            ? { gradeBook: gradeSelection }
-            : { gradeLevel: gradeSelection }),
+          await errorLogStorage.save(errorLog);
+          updatedErrorLog = errorLog;
+        } catch (error) {
+          console.error('Failed to save error log:', error);
+        }
+      }
+
+      if (!shouldPrefetch) {
+        return;
+      }
+
+      if (prefetchPromise) {
+        return prefetchPromise;
+      }
+
+      const prefetchTask = async () => {
+        const state = get();
+        const session = state.currentSession;
+        const selection = state.gradeSelection;
+        if (!session || !selection) {
+          return;
+        }
+
+        const target = state.totalWordCount || session.words.length;
+        if (session.words.length >= target) {
+          return;
+        }
+
+        const remainingCount = target - session.words.length;
+        const batchCount = Math.min(DEFAULT_WORD_COUNT * 2, remainingCount);
+        if (batchCount <= 0) {
+          return;
+        }
+
+        const latestErrorLog = updatedErrorLog ?? await errorLogStorage.load();
+        const sampleCount = Math.min(target, session.words.length + batchCount * 3);
+
+        const sampleSelection = await selectWords({
+          count: sampleCount,
+          ...(isGradeBook(selection)
+            ? { gradeBook: selection }
+            : { gradeLevel: selection }),
           errorLog: latestErrorLog,
           prioritizeErrors: true,
           excludeMastered: true,
         });
-        newWords = fullSelection.filter((word) => !existingIds.has(word.id));
-      }
 
-      const appended = newWords.slice(0, batchCount);
-      if (appended.length === 0) {
-        get().endTest();
-        return;
-      }
+        const existingIds = new Set(session.words.map((word) => word.id));
+        let newWords = sampleSelection.filter((word) => !existingIds.has(word.id));
 
-      set({
-        currentSession: {
-          ...currentSession,
-          words: [...currentSession.words, ...appended],
-        },
-        currentWordIndex: nextIndex,
-      });
-    } catch (error) {
-      console.error('Failed to load next batch:', error);
-      get().endTest();
-    }
+        if (newWords.length < batchCount && sampleCount < target) {
+          const fullSelection = await selectWords({
+            count: target,
+            ...(isGradeBook(selection)
+              ? { gradeBook: selection }
+              : { gradeLevel: selection }),
+            errorLog: latestErrorLog,
+            prioritizeErrors: true,
+            excludeMastered: true,
+          });
+          newWords = fullSelection.filter((word) => !existingIds.has(word.id));
+        }
+
+        const appended = newWords.slice(0, batchCount);
+        if (appended.length === 0) {
+          if (nextIndex >= session.words.length) {
+            get().endTest();
+          }
+          return;
+        }
+
+        set((state) => {
+          const current = state.currentSession;
+          if (!current) {
+            return state;
+          }
+          const existing = new Set(current.words.map((word) => word.id));
+          const filtered = appended.filter((word) => !existing.has(word.id));
+          if (filtered.length === 0) {
+            return state;
+          }
+          return {
+            ...state,
+            currentSession: {
+              ...current,
+              words: [...current.words, ...filtered],
+            },
+          };
+        });
+      };
+
+      prefetchPromise = prefetchTask()
+        .catch((error) => {
+          console.error('Failed to load next batch:', error);
+        })
+        .finally(() => {
+          prefetchPromise = null;
+        });
+
+      return prefetchPromise;
+    };
+
+    void runSideEffects();
   },
 
   endTest: () => {

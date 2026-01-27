@@ -4,10 +4,11 @@ import { AuthModule } from '../auth/auth.module';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { LlmController } from './llm.controller';
 import { LlmService } from './llm.service';
+import { DeviceConfigStore } from './device-config.store';
 
 @Module({
   imports: [ConfigModule, AuthModule],
   controllers: [LlmController],
-  providers: [LlmService, JwtAuthGuard],
+  providers: [LlmService, DeviceConfigStore, JwtAuthGuard],
 })
 export class LlmModule {}

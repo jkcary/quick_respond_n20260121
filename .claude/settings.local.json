@@ -14,7 +14,8 @@
       "Bash(claude plugin marketplace add:*)",
       "Bash(claude plugin install:*)",
       "Bash(claude plugin list:*)",
-      "Bash(python scripts/search.py:*)"
+      "Bash(python scripts/search.py:*)",
+      "Bash(npx tsc:*)"
     ]
   }
 }

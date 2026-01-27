@@ -2,7 +2,7 @@
  * Settings Page - Configuration interface
  */
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppStore } from '@/store/useAppStore';
 import { Card, Button, Input } from '@/components/common';
 import { GradeSelector, LLMConfigForm, APITester, PerfDiagnostics, type LLMFormData } from '@/components/config';
@@ -89,6 +89,69 @@ const SettingsPage: React.FC = () => {
     };
   });
   const [llmBaseUrlError, setLlmBaseUrlError] = useState<string | undefined>();
+  const [backendHealth, setBackendHealth] = useState<'unknown' | 'ok' | 'error'>('unknown');
+  const [llmStatus, setLlmStatus] = useState<
+    | {
+        provider: LLMProvider;
+        hasKey: boolean;
+        hasBaseUrl: boolean;
+        keyUpdatedAt?: string;
+        baseUrlUpdatedAt?: string;
+      }
+    | null
+  >(null);
+  const [llmStatusError, setLlmStatusError] = useState<string | undefined>();
+
+  const formatTimestamp = (value?: string) => {
+    if (!value) {
+      return '';
+    }
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) {
+      return '';
+    }
+    return date.toLocaleString();
+  };
+
+  const formatStatusLabel = (present: boolean | null, timestamp?: string) => {
+    if (present === null) {
+      return t('settings.statusUnknown');
+    }
+    if (!present) {
+      return t('settings.statusMissing');
+    }
+    const formatted = formatTimestamp(timestamp);
+    if (!formatted) {
+      return t('settings.statusPresent');
+    }
+    return t('settings.statusPresentAt', { time: formatted });
+  };
+
+  const refreshBackendIndicators = async (provider: LLMProvider) => {
+    try {
+      await backendRequest('/health', { method: 'GET' }, { auth: false });
+      setBackendHealth('ok');
+    } catch {
+      setBackendHealth('error');
+    }
+
+    try {
+      const status = await backendRequest<
+        Array<{
+          provider: LLMProvider;
+          hasKey: boolean;
+          hasBaseUrl: boolean;
+          keyUpdatedAt?: string;
+          baseUrlUpdatedAt?: string;
+        }>
+      >(`/llm/status?provider=${provider}`);
+      setLlmStatus(status[0] ?? null);
+      setLlmStatusError(undefined);
+    } catch (error) {
+      setLlmStatus(null);
+      setLlmStatusError(error instanceof Error ? error.message : t('settings.statusUnknownError'));
+    }
+  };
 
   const handleGradeChange = (gradeBook: GradeBook) => {
     const { grade } = parseGradeBook(gradeBook);
@@ -120,6 +183,7 @@ const SettingsPage: React.FC = () => {
 
   const handleReconnect = () => {
     resetBackendToken();
+    void refreshBackendIndicators(activeProvider);
     toast.success(t('settings.backendReconnectToast'));
   };
 
@@ -130,6 +194,7 @@ const SettingsPage: React.FC = () => {
       resetBackendToken();
       setBackendUrlError(undefined);
       setBackendUrlInput(getBackendBaseUrl());
+      void refreshBackendIndicators(activeProvider);
       toast.success(t('settings.backendUrlReset'));
       return;
     }
@@ -143,6 +208,7 @@ const SettingsPage: React.FC = () => {
     resetBackendToken();
     setBackendUrlError(undefined);
     setBackendUrlInput(getBackendBaseUrl());
+    void refreshBackendIndicators(activeProvider);
     toast.success(t('settings.backendUrlSaved'));
   };
 
@@ -198,6 +264,10 @@ const SettingsPage: React.FC = () => {
   const currentKeyValue = llmKeyByProvider[activeProvider] ?? '';
   const currentBaseUrlValue = llmBaseUrlByProvider[activeProvider] ?? '';
 
+  useEffect(() => {
+    void refreshBackendIndicators(activeProvider);
+  }, [activeProvider]);
+
   const handleLlmKeySave = async () => {
     const trimmed = currentKeyValue.trim();
 
@@ -219,6 +289,7 @@ const SettingsPage: React.FC = () => {
       });
       setLlmKeyError(undefined);
       setLlmKeyByProvider((prev) => ({ ...prev, [activeProvider]: '' }));
+      void refreshBackendIndicators(activeProvider);
       toast.success(trimmed ? t('settings.llmKeySaved') : t('settings.llmKeyCleared'));
     } catch (error) {
       toast.error(
@@ -257,6 +328,7 @@ const SettingsPage: React.FC = () => {
           window.localStorage.setItem(key, trimmed);
         }
       }
+      void refreshBackendIndicators(activeProvider);
       toast.success(trimmed ? t('settings.llmBaseUrlSaved') : t('settings.llmBaseUrlCleared'));
     } catch (error) {
       toast.error(
@@ -390,6 +462,43 @@ const SettingsPage: React.FC = () => {
                 <Button variant="ghost" onClick={handleReconnect}>
                   {t('settings.backendReconnect')}
                 </Button>
+              </div>
+              <div className="mt-2 space-y-2 text-xs text-text-muted">
+                <div className="flex items-center gap-2">
+                  <span
+                    className={`h-2 w-2 rounded-full ${
+                      backendHealth === 'ok'
+                        ? 'bg-emerald-400'
+                        : backendHealth === 'error'
+                          ? 'bg-rose-400'
+                          : 'bg-slate-500'
+                    }`}
+                  />
+                  <span>
+                    {t('settings.backendStatusLabel')}{' '}
+                    {backendHealth === 'ok'
+                      ? t('settings.backendStatusConnected')
+                      : backendHealth === 'error'
+                        ? t('settings.backendStatusDisconnected')
+                        : t('settings.backendStatusUnknown')}
+                  </span>
+                </div>
+                <div>
+                  {t('settings.llmKeyStatusLabel')}{' '}
+                  {formatStatusLabel(llmStatus ? llmStatus.hasKey : null, llmStatus?.keyUpdatedAt)}
+                </div>
+                <div>
+                  {t('settings.llmBaseUrlStatusLabel')}{' '}
+                  {formatStatusLabel(
+                    llmStatus ? llmStatus.hasBaseUrl : null,
+                    llmStatus?.baseUrlUpdatedAt,
+                  )}
+                </div>
+                {llmStatusError ? (
+                  <div className="text-rose-300">
+                    {t('settings.statusLoadFail', { error: llmStatusError })}
+                  </div>
+                ) : null}
               </div>
             </div>
           </div>

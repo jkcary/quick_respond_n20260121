@@ -8,7 +8,11 @@ import { useTestStore } from '@/store/testStore';
 import { useAppStore } from '@/store/useAppStore';
 import { ScorePanel } from './ScorePanel';
 import { Button, Modal, LoadingSpinner } from '@/components/common';
-import { segmentWithAgent } from '@/core/llm';
+import {
+  correctTranscriptWithAgent,
+  segmentWithAgent,
+  segmentAndJudgeWithAgent,
+} from '@/core/llm';
 import { BackendLLMGateway } from '@/core/backend/llmGateway';
 import { isBackendAuthConfigured } from '@/core/backend/client';
 import { useI18n } from '@/i18n';
@@ -96,7 +100,7 @@ export const TestPage: React.FC = () => {
   const segmentCacheRef = useRef(
     new Map<
       string,
-      { segments: string[]; correctedTranscript?: string; source: 'llm' | 'api' }
+      { segments: string[]; correctedTranscript?: string; source: 'llm' | 'api' | 'heuristic' }
     >(),
   );
 
@@ -258,39 +262,62 @@ export const TestPage: React.FC = () => {
     const submitStart = performance.now();
     let submitSuccess = true;
     let submitErrorType: string | undefined;
+    let entries:
+      | Array<{ word: VocabularyItem; input: string; judgment: { correct: boolean; correction: string } }>
+      | null = null;
 
     setIsSubmitting(true);
     setJudging(true);
 
     try {
-      const entries = await Promise.all(
-        batchWords.map(async (word) => {
-          const input = (inputs[word.id] ?? '').trim();
-          let judgment: { correct: boolean; correction: string };
+      const judgments: Array<{ correct: boolean; correction: string } | null> = new Array(
+        batchWords.length,
+      ).fill(null);
+      const toJudge: Array<{ index: number; word: string; userInput: string }> = [];
 
-          if (!gateway) {
-            judgment = {
-              correct: true,
-              correction: getDefaultCorrection(word),
-            };
-          } else if (input.length === 0) {
-            judgment = {
-              correct: false,
-              correction: getDefaultCorrection(word),
-            };
-          } else {
-            const result = await gateway.judge(word.word, input);
-            judgment = {
-              correct: result.correct,
-              correction: result.correction,
-            };
-          }
+      batchWords.forEach((word, index) => {
+        const input = (inputs[word.id] ?? '').trim();
+        if (!gateway) {
+          judgments[index] = {
+            correct: true,
+            correction: getDefaultCorrection(word),
+          };
+          return;
+        }
+        if (input.length === 0) {
+          judgments[index] = {
+            correct: false,
+            correction: getDefaultCorrection(word),
+          };
+          return;
+        }
+        toJudge.push({ index, word: word.word, userInput: input });
+      });
 
-          return { word, input, judgment };
-        }),
-      );
+      if (gateway && toJudge.length > 0) {
+        const results = await gateway.judgeBatch(
+          toJudge.map((entry) => ({ word: entry.word, userInput: entry.userInput })),
+        );
+        if (results.length !== toJudge.length) {
+          throw new Error('Batch judgment mismatch');
+        }
+        results.forEach((result, idx) => {
+          const target = toJudge[idx];
+          judgments[target.index] = {
+            correct: result.correct,
+            correction: result.correction,
+          };
+        });
+      }
 
-      await submitBatch(entries);
+      entries = batchWords.map((word, index) => {
+        const input = (inputs[word.id] ?? '').trim();
+        const judgment = judgments[index] ?? {
+          correct: false,
+          correction: getDefaultCorrection(word),
+        };
+        return { word, input, judgment };
+      });
     } catch (error) {
       submitSuccess = false;
       submitErrorType = error instanceof Error ? error.name : 'unknown';
@@ -304,9 +331,16 @@ export const TestPage: React.FC = () => {
         source: gateway ? 'llm' : 'offline',
         provider: gateway?.getProvider?.() ?? activeProvider,
         batchSize: batchWords.length,
+        meta: { backgroundSubmit: true },
       });
       setJudging(false);
       setIsSubmitting(false);
+    }
+
+    if (entries) {
+      void submitBatch(entries).catch((error) => {
+        console.error('Batch submit failed:', error);
+      });
     }
   }, [
     currentSession,
@@ -347,6 +381,13 @@ export const TestPage: React.FC = () => {
       if (!trimmedTranscript) {
         return null;
       }
+
+      const segmentWords = batchWords.map((word) => ({
+        id: word.id,
+        word: word.word,
+        zh: word.zh,
+        chinese: Array.isArray(word.chinese) ? word.chinese : [],
+      }));
 
       const segmentStart = performance.now();
       let segmentLogged = false;
@@ -416,9 +457,13 @@ export const TestPage: React.FC = () => {
       setRecordingError(null);
       const { applyAnswers = true, autoSubmit = false } = options;
 
+      let preCorrectedTranscript: string | undefined;
+      let transcriptForSegment = trimmedTranscript;
+      let correctionAttempted = false;
+
       const applySegments = (
         segments: string[],
-        source: 'llm' | 'api' | 'fallback',
+        source: 'llm' | 'api' | 'fallback' | 'heuristic',
         correctedTranscript?: string,
       ) => {
         const normalized = normalizeSegments(
@@ -434,14 +479,15 @@ export const TestPage: React.FC = () => {
         });
 
         setSegmentedTokens(normalized);
-        if (correctedTranscript) {
-          recordingTranscriptRef.current = correctedTranscript;
-          setRecordingTranscript(correctedTranscript);
+        const resolvedCorrectedTranscript = correctedTranscript ?? preCorrectedTranscript;
+        if (resolvedCorrectedTranscript) {
+          recordingTranscriptRef.current = resolvedCorrectedTranscript;
+          setRecordingTranscript(resolvedCorrectedTranscript);
         }
         if (applyAnswers) {
           setAnswers(nextAnswers);
         }
-        if (autoSubmit && source !== 'fallback') {
+        if (autoSubmit && source !== 'fallback' && source !== 'heuristic') {
           if (autoSubmitTimerRef.current !== null) {
             window.clearTimeout(autoSubmitTimerRef.current);
           }
@@ -452,10 +498,11 @@ export const TestPage: React.FC = () => {
         }
 
         if (source !== 'fallback') {
+          const storedSource = source === 'llm' ? 'llm' : source === 'api' ? 'api' : 'heuristic';
           segmentCacheRef.current.set(cacheKey, {
             segments: normalized,
-            correctedTranscript,
-            source: source === 'llm' ? 'llm' : 'api',
+            correctedTranscript: resolvedCorrectedTranscript,
+            source: storedSource,
           });
           if (segmentCacheRef.current.size > SEGMENT_CACHE_LIMIT) {
             const firstKey = segmentCacheRef.current.keys().next().value as string | undefined;
@@ -468,22 +515,98 @@ export const TestPage: React.FC = () => {
         return nextAnswers;
       };
 
-      const createFallbackSegments = () => {
-        const cleaned = trimmedTranscript.replace(/\s+/g, ' ').trim();
+      const hintGroups = segmentWords.map((word) =>
+        [word.zh, ...(word.chinese ?? [])]
+          .filter((item): item is string => typeof item === 'string' && item.trim().length > 0)
+          .map((item) => item.trim())
+          .sort((a, b) => b.length - a.length),
+      );
+
+      const createHintSegments = (input: string): string[] | null => {
+        const cleaned = input.replace(/\s+/g, ' ').trim();
+        if (!cleaned) {
+          return null;
+        }
+
+        const positions: Array<{ start: number; end: number }> = [];
+        let cursor = 0;
+
+        for (const hints of hintGroups) {
+          if (hints.length === 0) {
+            return null;
+          }
+          let bestIndex = -1;
+          let bestHint = '';
+          for (const hint of hints) {
+            const index = cleaned.indexOf(hint, cursor);
+            if (index === -1) {
+              continue;
+            }
+            if (bestIndex === -1 || index < bestIndex || (index === bestIndex && hint.length > bestHint.length)) {
+              bestIndex = index;
+              bestHint = hint;
+            }
+          }
+          if (bestIndex < 0) {
+            return null;
+          }
+          const start = bestIndex;
+          const endPos = bestIndex + bestHint.length;
+          positions.push({ start, end: endPos });
+          cursor = endPos;
+        }
+
+        return positions.map((pos, index) => {
+          const endPos = index + 1 < positions.length ? positions[index + 1].start : cleaned.length;
+          return cleaned.slice(pos.start, endPos).trim();
+        });
+      };
+
+      const createHeuristicSegments = (input: string): string[] | null => {
+        const cleaned = input.replace(/\s+/g, ' ').trim();
+        if (!cleaned) {
+          return null;
+        }
+
+        const hintSegments = createHintSegments(cleaned);
+        if (hintSegments) {
+          return hintSegments;
+        }
+
         let segments = cleaned
           .split(/[，。！？、,.;?!\n]+/)
           .map((item) => item.trim())
           .filter(Boolean);
 
-        if (segments.length < batchWords.length) {
-          const bySpace = cleaned
-            .split(/\s+/)
-            .map((item) => item.trim())
-            .filter(Boolean);
-          if (bySpace.length > segments.length) {
-            segments = bySpace;
-          }
+        if (segments.length >= batchWords.length) {
+          return segments;
         }
+
+        const bySpace = cleaned
+          .split(/\s+/)
+          .map((item) => item.trim())
+          .filter(Boolean);
+        if (bySpace.length >= batchWords.length) {
+          return bySpace;
+        }
+
+        return null;
+      };
+
+      const isHeuristicStrong = (segments: string[]): boolean => {
+        const nonEmpty = segments.filter((item) => item.trim().length > 0).length;
+        const minNonEmpty = Math.max(batchWords.length - 2, Math.ceil(batchWords.length * 0.7));
+        if (nonEmpty < minNonEmpty) {
+          return false;
+        }
+        const totalLength = segments.reduce((sum, item) => sum + item.trim().length, 0);
+        const avgLength = totalLength / Math.max(1, nonEmpty);
+        return avgLength <= 12;
+      };
+
+      const createFallbackSegments = (input: string) => {
+        const cleaned = input.replace(/\s+/g, ' ').trim();
+        let segments = createHeuristicSegments(cleaned) ?? [];
 
         if (segments.length < batchWords.length && cleaned.length > 0) {
           const avg = Math.max(1, Math.ceil(cleaned.length / batchWords.length));
@@ -498,19 +621,131 @@ export const TestPage: React.FC = () => {
       };
 
       try {
+        if (gateway && TEST_CONFIG.VOICE_CORRECTION_ENABLED) {
+          try {
+            correctionAttempted = true;
+            const result = await withTimeout(
+              correctTranscriptWithAgent(gateway, trimmedTranscript, segmentWords),
+              TEST_CONFIG.VOICE_CORRECTION_TIMEOUT_MS,
+              'Transcript correction timeout',
+            );
+
+            if (segmentTokenRef.current !== segmentToken) {
+              skipLogging = true;
+              return null;
+            }
+
+            const corrected = result?.correctedTranscript?.trim();
+            if (corrected) {
+              preCorrectedTranscript = corrected;
+              transcriptForSegment = corrected;
+              recordingTranscriptRef.current = corrected;
+              setRecordingTranscript(corrected);
+            }
+          } catch (error) {
+            console.warn('Transcript correction failed, continuing.', error);
+          }
+        }
+
+        const heuristicSegments = createHeuristicSegments(transcriptForSegment);
+        if (!autoSubmit && heuristicSegments && isHeuristicStrong(heuristicSegments)) {
+          const next = applySegments(heuristicSegments, 'heuristic', preCorrectedTranscript);
+          logSegment('heuristic', true, undefined, {
+            correctionAttempted,
+            corrected: Boolean(preCorrectedTranscript),
+          });
+          return next;
+        }
 
         if (gateway) {
+          // 当 autoSubmit 为 true 时，使用 segmentAndJudge 一次完成切分和判断
+          if (autoSubmit) {
+            try {
+              const result = await withTimeout(
+                segmentAndJudgeWithAgent(
+                  gateway,
+                  transcriptForSegment,
+                  segmentWords,
+                ),
+                TEST_CONFIG.VOICE_SEGMENT_TIMEOUT_MS,
+                'Segment and judge agent timeout',
+              );
+
+              if (segmentTokenRef.current !== segmentToken) {
+                skipLogging = true;
+                return null;
+              }
+
+              if (result?.segments?.length && result?.judgments?.length) {
+                const normalized = normalizeSegments(
+                  result.segments.map((item) => item.trim()),
+                  batchWords.length,
+                );
+                const nextAnswers: Record<string, string> = {};
+                normalized.forEach((segment, index) => {
+                  const word = batchWords[index];
+                  if (word) {
+                    nextAnswers[word.id] = segment.trim();
+                  }
+                });
+
+                const resolvedCorrectedTranscript =
+                  result.correctedTranscript ?? preCorrectedTranscript;
+                setSegmentedTokens(normalized);
+                if (resolvedCorrectedTranscript) {
+                  recordingTranscriptRef.current = resolvedCorrectedTranscript;
+                  setRecordingTranscript(resolvedCorrectedTranscript);
+                }
+                if (applyAnswers) {
+                  setAnswers(nextAnswers);
+                }
+
+                // 缓存结果
+                segmentCacheRef.current.set(cacheKey, {
+                  segments: normalized,
+                  correctedTranscript: resolvedCorrectedTranscript,
+                  source: 'llm',
+                });
+                if (segmentCacheRef.current.size > SEGMENT_CACHE_LIMIT) {
+                  const firstKey = segmentCacheRef.current.keys().next().value as string | undefined;
+                  if (firstKey) {
+                    segmentCacheRef.current.delete(firstKey);
+                  }
+                }
+
+                logSegment('llm-combined', true, undefined, {
+                  correctionAttempted,
+                  corrected: Boolean(resolvedCorrectedTranscript),
+                });
+
+                // 直接使用返回的判断结果提交，不需要再调用 judgeBatch
+                const judgments = result.judgments;
+                const entries = batchWords.map((word, index) => {
+                  const input = nextAnswers[word.id] ?? '';
+                  const judgment = judgments[index] ?? {
+                    correct: false,
+                    correction: getDefaultCorrection(word),
+                  };
+                  return { word, input, judgment };
+                });
+                void submitBatch(entries).catch((error) => {
+                  console.error('Batch submit failed:', error);
+                });
+
+                return nextAnswers;
+              }
+            } catch (error) {
+              console.warn('Segment and judge agent failed, falling back to separate calls.', error);
+            }
+          }
+
+          // 普通切分（不带判断）
           try {
             const result = await withTimeout(
               segmentWithAgent(
                 gateway,
-                trimmedTranscript,
-                batchWords.map((word) => ({
-                  id: word.id,
-                  word: word.word,
-                  zh: word.zh,
-                  chinese: Array.isArray(word.chinese) ? word.chinese : [],
-                })),
+                transcriptForSegment,
+                segmentWords,
               ),
               TEST_CONFIG.VOICE_SEGMENT_TIMEOUT_MS,
               'Segment agent timeout',
@@ -523,7 +758,10 @@ export const TestPage: React.FC = () => {
 
             if (result?.segments?.length) {
               const next = applySegments(result.segments, 'llm', result.correctedTranscript);
-              logSegment('llm', true);
+              logSegment('llm', true, undefined, {
+                correctionAttempted,
+                corrected: Boolean(preCorrectedTranscript ?? result.correctedTranscript),
+              });
               return next;
             }
           } catch (error) {
@@ -548,7 +786,7 @@ export const TestPage: React.FC = () => {
                 'Content-Type': 'application/json',
               },
               body: JSON.stringify({
-                transcript: trimmedTranscript,
+                transcript: transcriptForSegment,
                 matchMode: 'ordered',
                 words: batchWords.map((word, index) => ({
                   index: index + 1,
@@ -592,6 +830,10 @@ export const TestPage: React.FC = () => {
             (word) => nextAnswers[word.id] ?? '',
           );
           setSegmentedTokens(normalizeSegments(orderedSegments, batchWords.length));
+          if (preCorrectedTranscript) {
+            recordingTranscriptRef.current = preCorrectedTranscript;
+            setRecordingTranscript(preCorrectedTranscript);
+          }
           if (applyAnswers) {
             setAnswers(nextAnswers);
           }
@@ -606,7 +848,7 @@ export const TestPage: React.FC = () => {
           }
           segmentCacheRef.current.set(cacheKey, {
             segments: normalizeSegments(orderedSegments, batchWords.length),
-            correctedTranscript: undefined,
+            correctedTranscript: preCorrectedTranscript,
             source: 'api',
           });
           if (segmentCacheRef.current.size > SEGMENT_CACHE_LIMIT) {
@@ -615,13 +857,19 @@ export const TestPage: React.FC = () => {
               segmentCacheRef.current.delete(firstKey);
             }
           }
-          logSegment('api', true);
+          logSegment('api', true, undefined, {
+            correctionAttempted,
+            corrected: Boolean(preCorrectedTranscript),
+          });
           return nextAnswers;
         }
 
         if (Array.isArray(data.segments)) {
           const next = applySegments(data.segments, 'api');
-          logSegment('api', true);
+          logSegment('api', true, undefined, {
+            correctionAttempted,
+            corrected: Boolean(preCorrectedTranscript),
+          });
           return next;
         }
 
@@ -636,9 +884,11 @@ export const TestPage: React.FC = () => {
         setRecordingError(message);
         logSegment('fallback', false, error instanceof Error ? error.name : 'unknown', {
           message,
+          correctionAttempted,
+          corrected: Boolean(preCorrectedTranscript),
         });
         return applySegments(
-          createFallbackSegments(),
+          createFallbackSegments(transcriptForSegment),
           'fallback',
         );
       } finally {

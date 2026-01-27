@@ -33,6 +33,12 @@ export const TEST_CONFIG = {
   /** Timeout for voice segmentation (ms) */
   VOICE_SEGMENT_TIMEOUT_MS: 8000,
 
+  /** Enable AI correction before segmentation */
+  VOICE_CORRECTION_ENABLED: true,
+
+  /** Timeout for transcript correction (ms) */
+  VOICE_CORRECTION_TIMEOUT_MS: 3000,
+
 
   /** Auto-advance delay after correct answer (ms) */
   AUTO_ADVANCE_DELAY: 1500,

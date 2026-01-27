@@ -33,3 +33,13 @@ export type SegmentResult = {
   segments: string[];
   correctedTranscript?: string;
 };
+
+export type CorrectTranscriptResult = {
+  correctedTranscript: string;
+};
+
+export type SegmentAndJudgeResult = {
+  segments: string[];
+  correctedTranscript?: string;
+  judgments: JudgmentResult[];
+};

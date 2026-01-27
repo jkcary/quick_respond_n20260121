@@ -1,9 +1,12 @@
-import { Injectable, Logger, BadRequestException } from '@nestjs/common';
+import { Injectable, Logger, BadRequestException, Inject } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import {
   JUDGE_SYSTEM_PROMPT,
+  JUDGE_BATCH_SYSTEM_PROMPT,
   SEGMENT_SYSTEM_PROMPT,
+  CORRECT_TRANSCRIPT_SYSTEM_PROMPT,
+  SEGMENT_AND_JUDGE_SYSTEM_PROMPT,
   CONNECTION_TEST_PROMPT,
 } from './prompts';
 import {
@@ -11,17 +14,21 @@ import {
   LlmProvider,
   LlmResponse,
   ProviderConfig,
+  CorrectTranscriptResult,
   SegmentResult,
+  SegmentAndJudgeResult,
 } from './llm.types';
 import { safeParseJson } from './parser';
+import { DeviceConfigStore, type LlmConfigStatus } from './device-config.store';
 
 @Injectable()
 export class LlmService {
   private readonly logger = new Logger(LlmService.name);
-  private readonly deviceKeys = new Map<string, Map<LlmProvider, string>>();
-  private readonly deviceBaseUrls = new Map<string, Map<LlmProvider, string>>();
 
-  constructor(private readonly configService: ConfigService) {}
+  constructor(
+    @Inject(ConfigService) private readonly configService: ConfigService,
+    @Inject(DeviceConfigStore) private readonly configStore: DeviceConfigStore,
+  ) {}
 
   async judge(
     provider: LlmProvider,
@@ -83,9 +90,144 @@ export class LlmService {
     };
   }
 
+  async correctTranscript(
+    provider: LlmProvider,
+    transcript: string,
+    words: Array<{ index: number; word: string; hints?: string[] }>,
+    targetCount: number,
+    modelOverride?: string,
+    deviceId?: string,
+  ): Promise<CorrectTranscriptResult> {
+    const wordLines = words
+      .map((item) => `#${item.index} ${item.word} | hints: ${(item.hints ?? []).join(', ')}`)
+      .join('\n');
+
+    const userMessage = `Transcript (Chinese, continuous): ${transcript}\n\nTarget segments: ${targetCount}\n\nEnglish words and Chinese hints:\n${wordLines}\n\nReturn JSON only.`;
+
+    const response = await this.sendChat(
+      provider,
+      CORRECT_TRANSCRIPT_SYSTEM_PROMPT,
+      userMessage,
+      modelOverride,
+      deviceId,
+      Math.max(120, targetCount * 40),
+    );
+
+    const parsed = safeParseJson<CorrectTranscriptResult>(response.content);
+    if (parsed && typeof parsed.correctedTranscript === 'string') {
+      return parsed;
+    }
+
+    return { correctedTranscript: transcript };
+  }
+
   async testConnection(provider: LlmProvider, deviceId?: string): Promise<boolean> {
     const response = await this.sendChat(provider, CONNECTION_TEST_PROMPT, 'Test', undefined, deviceId);
     return response.content.length > 0;
+  }
+
+  async segmentAndJudge(
+    provider: LlmProvider,
+    transcript: string,
+    words: Array<{ index: number; word: string; hints?: string[] }>,
+    targetCount: number,
+    modelOverride?: string,
+    deviceId?: string,
+  ): Promise<SegmentAndJudgeResult> {
+    const wordLines = words
+      .map((item) => `#${item.index} ${item.word} | hints: ${(item.hints ?? []).join(', ')}`)
+      .join('\n');
+
+    const userMessage = `Transcript (Chinese, continuous): ${transcript}\n\nTarget segments: ${targetCount}\n\nEnglish words and Chinese hints:\n${wordLines}\n\nReturn JSON with segments, correctedTranscript, and judgments.`;
+
+    const response = await this.sendChat(
+      provider,
+      SEGMENT_AND_JUDGE_SYSTEM_PROMPT,
+      userMessage,
+      modelOverride,
+      deviceId,
+      Math.max(400, targetCount * 80),
+    );
+
+    const parsed = safeParseJson<SegmentAndJudgeResult>(response.content);
+    if (
+      parsed &&
+      Array.isArray(parsed.segments) &&
+      Array.isArray(parsed.judgments) &&
+      parsed.judgments.length === targetCount
+    ) {
+      // 验证 judgments 格式
+      const validJudgments = parsed.judgments.every(
+        (j) => typeof j.correct === 'boolean' && typeof j.correction === 'string',
+      );
+      if (validJudgments) {
+        return parsed;
+      }
+    }
+
+    // 回退：使用普通切分 + 批量判断
+    const segmentResult = await this.segment(
+      provider,
+      transcript,
+      words,
+      targetCount,
+      modelOverride,
+      deviceId,
+    );
+
+    const entries = words.map((w, i) => ({
+      word: w.word,
+      userInput: segmentResult.segments[i] ?? '',
+    }));
+
+    const judgments = await this.judgeBatch(provider, entries, modelOverride, deviceId);
+
+    return {
+      segments: segmentResult.segments,
+      correctedTranscript: segmentResult.correctedTranscript,
+      judgments,
+    };
+  }
+
+  async judgeBatch(
+    provider: LlmProvider,
+    entries: Array<{ word: string; userInput: string }>,
+    modelOverride?: string,
+    deviceId?: string,
+  ): Promise<JudgmentResult[]> {
+    const userMessage = entries
+      .map((entry, index) => `#${index + 1} ${entry.word} | input: ${entry.userInput || '(empty)'}`)
+      .join('\n');
+
+    const response = await this.sendChat(
+      provider,
+      JUDGE_BATCH_SYSTEM_PROMPT,
+      userMessage,
+      modelOverride,
+      deviceId,
+      Math.max(200, entries.length * 40),
+    );
+
+    const parsed = safeParseJson<unknown>(response.content);
+    if (Array.isArray(parsed)) {
+      const normalized = parsed.map((item) => {
+        const obj = item as { correct?: unknown; correction?: unknown };
+        if (typeof obj?.correct === 'boolean' && typeof obj?.correction === 'string') {
+          return { correct: obj.correct, correction: obj.correction };
+        }
+        return null;
+      });
+      if (normalized.length === entries.length && normalized.every((item) => item)) {
+        return normalized as JudgmentResult[];
+      }
+    }
+
+    // Fallback: judge individually if batch parsing fails
+    const results: JudgmentResult[] = [];
+    for (const entry of entries) {
+      results.push(await this.judge(provider, entry.word, entry.userInput, modelOverride, deviceId));
+    }
+    return results;
   }
 
   setApiKey(deviceId: string, provider: LlmProvider, apiKey: string): void {
@@ -96,22 +238,7 @@ export class LlmService {
       return;
     }
     const trimmed = apiKey.trim();
-    if (!trimmed) {
-      const existing = this.deviceKeys.get(deviceId);
-      if (existing) {
-        existing.delete(provider);
-        if (existing.size === 0) {
-          this.deviceKeys.delete(deviceId);
-        }
-      }
-      return;
-    }
-    let map = this.deviceKeys.get(deviceId);
-    if (!map) {
-      map = new Map<LlmProvider, string>();
-      this.deviceKeys.set(deviceId, map);
-    }
-    map.set(provider, trimmed);
+    this.configStore.setApiKey(deviceId, provider, trimmed);
   }
 
   setBaseUrl(deviceId: string, provider: LlmProvider, baseUrl: string): void {
@@ -120,36 +247,23 @@ export class LlmService {
     }
     const trimmed = baseUrl.trim();
     if (!trimmed) {
-      const existing = this.deviceBaseUrls.get(deviceId);
-      if (existing) {
-        existing.delete(provider);
-        if (existing.size === 0) {
-          this.deviceBaseUrls.delete(deviceId);
-        }
-      }
+      this.configStore.setBaseUrl(deviceId, provider, '');
       return;
     }
     this.ensureSecureBaseUrl(provider, trimmed);
-    let map = this.deviceBaseUrls.get(deviceId);
-    if (!map) {
-      map = new Map<LlmProvider, string>();
-      this.deviceBaseUrls.set(deviceId, map);
-    }
-    map.set(provider, trimmed);
+    this.configStore.setBaseUrl(deviceId, provider, trimmed);
+  }
+
+  getConfigStatus(deviceId: string | undefined, provider?: LlmProvider): LlmConfigStatus[] {
+    return this.configStore.getStatus(deviceId, provider);
   }
 
   private getDeviceApiKey(deviceId: string | undefined, provider: LlmProvider): string | undefined {
-    if (!deviceId) {
-      return undefined;
-    }
-    return this.deviceKeys.get(deviceId)?.get(provider);
+    return this.configStore.getApiKey(deviceId, provider);
   }
 
   private getDeviceBaseUrl(deviceId: string | undefined, provider: LlmProvider): string | undefined {
-    if (!deviceId) {
-      return undefined;
-    }
-    return this.deviceBaseUrls.get(deviceId)?.get(provider);
+    return this.configStore.getBaseUrl(deviceId, provider);
   }
 
   private getProviderConfig(
@@ -202,7 +316,12 @@ export class LlmService {
   }
 
   private ensureSecureBaseUrl(provider: LlmProvider, baseUrl: string): void {
-    const parsed = new URL(baseUrl);
+    let parsed: URL;
+    try {
+      parsed = new URL(baseUrl);
+    } catch {
+      throw new BadRequestException('Invalid base URL');
+    }
     if (provider === LlmProvider.Ollama) {
       const allow = this.configService.get<string>('ALLOW_OLLAMA') ?? 'false';
       if (allow !== 'true') {
@@ -246,6 +365,7 @@ export class LlmService {
     userMessage: string,
     modelOverride?: string,
     deviceId?: string,
+    maxTokens?: number,
   ): Promise<LlmResponse> {
     const config = this.getProviderConfig(provider, modelOverride, deviceId);
     this.ensureSecureBaseUrl(provider, config.baseUrl);
@@ -258,11 +378,11 @@ export class LlmService {
 
     switch (provider) {
       case LlmProvider.Anthropic:
-        return this.sendAnthropic(config, systemPrompt, userMessage, timeout);
+        return this.sendAnthropic(config, systemPrompt, userMessage, timeout, maxTokens);
       case LlmProvider.Ollama:
         return this.sendOllama(config, systemPrompt, userMessage, timeout);
       default:
-        return this.sendOpenAICompatible(config, systemPrompt, userMessage, timeout);
+        return this.sendOpenAICompatible(config, systemPrompt, userMessage, timeout, maxTokens);
     }
   }
 
@@ -271,6 +391,7 @@ export class LlmService {
     systemPrompt: string,
     userMessage: string,
     timeout: number,
+    maxTokens?: number,
   ): Promise<LlmResponse> {
     const endpoint = this.buildOpenAIEndpoint(config.baseUrl);
     const response = await axios.post(
@@ -281,7 +402,7 @@ export class LlmService {
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userMessage },
         ],
-        max_tokens: 200,
+        max_tokens: maxTokens ?? 200,
         temperature: 0,
       },
       {
@@ -305,6 +426,7 @@ export class LlmService {
     systemPrompt: string,
     userMessage: string,
     timeout: number,
+    maxTokens?: number,
   ): Promise<LlmResponse> {
     const endpoint = this.buildAnthropicEndpoint(config.baseUrl);
     const version = this.configService.get<string>('ANTHROPIC_VERSION') ?? '2023-06-01';
@@ -313,7 +435,7 @@ export class LlmService {
       endpoint,
       {
         model: config.model,
-        max_tokens: 200,
+        max_tokens: maxTokens ?? 200,
         temperature: 0,
         system: systemPrompt,
         messages: [{ role: 'user', content: userMessage }],
