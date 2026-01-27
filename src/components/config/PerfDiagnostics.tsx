@@ -63,26 +63,36 @@ export const PerfDiagnostics: React.FC = () => {
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="text-sm text-slate-400">
+        <div className="text-sm text-slate-700 dark:text-slate-400">
           {t('settings.perfSubtitle')} {lastUpdated.toLocaleTimeString()}
         </div>
         <div className="flex gap-2">
-          <Button variant="ghost" onClick={handleRefresh}>
+          <Button
+            variant="ghost"
+            onClick={handleRefresh}
+            className="text-slate-700 border-slate-300 hover:bg-slate-200 dark:text-accent dark:border-border-primary dark:hover:bg-accent-muted"
+          >
             {t('settings.perfRefresh')}
           </Button>
-          <Button variant="ghost" onClick={handleClear}>
+          <Button
+            variant="ghost"
+            onClick={handleClear}
+            className="text-slate-700 border-slate-300 hover:bg-slate-200 dark:text-accent dark:border-border-primary dark:hover:bg-accent-muted"
+          >
             {t('settings.perfClear')}
           </Button>
         </div>
       </div>
 
       {rows.length === 0 ? (
-        <div className="text-sm text-slate-400">{t('settings.perfEmpty')}</div>
+        <div className="text-sm text-slate-700 dark:text-slate-400">
+          {t('settings.perfEmpty')}
+        </div>
       ) : (
         <div className="overflow-x-auto">
-          <table className="min-w-full text-sm text-slate-300">
+          <table className="min-w-full text-sm text-slate-900 dark:text-slate-300">
             <thead>
-              <tr className="text-left text-slate-400">
+              <tr className="text-left text-slate-700 dark:text-slate-400">
                 <th className="py-2 pr-4">{t('settings.perfMetric')}</th>
                 <th className="py-2 pr-4">{t('settings.perfCount')}</th>
                 <th className="py-2 pr-4">{t('settings.perfErrors')}</th>
@@ -94,8 +104,10 @@ export const PerfDiagnostics: React.FC = () => {
             </thead>
             <tbody>
               {rows.map((row) => (
-                <tr key={row.name} className="border-t border-slate-700/60">
-                  <td className="py-2 pr-4 font-medium text-slate-200">{row.name}</td>
+                <tr key={row.name} className="border-t border-slate-200 dark:border-slate-700/60">
+                  <td className="py-2 pr-4 font-medium text-slate-900 dark:text-slate-200">
+                    {row.name}
+                  </td>
                   <td className="py-2 pr-4">{row.count}</td>
                   <td className="py-2 pr-4">{row.errorCount}</td>
                   <td className="py-2 pr-4">{formatRate(row.errorCount, row.count)}</td>

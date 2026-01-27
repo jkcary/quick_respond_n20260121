@@ -52,7 +52,9 @@ export const APITester: React.FC<APITesterProps> = ({ provider, model }) => {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-medium text-slate-200">{t('settings.connectionTitle')}</h3>
+          <h3 className="text-lg font-medium text-slate-900 dark:text-slate-200">
+            {t('settings.connectionTitle')}
+          </h3>
           <p className="text-sm text-slate-400 mt-1">
             {t('settings.connectionSubtitleBackend')}
           </p>
@@ -72,7 +74,7 @@ export const APITester: React.FC<APITesterProps> = ({ provider, model }) => {
         <div
           className={`p-4 rounded-lg border ${
             result.success
-              ? 'bg-green-900/20 border-green-700'
+              ? 'bg-green-50 border-green-300 dark:bg-green-900/20 dark:border-green-700'
               : 'bg-red-900/20 border-red-700'
           }`}
         >
@@ -114,14 +116,16 @@ export const APITester: React.FC<APITesterProps> = ({ provider, model }) => {
             <div className="flex-1">
               <div
                 className={`font-medium ${
-                  result.success ? 'text-green-400' : 'text-red-400'
+                  result.success
+                    ? 'text-green-800 dark:text-green-400'
+                    : 'text-red-400'
                 }`}
               >
                 {result.success ? t('settings.connectionSuccess') : t('settings.connectionFail')}
               </div>
 
               {result.success && result.latency !== undefined && (
-                <div className="text-sm text-slate-300 mt-1">
+                <div className="text-sm text-slate-700 dark:text-slate-300 mt-1">
                   {t('settings.connectionLatency', { ms: result.latency })}
                 </div>
               )}
@@ -133,7 +137,7 @@ export const APITester: React.FC<APITesterProps> = ({ provider, model }) => {
               )}
 
               {result.success && (
-                <div className="text-sm text-slate-400 mt-2">
+                <div className="text-sm text-slate-700/80 dark:text-slate-400 mt-2">
                   {t('settings.connectionSuccessHintBackend')}
                 </div>
               )}

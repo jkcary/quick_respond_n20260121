@@ -61,7 +61,9 @@ export const ExportPanel: React.FC<ExportPanelProps> = ({ errorLog }) => {
   return (
     <div className="space-y-4">
       <div>
-        <h3 className="text-lg font-medium text-slate-200 mb-2">{t('export.title')}</h3>
+        <h3 className="text-lg font-medium text-slate-900 dark:text-slate-200 mb-2">
+          {t('export.title')}
+        </h3>
         <p className="text-sm text-slate-400">
           {t('export.subtitle')}
         </p>

@@ -155,7 +155,9 @@ export const LLMConfigForm: React.FC<LLMConfigFormProps> = ({
       </div>
 
       <div className="rounded-lg border border-slate-700 bg-slate-900/40 p-3">
-        <p className="text-xs text-slate-400">{t('settings.backendManagedHint')}</p>
+        <p className="text-xs text-white dark:text-slate-400">
+          {t('settings.backendManagedHint')}
+        </p>
       </div>
 
       {/* Model Name */}
