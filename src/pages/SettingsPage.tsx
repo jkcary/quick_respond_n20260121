@@ -127,12 +127,81 @@ const SettingsPage: React.FC = () => {
     return t('settings.statusPresentAt', { time: formatted });
   };
 
+  const normalizeUrlInput = (value: string, defaultProtocol: 'http:' | 'https:') => {
+    const trimmed = value.trim();
+    if (!trimmed) {
+      return '';
+    }
+    if (/^[a-zA-Z][a-zA-Z\d+\-.]*:\/\//.test(trimmed)) {
+      return trimmed;
+    }
+    return `${defaultProtocol}//${trimmed}`;
+  };
+
+  const validateLlmBaseUrl = (value: string, provider: LLMProvider): string | undefined => {
+    const validation = validateURL(value);
+    if (!validation.valid) {
+      return t('settings.llmBaseUrlInvalid');
+    }
+
+    let parsed: URL;
+    try {
+      parsed = new URL(value);
+    } catch {
+      return t('settings.llmBaseUrlInvalid');
+    }
+
+    if (provider === LLMProvider.Ollama) {
+      const isLocalhost = parsed.hostname === 'localhost' || parsed.hostname === '127.0.0.1';
+      if (!isLocalhost) {
+        return t('settings.llmBaseUrlLocalhostOnly');
+      }
+      return undefined;
+    }
+
+    if (parsed.protocol !== 'https:') {
+      return t('settings.llmBaseUrlHttpsOnly');
+    }
+
+    return undefined;
+  };
+
+  const resolveBackendSaveError = (error: unknown): string => {
+    if (error instanceof Error) {
+      const message = error.message.toLowerCase();
+      if (message.includes('invalid shared secret') || message.includes('unauthorized')) {
+        return t('settings.backendAuthFailed');
+      }
+      if (message.includes('failed to fetch') || message.includes('network')) {
+        return t('settings.backendUnavailableSave');
+      }
+      return error.message;
+    }
+    return t('settings.statusUnknownError');
+  };
+
+  const ensureBackendReady = (): boolean => {
+    if (backendHealth === 'ok') {
+      return true;
+    }
+    toast.error(t('settings.backendUnavailableSave'));
+    return false;
+  };
+
   const refreshBackendIndicators = async (provider: LLMProvider) => {
+    let backendOk = false;
     try {
       await backendRequest('/health', { method: 'GET' }, { auth: false });
       setBackendHealth('ok');
+      backendOk = true;
     } catch {
       setBackendHealth('error');
+    }
+
+    if (!backendOk) {
+      setLlmStatus(null);
+      setLlmStatusError(undefined);
+      return;
     }
 
     try {
@@ -188,7 +257,8 @@ const SettingsPage: React.FC = () => {
   };
 
   const handleBackendUrlSave = () => {
-    const trimmed = backendUrlInput.trim();
+    const normalized = normalizeUrlInput(backendUrlInput, 'http:');
+    const trimmed = normalized.trim();
     if (trimmed.length === 0) {
       setBackendBaseUrl('');
       resetBackendToken();
@@ -207,6 +277,9 @@ const SettingsPage: React.FC = () => {
     setBackendBaseUrl(trimmed);
     resetBackendToken();
     setBackendUrlError(undefined);
+    if (normalized !== backendUrlInput) {
+      setBackendUrlInput(normalized);
+    }
     setBackendUrlInput(getBackendBaseUrl());
     void refreshBackendIndicators(activeProvider);
     toast.success(t('settings.backendUrlSaved'));
@@ -280,6 +353,9 @@ const SettingsPage: React.FC = () => {
     }
 
     try {
+      if (!ensureBackendReady()) {
+        return;
+      }
       await backendRequest('/llm/key', {
         method: 'POST',
         body: JSON.stringify({
@@ -294,24 +370,29 @@ const SettingsPage: React.FC = () => {
     } catch (error) {
       toast.error(
         t('settings.llmKeySaveFail', {
-          error: error instanceof Error ? error.message : 'Unknown error',
+          error: resolveBackendSaveError(error),
         }),
       );
     }
   };
 
   const handleLlmBaseUrlSave = async () => {
-    const trimmed = currentBaseUrlValue.trim();
+    const defaultProtocol = activeProvider === LLMProvider.Ollama ? 'http:' : 'https:';
+    const normalized = normalizeUrlInput(currentBaseUrlValue, defaultProtocol);
+    const trimmed = normalized.trim();
 
     if (trimmed.length > 0) {
-      const validation = validateURL(trimmed);
-      if (!validation.valid) {
-        setLlmBaseUrlError(validation.error || t('settings.llmBaseUrlInvalid'));
+      const error = validateLlmBaseUrl(trimmed, activeProvider);
+      if (error) {
+        setLlmBaseUrlError(error);
         return;
       }
     }
 
     try {
+      if (!ensureBackendReady()) {
+        return;
+      }
       await backendRequest('/llm/base-url', {
         method: 'POST',
         body: JSON.stringify({
@@ -328,12 +409,15 @@ const SettingsPage: React.FC = () => {
           window.localStorage.setItem(key, trimmed);
         }
       }
+      if (normalized !== currentBaseUrlValue) {
+        setLlmBaseUrlByProvider((prev) => ({ ...prev, [activeProvider]: normalized }));
+      }
       void refreshBackendIndicators(activeProvider);
       toast.success(trimmed ? t('settings.llmBaseUrlSaved') : t('settings.llmBaseUrlCleared'));
     } catch (error) {
       toast.error(
         t('settings.llmBaseUrlSaveFail', {
-          error: error instanceof Error ? error.message : 'Unknown error',
+          error: resolveBackendSaveError(error),
         }),
       );
     }

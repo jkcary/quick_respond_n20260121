@@ -16,7 +16,7 @@ import {
 import { BackendLLMGateway } from '@/core/backend/llmGateway';
 import { isBackendAuthConfigured } from '@/core/backend/client';
 import { useI18n } from '@/i18n';
-import { SpeechRecognizer } from '@/core/speech';
+import { SpeechRecognizer, PermissionStatus } from '@/core/speech';
 import { requestMicrophonePermission, isSpeechRecognitionSupported } from '@/core/speech';
 import { formatDuration } from '@/utils/formatters';
 import { logPerfEvent } from '@/utils/perfLogger';
@@ -90,7 +90,7 @@ export const TestPage: React.FC = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [isSegmenting, setIsSegmenting] = useState(false);
   const [segmentProgress, setSegmentProgress] = useState(0);
-  const [voiceEnabled, setVoiceEnabled] = useState(false);
+  const [voiceEnabled, setVoiceEnabled] = useState(() => isSpeechRecognitionSupported());
   const recognizerRef = useRef<SpeechRecognizer | null>(null);
   const recordingTokenRef = useRef(0);
   const recordingTranscriptRef = useRef('');
@@ -199,36 +199,20 @@ export const TestPage: React.FC = () => {
     }
   }, [currentSession?.id, currentWordIndex, batchWords]);
 
-  // Initialize speech recognizer
+  // Initialize speech recognizer (lazy, request permission on user action)
   useEffect(() => {
-    const initRecognizer = async () => {
-      if (!isSpeechRecognitionSupported()) {
-        return;
-      }
-
-      try {
-        const permission = await requestMicrophonePermission();
-        if (permission.status === 'granted') {
-          const rec = new SpeechRecognizer({
-            language: 'zh-CN',
-            continuous: false,
-            interimResults: true,
-          });
-          recognizerRef.current = rec;
-          setVoiceEnabled(true);
-        }
-      } catch (error) {
-        console.error('Failed to initialize speech recognizer:', error);
-      }
-    };
-
-    initRecognizer();
+    if (!isSpeechRecognitionSupported()) {
+      setVoiceEnabled(false);
+      setRecordingError(t('test.voiceNotSupported'));
+    } else {
+      setVoiceEnabled(true);
+    }
 
     return () => {
       recognizerRef.current?.destroy();
       recognizerRef.current = null;
     };
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     if (!isSegmenting) {
@@ -926,13 +910,67 @@ export const TestPage: React.FC = () => {
     return 'Speech recognition error';
   }, [t]);
 
+  const resolvePermissionError = useCallback((errorMessage?: string): string => {
+    if (!errorMessage) {
+      return t('test.voicePermissionFailed');
+    }
+    const lower = errorMessage.toLowerCase();
+    if (lower.includes('not supported')) {
+      return t('test.voiceNotSupported');
+    }
+    if (lower.includes('no microphone') || lower.includes('not found')) {
+      return t('test.voiceDeviceMissing');
+    }
+    if (lower.includes('denied') || lower.includes('permission')) {
+      return t('test.voicePermissionDenied');
+    }
+    return t('test.voicePermissionFailed');
+  }, [t]);
+
+  const ensureRecognizerReady = useCallback(async (): Promise<SpeechRecognizer | null> => {
+    if (recognizerRef.current) {
+      return recognizerRef.current;
+    }
+    if (!isSpeechRecognitionSupported()) {
+      setVoiceEnabled(false);
+      setRecordingError(t('test.voiceNotSupported'));
+      return null;
+    }
+
+    try {
+      const permission = await requestMicrophonePermission();
+      if (permission.status !== PermissionStatus.GRANTED) {
+        setRecordingError(resolvePermissionError(permission.error));
+        return null;
+      }
+    } catch (error) {
+      setRecordingError(
+        resolvePermissionError(error instanceof Error ? error.message : undefined),
+      );
+      return null;
+    }
+
+    const rec = new SpeechRecognizer({
+      language: 'zh-CN',
+      continuous: false,
+      interimResults: true,
+    });
+    recognizerRef.current = rec;
+    setVoiceEnabled(true);
+    return rec;
+  }, [resolvePermissionError, t]);
+
   const stopBatchRecording = useCallback(() => {
     setIsRecording(false);
     recognizerRef.current?.stop();
   }, []);
 
-  const startBatchRecording = useCallback(() => {
-    const recognizer = recognizerRef.current;
+  const startBatchRecording = useCallback(async () => {
+    if (isRecording || isSubmitting || isJudging) {
+      return;
+    }
+
+    const recognizer = await ensureRecognizerReady();
     if (!recognizer || isRecording || isSubmitting || isJudging) {
       return;
     }
@@ -988,13 +1026,13 @@ export const TestPage: React.FC = () => {
       setIsRecording(false);
       setRecordingError(resolveRecordingError(error));
     }
-  }, [isRecording, isSubmitting, isJudging, segmentAndMatchTranscript, resolveRecordingError]);
+  }, [ensureRecognizerReady, isRecording, isSubmitting, isJudging, resolveRecordingError]);
 
   const handleRecordToggle = useCallback(() => {
     if (isRecording) {
       stopBatchRecording();
     } else {
-      startBatchRecording();
+      void startBatchRecording();
     }
   }, [isRecording, startBatchRecording, stopBatchRecording]);
 
