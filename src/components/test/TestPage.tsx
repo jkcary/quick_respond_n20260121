@@ -605,7 +605,11 @@ export const TestPage: React.FC = () => {
       };
 
       try {
-        if (gateway && TEST_CONFIG.VOICE_CORRECTION_ENABLED) {
+        // Phase 1 优化：当 autoSubmit=true 时，segmentAndJudge 已包含纠正功能，
+        // 跳过单独的 correctTranscript 调用，减少一次 LLM 请求
+        const shouldPreCorrect = gateway && TEST_CONFIG.VOICE_CORRECTION_ENABLED && !autoSubmit;
+
+        if (shouldPreCorrect) {
           try {
             correctionAttempted = true;
             const result = await withTimeout(
@@ -642,13 +646,14 @@ export const TestPage: React.FC = () => {
         }
 
         if (gateway) {
-          // 当 autoSubmit 为 true 时，使用 segmentAndJudge 一次完成切分和判断
+          // 当 autoSubmit 为 true 时，使用 segmentAndJudge 一次完成纠正+切分+判断
+          // segmentAndJudge 的 prompt 已包含纠正步骤，无需单独调用 correctTranscript
           if (autoSubmit) {
             try {
               const result = await withTimeout(
                 segmentAndJudgeWithAgent(
                   gateway,
-                  transcriptForSegment,
+                  trimmedTranscript,  // 直接使用原始转录，让 segmentAndJudge 内部纠正
                   segmentWords,
                 ),
                 TEST_CONFIG.VOICE_SEGMENT_TIMEOUT_MS,
