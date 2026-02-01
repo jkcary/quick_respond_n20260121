@@ -39,8 +39,8 @@ export const TEST_CONFIG = {
    */
   VOICE_RECOGNITION_MODE: (import.meta.env.VITE_VOICE_RECOGNITION_MODE as VoiceRecognitionMode) || 'web-speech',
 
-  /** Whisper 服务地址 (使用后端 /whisper 端点) */
-  WHISPER_API_URL: (import.meta.env.VITE_WHISPER_API_URL as string) || 'http://localhost:4000/whisper',
+  /** Whisper 服务地址 (使用后端 /api/whisper 端点) */
+  WHISPER_API_URL: (import.meta.env.VITE_WHISPER_API_URL as string) || 'http://localhost:4000/api/whisper',
 
   /** Whisper 请求超时时间 (ms) */
   WHISPER_TIMEOUT_MS: 30000,

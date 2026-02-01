@@ -30,7 +30,7 @@ export interface WhisperHealthStatus {
 }
 
 const DEFAULT_CONFIG: Required<WhisperConfig> = {
-  baseUrl: 'http://localhost:4000/whisper',
+  baseUrl: 'http://localhost:4000/api/whisper',
   language: 'zh',
   timeout: 30000,
 };
@@ -264,7 +264,7 @@ export class WhisperRecognizer {
 /**
  * 检查 Whisper 服务是否可用
  */
-export async function isWhisperAvailable(baseUrl = 'http://localhost:4000/whisper'): Promise<boolean> {
+export async function isWhisperAvailable(baseUrl = 'http://localhost:4000/api/whisper'): Promise<boolean> {
   try {
     const recognizer = new WhisperRecognizer({ baseUrl });
     const health = await recognizer.checkHealth();
