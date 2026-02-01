@@ -5,3 +5,4 @@
 export * from './recognizer';
 export * from './synthesizer';
 export * from './permissions';
+export * from './whisperRecognizer';

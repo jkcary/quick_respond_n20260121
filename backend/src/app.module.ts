@@ -6,6 +6,7 @@ import { AppController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
 import { DiagnosticsModule } from './diagnostics/diagnostics.module';
 import { LlmModule } from './llm/llm.module';
+import { WhisperModule } from './whisper/whisper.module';
 import { RequestIdMiddleware } from './common/middleware/request-id.middleware';
 import { HttpLoggerMiddleware } from './common/middleware/http-logger.middleware';
 
@@ -23,6 +24,7 @@ import { HttpLoggerMiddleware } from './common/middleware/http-logger.middleware
     AuthModule,
     DiagnosticsModule,
     LlmModule,
+    WhisperModule,
   ],
   controllers: [AppController],
   providers: [

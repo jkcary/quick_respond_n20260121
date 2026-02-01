@@ -1,0 +1,12 @@
+# Whisper Speech-to-Text Service Dependencies
+
+# Web framework
+fastapi>=0.109.0
+uvicorn>=0.27.0
+python-multipart>=0.0.6
+
+# Whisper
+faster-whisper>=1.0.0
+
+# Optional: GPU support (uncomment if using CUDA)
+# ctranslate2>=4.0.0

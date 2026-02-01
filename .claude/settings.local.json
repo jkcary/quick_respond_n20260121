@@ -15,7 +15,16 @@
       "Bash(claude plugin install:*)",
       "Bash(claude plugin list:*)",
       "Bash(python scripts/search.py:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(test:*)",
+      "Bash(pip install:*)",
+      "Bash(where conda)",
+      "Bash(npm install form-data)",
+      "Bash(npm install -D @types/multer)",
+      "Bash(npm run dev:*)",
+      "Bash(timeout:*)",
+      "Bash(npm run dev:full:*)",
+      "Bash(ping:*)"
     ]
   }
 }

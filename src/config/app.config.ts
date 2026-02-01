@@ -15,6 +15,11 @@ export const APP_METADATA = {
 } as const;
 
 /**
+ * 语音识别模式
+ */
+export type VoiceRecognitionMode = 'web-speech' | 'whisper';
+
+/**
  * Test configuration constants
  */
 export const TEST_CONFIG = {
@@ -39,6 +44,18 @@ export const TEST_CONFIG = {
   /** Timeout for transcript correction (ms) */
   VOICE_CORRECTION_TIMEOUT_MS: 3000,
 
+  /**
+   * 语音识别模式
+   * - 'web-speech': 使用浏览器 Web Speech API (依赖 Google 服务器)
+   * - 'whisper': 使用本地 Whisper 服务 (需要启动 whisper-service)
+   */
+  VOICE_RECOGNITION_MODE: (import.meta.env.VITE_VOICE_RECOGNITION_MODE as VoiceRecognitionMode) || 'web-speech',
+
+  /** Whisper 服务地址 (使用后端 /whisper 端点) */
+  WHISPER_API_URL: (import.meta.env.VITE_WHISPER_API_URL as string) || 'http://localhost:4000/whisper',
+
+  /** Whisper 请求超时时间 (ms) */
+  WHISPER_TIMEOUT_MS: 30000,
 
   /** Auto-advance delay after correct answer (ms) */
   AUTO_ADVANCE_DELAY: 1500,

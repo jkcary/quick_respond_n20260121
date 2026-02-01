@@ -16,8 +16,7 @@ import {
 import { BackendLLMGateway } from '@/core/backend/llmGateway';
 import { isBackendAuthConfigured } from '@/core/backend/client';
 import { useI18n } from '@/i18n';
-import { SpeechRecognizer, PermissionStatus } from '@/core/speech';
-import { requestMicrophonePermission, isSpeechRecognitionSupported } from '@/core/speech';
+import { WhisperRecognizer, isWhisperAvailable } from '@/core/speech';
 import { formatDuration } from '@/utils/formatters';
 import { logPerfEvent } from '@/utils/perfLogger';
 import { getGradeBookForGrade } from '@/types';
@@ -90,8 +89,8 @@ export const TestPage: React.FC = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [isSegmenting, setIsSegmenting] = useState(false);
   const [segmentProgress, setSegmentProgress] = useState(0);
-  const [voiceEnabled, setVoiceEnabled] = useState(() => isSpeechRecognitionSupported());
-  const recognizerRef = useRef<SpeechRecognizer | null>(null);
+  const [voiceEnabled, setVoiceEnabled] = useState(false);
+  const whisperRecognizerRef = useRef<WhisperRecognizer | null>(null);
   const recordingTokenRef = useRef(0);
   const recordingTranscriptRef = useRef('');
   const autoSubmitTimerRef = useRef<number | null>(null);
@@ -189,7 +188,7 @@ export const TestPage: React.FC = () => {
     setSegmentProgress(0);
     recordingTranscriptRef.current = '';
     recordingTokenRef.current += 1;
-    recognizerRef.current?.abort();
+    whisperRecognizerRef.current?.cancelRecording();
     segmentTokenRef.current += 1;
     segmentAbortRef.current?.abort();
     segmentAbortRef.current = null;
@@ -199,18 +198,27 @@ export const TestPage: React.FC = () => {
     }
   }, [currentSession?.id, currentWordIndex, batchWords]);
 
-  // Initialize speech recognizer (lazy, request permission on user action)
+  // Initialize Whisper speech recognizer
   useEffect(() => {
-    if (!isSpeechRecognitionSupported()) {
-      setVoiceEnabled(false);
-      setRecordingError(t('test.voiceNotSupported'));
-    } else {
-      setVoiceEnabled(true);
-    }
+    const initVoice = async () => {
+      // 只使用 Whisper 模式
+      const available = await isWhisperAvailable(TEST_CONFIG.WHISPER_API_URL);
+
+      if (available) {
+        setVoiceEnabled(true);
+        console.log('[Voice] Whisper service connected');
+      } else {
+        setVoiceEnabled(false);
+        setRecordingError(t('test.whisperNotAvailable') || 'Whisper service not available. Please start whisper-service.');
+        console.error('[Voice] Whisper service not available at:', TEST_CONFIG.WHISPER_API_URL);
+      }
+    };
+
+    void initVoice();
 
     return () => {
-      recognizerRef.current?.destroy();
-      recognizerRef.current = null;
+      whisperRecognizerRef.current?.destroy();
+      whisperRecognizerRef.current = null;
     };
   }, [t]);
 
@@ -899,75 +907,42 @@ export const TestPage: React.FC = () => {
     ],
   );
 
-  const resolveRecordingError = useCallback((error: unknown): string => {
-    if (error instanceof Error) {
-      const message = error.message;
-      if (
-        error.name === 'speech-timeout' ||
-        message === 'aborted' ||
-        message === 'No speech detected' ||
-        message === 'No speech detected within timeout'
-      ) {
-        return t('test.recordNoSpeech');
-      }
-      return message;
-    }
-    return 'Speech recognition error';
-  }, [t]);
-
-  const resolvePermissionError = useCallback((errorMessage?: string): string => {
-    if (!errorMessage) {
-      return t('test.voicePermissionFailed');
-    }
-    const lower = errorMessage.toLowerCase();
-    if (lower.includes('not supported')) {
-      return t('test.voiceNotSupported');
-    }
-    if (lower.includes('no microphone') || lower.includes('not found')) {
-      return t('test.voiceDeviceMissing');
-    }
-    if (lower.includes('denied') || lower.includes('permission')) {
-      return t('test.voicePermissionDenied');
-    }
-    return t('test.voicePermissionFailed');
-  }, [t]);
-
-  const ensureRecognizerReady = useCallback(async (): Promise<SpeechRecognizer | null> => {
-    if (recognizerRef.current) {
-      return recognizerRef.current;
-    }
-    if (!isSpeechRecognitionSupported()) {
-      setVoiceEnabled(false);
-      setRecordingError(t('test.voiceNotSupported'));
-      return null;
+  const ensureWhisperRecognizerReady = useCallback(async (): Promise<WhisperRecognizer | null> => {
+    if (whisperRecognizerRef.current) {
+      return whisperRecognizerRef.current;
     }
 
-    try {
-      const permission = await requestMicrophonePermission();
-      if (permission.status !== PermissionStatus.GRANTED) {
-        setRecordingError(resolvePermissionError(permission.error));
-        return null;
-      }
-    } catch (error) {
-      setRecordingError(
-        resolvePermissionError(error instanceof Error ? error.message : undefined),
-      );
-      return null;
-    }
-
-    const rec = new SpeechRecognizer({
-      language: 'zh-CN',
-      continuous: false,
-      interimResults: true,
+    const rec = new WhisperRecognizer({
+      baseUrl: TEST_CONFIG.WHISPER_API_URL,
+      language: 'zh',
+      timeout: TEST_CONFIG.WHISPER_TIMEOUT_MS,
     });
-    recognizerRef.current = rec;
-    setVoiceEnabled(true);
-    return rec;
-  }, [resolvePermissionError, t]);
 
-  const stopBatchRecording = useCallback(() => {
+    // 检查服务是否可用
+    const health = await rec.checkHealth();
+    if (!health.available) {
+      setRecordingError(t('test.whisperNotAvailable') || 'Whisper service not available');
+      return null;
+    }
+
+    whisperRecognizerRef.current = rec;
+    return rec;
+  }, [t]);
+
+  const stopBatchRecording = useCallback(async () => {
     setIsRecording(false);
-    recognizerRef.current?.stop();
+    if (whisperRecognizerRef.current?.getIsRecording()) {
+      try {
+        const result = await whisperRecognizerRef.current.stopRecording();
+        if (result.text.trim()) {
+          recordingTranscriptRef.current = result.text.trim();
+          setRecordingTranscript(result.text.trim());
+        }
+      } catch (error) {
+        console.error('Whisper stop recording failed:', error);
+        setRecordingError(error instanceof Error ? error.message : 'Stop recording failed');
+      }
+    }
   }, []);
 
   const startBatchRecording = useCallback(async () => {
@@ -975,67 +950,29 @@ export const TestPage: React.FC = () => {
       return;
     }
 
-    const recognizer = await ensureRecognizerReady();
-    if (!recognizer || isRecording || isSubmitting || isJudging) {
-      return;
-    }
-
-    const sessionToken = recordingTokenRef.current + 1;
-    recordingTokenRef.current = sessionToken;
+    recordingTokenRef.current += 1;
     recordingTranscriptRef.current = '';
     setRecordingTranscript('');
     setSegmentedTokens([]);
     setRecordingError(null);
-    setIsRecording(true);
 
+    const whisper = await ensureWhisperRecognizerReady();
+    if (!whisper || isRecording || isSubmitting || isJudging) {
+      return;
+    }
+
+    setIsRecording(true);
     try {
-      recognizer.updateConfig({ continuous: true, interimResults: true });
-      recognizer.startContinuous(
-        {
-          onResult: (result) => {
-            if (recordingTokenRef.current !== sessionToken) {
-              return;
-            }
-            if (!result.isFinal) {
-              return;
-            }
-            const trimmed = result.transcript.trim();
-            if (!trimmed) {
-              return;
-            }
-            const nextValue = recordingTranscriptRef.current
-              ? `${recordingTranscriptRef.current} ${trimmed}`
-              : trimmed;
-            recordingTranscriptRef.current = nextValue;
-            setRecordingTranscript(nextValue);
-          },
-          onError: (error) => {
-            if (recordingTokenRef.current !== sessionToken) {
-              return;
-            }
-            setIsRecording(false);
-            setRecordingError(resolveRecordingError(error));
-          },
-          onEnd: () => {
-            if (recordingTokenRef.current !== sessionToken) {
-              return;
-            }
-            setIsRecording(false);
-          },
-        },
-        {
-          speechStartTimeoutMs: TEST_CONFIG.VOICE_SPEECH_TIMEOUT_MS,
-        },
-      );
+      await whisper.startRecording();
     } catch (error) {
       setIsRecording(false);
-      setRecordingError(resolveRecordingError(error));
+      setRecordingError(error instanceof Error ? error.message : 'Failed to start recording');
     }
-  }, [ensureRecognizerReady, isRecording, isSubmitting, isJudging, resolveRecordingError]);
+  }, [ensureWhisperRecognizerReady, isRecording, isSubmitting, isJudging]);
 
   const handleRecordToggle = useCallback(() => {
     if (isRecording) {
-      stopBatchRecording();
+      void stopBatchRecording();
     } else {
       void startBatchRecording();
     }
