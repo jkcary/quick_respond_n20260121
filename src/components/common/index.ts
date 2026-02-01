@@ -25,5 +25,3 @@ export type { ProgressBarProps } from './ProgressBar';
 
 export { ToastContainer, toast } from './Toast';
 export type { ToastContainerProps, ToastMessage, ToastType } from './Toast';
-
-export { LanguageToggle } from './LanguageToggle';

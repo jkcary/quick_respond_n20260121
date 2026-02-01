@@ -2,7 +2,6 @@
  * LLM module exports
  */
 
-export * from './gateway';
 export * from './prompts';
 export * from './parser';
 export * from './segmentAgent';

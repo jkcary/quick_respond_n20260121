@@ -39,10 +39,9 @@ export type {
   AppConfig,
   UserPreferences,
   FeatureFlags,
-  PlatformCapabilities,
 } from './config';
 
-export { StorageKey, Platform } from './config';
+export { StorageKey } from './config';
 
 // ==================== Legacy Type Aliases (Backward Compatibility) ====================
 // These aliases maintain compatibility with existing code

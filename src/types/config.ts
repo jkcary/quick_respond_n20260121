@@ -111,35 +111,3 @@ export enum StorageKey {
   LastSession = 'eaa_last_session',
 }
 
-/**
- * Platform detection
- */
-export enum Platform {
-  Web = 'web',
-  Electron = 'electron',
-  Android = 'android',
-  iOS = 'ios',
-}
-
-/**
- * Platform capabilities
- */
-export interface PlatformCapabilities {
-  /** Current platform */
-  platform: Platform;
-
-  /** Whether file system access is available */
-  hasFileSystem: boolean;
-
-  /** Whether native menus are available */
-  hasNativeMenus: boolean;
-
-  /** Whether microphone permission is required */
-  requiresMicPermission: boolean;
-
-  /** Whether speech recognition is supported */
-  hasSpeechRecognition: boolean;
-
-  /** Whether text-to-speech is supported */
-  hasTextToSpeech: boolean;
-}

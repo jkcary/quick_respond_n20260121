@@ -2,7 +2,6 @@
  * Input validation functions
  */
 
-import type { VocabularyItem } from '@/types';
 import { LLMProvider } from '@/types';
 
 export interface ValidationResult {
@@ -94,38 +93,6 @@ export function validateURL(url: string): ValidationResult {
 }
 
 /**
- * Validate grade level
- */
-export function validateGradeLevel(grade: number): boolean {
-  return Number.isInteger(grade) && grade >= 3 && grade <= 9;
-}
-
-/**
- * Validate vocabulary item structure
- */
-export function validateVocabularyItem(item: unknown): item is VocabularyItem {
-  if (typeof item !== 'object' || item === null) {
-    return false;
-  }
-
-  const vocab = item as Record<string, unknown>;
-
-  return (
-    typeof vocab.id === 'string' &&
-    vocab.id.length > 0 &&
-    typeof vocab.word === 'string' &&
-    vocab.word.length > 0 &&
-    typeof vocab.phonetic === 'string' &&
-    typeof vocab.chinese === 'string' &&
-    vocab.chinese.length > 0 &&
-    typeof vocab.gradeLevel === 'number' &&
-    validateGradeLevel(vocab.gradeLevel) &&
-    typeof vocab.exampleSentence === 'string' &&
-    typeof vocab.exampleChinese === 'string'
-  );
-}
-
-/**
  * Validate model name format
  */
 export function validateModelName(model: string, provider: LLMProvider): ValidationResult {
@@ -171,39 +138,4 @@ export function validateModelName(model: string, provider: LLMProvider): Validat
   }
 
   return { valid: true };
-}
-
-/**
- * Validate user input (Chinese translation)
- */
-export function validateUserInput(input: string): ValidationResult {
-  if (typeof input !== 'string') {
-    return { valid: false, error: 'Input must be a string' };
-  }
-
-  const trimmed = input.trim();
-
-  if (trimmed.length === 0) {
-    return { valid: false, error: 'Please enter a translation' };
-  }
-
-  if (trimmed.length > 100) {
-    return { valid: false, error: 'Translation is too long (max 100 characters)' };
-  }
-
-  return { valid: true };
-}
-
-/**
- * Sanitize user input (remove potentially harmful content)
- */
-export function sanitizeInput(input: string): string {
-  if (typeof input !== 'string') {
-    return '';
-  }
-
-  return input
-    .trim()
-    .replace(/<[^>]*>/g, '') // Remove HTML tags
-    .substring(0, 100); // Limit length
 }
