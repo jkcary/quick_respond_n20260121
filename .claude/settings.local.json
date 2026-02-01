@@ -24,7 +24,9 @@
       "Bash(npm run dev:*)",
       "Bash(timeout:*)",
       "Bash(npm run dev:full:*)",
-      "Bash(ping:*)"
+      "Bash(ping:*)",
+      "Bash(npm run start:dev:*)",
+      "Bash(powershell -Command:*)"
     ]
   }
 }
